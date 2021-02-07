@@ -1,16 +1,17 @@
 package io.nimbly.any2json.generator
 
+import org.jetbrains.kotlin.cli.common.toBooleanLenient
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-var TEST_NOW:LocalDateTime? = null
-var TEST_DOUBLE :Double? = null
-var TEST_INT :Int? = null
-var TEST_CHAR :Char? = null
-var TEST_BOOL :Boolean? = null
+var TEST_NOW: LocalDateTime? = null
+var TEST_DOUBLE: Double? = null
+var TEST_INT: Int? = null
+var TEST_CHAR: Char? = null
+var TEST_BOOL: Boolean? = null
 
 class GString : Generator<String>() {
     override fun generate(feed: Boolean, initializer: String?): String
@@ -55,8 +56,14 @@ class GChar : Generator<Char>() {
 }
 
 class GBoolean : Generator<Boolean>() {
-    override fun generate(feed: Boolean, initializer: String?): Boolean
-        = if (feed) TEST_BOOL ?: random.nextBoolean() else false
+    override fun generate(feed: Boolean, initializer: String?): Boolean {
+        if (initializer!=null) {
+            val sub = initializer.toBooleanLenient()
+            if (sub !=null)
+                return sub
+        }
+        return if (feed) TEST_BOOL ?: random.nextBoolean() else false
+    }
 }
 
 class GDate : GeneratorFormated() {

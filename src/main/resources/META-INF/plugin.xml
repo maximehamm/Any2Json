@@ -21,15 +21,6 @@
 
     ]]></description>
 
-<!--    <change-notes><![CDATA[-->
-<!--       <ul>-->
-<!--          <li><b>1.2</b> Supports of Kotlin</li>-->
-<!--          <li><b>1.1</b> Supports of Java</li>-->
-<!--          <li><b>1.0</b> Initial version</li>-->
-<!--       </ul>-->
-<!--    ]]>-->
-<!--    </change-notes>-->
-
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
 

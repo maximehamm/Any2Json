@@ -3,8 +3,9 @@ package io.nimbly.test.any2json.java
 class JavaBaseTests : AbstractJavaTestCase() {
 
     fun testPrimitives() {
-        configure(
-            """
+
+        // language=Java
+        configure("""
                 package io.nimbly;
                 public class Person {
                     private boolean zeBoolean;
@@ -13,9 +14,9 @@ class JavaBaseTests : AbstractJavaTestCase() {
                     private double zeDouble;
                     private float zeFloat;
                     private char zeChar;
-                }"""
-        )
+                }""")
 
+        // language=Json
         assertEquals(toJson(), """
             {
               "zeBoolean": false,
@@ -29,8 +30,9 @@ class JavaBaseTests : AbstractJavaTestCase() {
     }
 
     fun testJavaLang() {
-        configure(
-            """
+
+        // language=Java
+        configure("""
                 package io.nimbly;
                 public class Person {
                     private Boolean zeBoolean;
@@ -39,9 +41,9 @@ class JavaBaseTests : AbstractJavaTestCase() {
                     private Number zeNumber;
                     private Double zeDouble;
                     private Float zeFloat;
-                }"""
-        )
+                }""")
 
+        // language=Json
         assertEquals(toJson(), """
             {
               "zeBoolean": false,
@@ -55,15 +57,16 @@ class JavaBaseTests : AbstractJavaTestCase() {
     }
 
     fun testJavaMath() {
-        configure(
-            """
+
+        // language=Java
+        configure("""
                 package io.nimbly;
                 import java.math.BigDecimal;
                 public class Person {
                     private BigDecimal zeBigDecimal;
-                }"""
-        )
+                }""")
 
+        // language=Json
         assertEquals(toJson(), """
             {
               "zeBigDecimal": 0E-12
@@ -72,8 +75,9 @@ class JavaBaseTests : AbstractJavaTestCase() {
     }
 
     fun testJavaTime() {
-        configure(
-            """
+
+        // language=Java
+        configure("""
                 package io.nimbly;
                 import java.util.Date;
                 import java.time.LocalDateTime;
@@ -84,9 +88,9 @@ class JavaBaseTests : AbstractJavaTestCase() {
                     public LocalDateTime zeLocalDateTime;
                     public LocalDate zeLocalDate;
                     public LocalTime zeLocalTime;
-                }"""
-        )
+                }""")
 
+        // language=Json
         assertEquals(toJson(), """
             {
               "zeDate": "2020-03-23 00:00:00",
@@ -99,14 +103,16 @@ class JavaBaseTests : AbstractJavaTestCase() {
 
 
     fun testIgnoreStatic() {
-        configure(
-            """
-                    package io.nimbly;
-                    public class Person {
-                        public static final String TEST = "TEST";
-                        private int name;
-                    }""")
 
+        // language=Java
+        configure("""
+            package io.nimbly;
+            public class Person {
+                public static final String TEST = "TEST";
+                private int name;
+            }""")
+
+        // language=Json
         assertEquals(toJson(), """
             {
               "name": 0
@@ -114,12 +120,15 @@ class JavaBaseTests : AbstractJavaTestCase() {
     }
 
     fun testInterface() {
+
+        // language=Java
         configure("""
             package io.nimbly;
             interface ISchool {
                 Long id = 123456789l;
             }""")
 
+        // language=Json
         assertEquals(toJsonRandom(), """
             {
               "id": 123456789
