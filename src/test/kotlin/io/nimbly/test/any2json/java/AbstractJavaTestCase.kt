@@ -27,15 +27,30 @@ abstract class AbstractJavaTestCase : AbstractTestCase() {
             import java.lang.CharSequence;
             import java.lang.Number;
             import java.lang.Double;
+            import java.lang.Long;
+            import java.lang.Integer;
             import java.lang.Float;
             import java.lang.Character;
             """.trimIndent() + t.substringAfter(";")
         }
 
-        val regex = """( class )(\w*)""".toRegex()
+        if (!t.contains("<caret>")) {
+            if (t.contains("class "))
+                t = t.substringBefore("class ") + "class <caret>" +
+                        t.substringAfter("class ")
+            else
+                t = t.substringBefore("interface ") + "interface <caret>" +
+                        t.substringAfter("interface ")
+        }
+
+        configureBase(t)
+    }
+
+    protected fun configureBase(text: String) {
+        val regex = """(class )|(interface )(\w*)""".toRegex()
         val className = regex.find(text)!!.groupValues.last()
 
-        myFixture.configureByText("$className.java", t)
+        myFixture.configureByText("$className.java", text)
     }
 
     override fun setUp() {
@@ -44,9 +59,9 @@ abstract class AbstractJavaTestCase : AbstractTestCase() {
         PsiTestUtil.addLibrary( myFixture.module, getTestDataPath() + '/' + LIB_JAVA)
 
         //configure("""package java.lang; public class Object""".trimIndent())
-        configure("""package java.math; public class BigDecimal extends Number { }""".trimIndent())
-        configure("""package java.time; public class LocalDate { }""".trimIndent())
-        configure("""package java.time; public class LocalDateTime { }""".trimIndent())
-        configure("""package java.time; public class LocalTime { }""".trimIndent())
+        configureBase("""package java.math; public class BigDecimal extends Number { }""".trimIndent())
+        configureBase("""package java.time; public class LocalDate { }""".trimIndent())
+        configureBase("""package java.time; public class LocalDateTime { }""".trimIndent())
+        configureBase("""package java.time; public class LocalTime { }""".trimIndent())
     }
 }

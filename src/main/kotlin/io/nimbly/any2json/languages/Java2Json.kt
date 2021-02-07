@@ -25,7 +25,7 @@ class Java2Json(val psiClass: PsiClass, val generateValues: Boolean) : AnyToJson
     @Suppress("UNCHECKED_CAST")
     override fun buildMap(): Map<String, Any>
         = psiClass.allFields
-            .filter { it.modifierList?.hasModifierProperty(PsiModifier.STATIC) == false }
+            .filter { it.modifierList?.hasModifierProperty(PsiModifier.STATIC) == false || psiClass.isInterface }
             .map { it.name to parse(it.type, it.initializer?.text) }
             .filter { it.second != null }
             .toMap() as Map<String, Any>

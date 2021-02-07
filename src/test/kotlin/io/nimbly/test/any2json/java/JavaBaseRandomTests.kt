@@ -6,7 +6,7 @@ class JavaBaseRandomTests : AbstractJavaTestCase() {
         configure(
             """
                 package io.nimbly;
-                public class Person<caret> {
+                public class Person {
                     private boolean zeBoolean;
                     private int zeInt;
                     private long zeLong;
@@ -32,7 +32,7 @@ class JavaBaseRandomTests : AbstractJavaTestCase() {
         configure(
             """
                 package io.nimbly;
-                public class Person<caret> {
+                public class Person {
                     private Boolean zeBoolean;
                     private Character zeCharacter;
                     private String zeString;
@@ -59,7 +59,7 @@ class JavaBaseRandomTests : AbstractJavaTestCase() {
             """
                 package io.nimbly;
                 import java.math.BigDecimal;
-                public class Person<caret> {
+                public class Person {
                     private BigDecimal zeBigDecimal;
                 }"""
         )
@@ -79,7 +79,7 @@ class JavaBaseRandomTests : AbstractJavaTestCase() {
                 import java.time.LocalDateTime;
                 import java.time.LocalDate;
                 import java.time.LocalTime;
-                public class Person<caret> {
+                public class Person {
                     public Date zeDate;
                     public LocalDateTime zeLocalDateTime;
                     public LocalDate zeLocalDate;

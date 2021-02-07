@@ -7,7 +7,7 @@ class JavaArraysTests : AbstractJavaTestCase() {
                 package io.nimbly;
                 import java.util.List;
                 import java.util.Collection;
-                public class Person<caret> {
+                public class Person {
                     private List<Boolean> zeBooleans;
                     private Collection<Character> zeCharacters;
                     private java.util.ArrayList<String> zeStrings;
@@ -48,7 +48,7 @@ class JavaArraysTests : AbstractJavaTestCase() {
     fun testArraysNoType() {
         configure("""
                 package io.nimbly;
-                public class Person<caret> {
+                public class Person {
                     private java.util.List zeThings;
                 }""")
 

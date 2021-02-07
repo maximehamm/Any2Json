@@ -7,7 +7,7 @@ class JavaHierarchyTests : AbstractJavaTestCase() {
         configure("""
             package io.nimbly;
             import java.util.Set;
-            class School<caret> {
+            class School {
                 private String schoolName;
                 private Set<Student> students;
             }
@@ -82,26 +82,32 @@ class JavaHierarchyTests : AbstractJavaTestCase() {
                     "schoolName": "Something",
                     "teatchers": [
                       {
+                        "name": "Something",
                         "age": 100,
-                        "id": 0
+                        "id": 123456789
                       }
-                    ],
-                    "age": 100,
-                    "id": 0
-                  }
+                    ]
+                  },
+                  "name": "Something",
+                  "age": 100,
+                  "id": 123456789
                 }
               ],
               "teatchers": [
                 {
-                  "school": {
+                  "shcool": {
                     "schoolName": "Something",
                     "students": [
                       {
+                        "name": "Something",
                         "age": 100,
-                        "id": 0
+                        "id": 123456789
                       }
                     ]
-                  }
+                  },
+                  "name": "Something",
+                  "age": 100,
+                  "id": 123456789
                 }
               ]
             }
