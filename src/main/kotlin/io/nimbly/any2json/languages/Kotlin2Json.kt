@@ -27,7 +27,10 @@ class Kotlin2Json(val ktClass: KtClass, val generateValues: Boolean) : AnyToJson
         = ktClass.getProperties().map { it.name to
             parse(it.type(), it.initializer?.text) }.filter { it.second != null }.toMap() as Map<String, Any>
 
+    @Suppress("NAME_SHADOWING")
     private fun parse(type: KotlinType?, initializer: String?, done: MutableSet<String> = mutableSetOf()): Any? {
+
+        val initializer = if (initializer == "null") null else initializer
 
         var type = type
         if (type == null)

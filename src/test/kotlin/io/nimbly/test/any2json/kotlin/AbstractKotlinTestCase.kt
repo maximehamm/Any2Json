@@ -27,4 +27,12 @@ abstract class AbstractKotlinTestCase : AbstractTestCase() {
 
         addClass("""package java.util; public class Date { }""".trimIndent())
     }
+
+    override fun addClass(text: String) {
+
+        val regex = """(class|interface) *([\w]+)""".toRegex()
+        val className = regex.find(text.trimIndent())!!.groupValues.last()
+
+        myFixture.configureByText("$className.kt", text)
+    }
 }

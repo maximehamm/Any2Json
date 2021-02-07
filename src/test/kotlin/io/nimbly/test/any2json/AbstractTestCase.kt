@@ -55,7 +55,7 @@ abstract class AbstractTestCase : JavaCodeInsightFixtureTestCase() {
         myFixture.configureByText("$className.$extension", t)
     }
 
-    protected fun addClass(text: String) {
+    open protected fun addClass(text: String) {
         myFixture.addClass(text)
     }
 
