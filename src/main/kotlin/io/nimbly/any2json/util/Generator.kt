@@ -24,6 +24,12 @@ class GInteger : Generator<Int>() {
             else if (feed) 100 else 0
 }
 
+class GLong : Generator<Long>() {
+    override fun generate(feed: Boolean, initializer: String?): Long
+            = if (initializer!=null) initializer.substringBeforeLast("l").toLongOrNull() ?: 0
+    else if (feed) 100 else 0
+}
+
 class GDecimal(val digits: Int) : Generator<BigDecimal>() {
     override fun generate(feed: Boolean, initializer: String?): BigDecimal {
         if (initializer != null) {

@@ -105,14 +105,24 @@ class JavaBaseTests : AbstractJavaTestCase() {
                     public class Person<caret> {
                         public static final String TEST = "TEST";
                         private int name;
-                    }"""
-        )
+                    }""")
 
         assertEquals(toJson(), """
             {
               "name": 0
+            }""".trimIndent())
+    }
+
+    fun testInterface() {
+        configure("""
+                interface ISchool {
+                    Long id = 123456789l;
+                }""")
+
+        assertEquals(toJson(), """
+            {
+              id = 123456789
             }
         """.trimIndent())
     }
-
 }

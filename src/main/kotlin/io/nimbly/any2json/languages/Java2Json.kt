@@ -15,6 +15,7 @@ import io.nimbly.any2json.generator.GDate
 import io.nimbly.any2json.generator.GDateTime
 import io.nimbly.any2json.generator.GDecimal
 import io.nimbly.any2json.generator.GInteger
+import io.nimbly.any2json.generator.GLong
 import io.nimbly.any2json.generator.GString
 import io.nimbly.any2json.generator.GTime
 import io.nimbly.any2json.util.Any2PojoException
@@ -31,11 +32,6 @@ class Java2Json(val psiClass: PsiClass, val generateValues: Boolean) : AnyToJson
 
     private fun parse(type: PsiType, initializer: String?, done: MutableSet<PsiType> = mutableSetOf()): Any? {
 
-        if (done.contains(type))
-            return null
-
-        done.add(type)
-
         // Primitives
         if (type is PsiPrimitiveType)
             return getValue(type, initializer)
@@ -49,10 +45,20 @@ class Java2Json(val psiClass: PsiClass, val generateValues: Boolean) : AnyToJson
         if (psiClass.isEnum)
             return psiClass.fields.find { it is PsiEnumConstant }?.name ?: ""
 
-        // Collections, iterables, arrays, etc.
+        // Known object with generator
         val names = mutableListOf<String>()
         names += type.presentableText
         names += type.superTypes.map { it.presentableText }
+        names.find { GENERATORS[it] != null }?.let {
+            return getValue(it, initializer)
+        }
+
+        // Prevent stack overflow
+        if (done.contains(type))
+            return null
+        done.add(type)
+
+        // Collections, iterables, arrays, etc.
         if (names.find { it.startsWith("Collection")
                     || it.startsWith("Iterable")
                     || it.startsWith("Iterator")
@@ -64,11 +70,6 @@ class Java2Json(val psiClass: PsiClass, val generateValues: Boolean) : AnyToJson
             if (parameterType.presentableText == "Object")
                 return listOf<Int>()
             return listOfNotNull(parse(parameterType, null, done = done))
-        }
-
-        // Known object with generator
-        names.find { GENERATORS[it] != null }?.let {
-            return getValue(it, initializer)
         }
 
         // Recurse
@@ -97,7 +98,8 @@ class Java2Json(val psiClass: PsiClass, val generateValues: Boolean) : AnyToJson
             "Boolean" to GBoolean(),
             "Character" to GChar(),
             "CharSequence" to GString(),
-            "Number" to GInteger(),
+            "Long" to GLong(),
+            "Number" to GLong(),
             "Double" to GDecimal(1), "Float" to GDecimal(6), "BigDecimal" to GDecimal(12),
             "Date" to GDateTime(), "LocalDateTime" to GDateTime(),
             "LocalDate" to GDate(),
