@@ -14,7 +14,7 @@ var TEST_BOOL :Boolean? = null
 
 class GString : Generator<String>() {
     override fun generate(feed: Boolean, initializer: String?): String
-        = if (initializer!=null) initializer.substringAfter("\"").substringBeforeLast("\"")
+        = if (initializer!=null && initializer.startsWith("\"")) initializer.substringAfter("\"").substringBeforeLast("\"")
             else if (feed) "Something" else ""
 }
 

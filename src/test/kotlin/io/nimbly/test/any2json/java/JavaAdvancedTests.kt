@@ -235,5 +235,23 @@ class JavaAdvancedTests : AbstractJavaTestCase() {
         """.trimIndent())
     }
 
+    fun testFieldRefField() {
 
+        // language=Java
+        configure("""
+            package io.nimbly;
+            class School {
+                private String schoolName;
+                private String schoolNameShort = schoolName.substring(3)
+            }
+            """)
+
+        // language=Json
+        assertEquals(toJsonRandom(), """
+            {
+              "schoolName": "Something",
+              "schoolNameShort": "Something"
+            }
+        """.trimIndent())
+    }
 }
