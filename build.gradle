@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'io.nimbly.json'
-version '1.2.3-SNAPSHOT'
+version '1.2.5-SNAPSHOT'
 
 repositories {
     mavenCentral()

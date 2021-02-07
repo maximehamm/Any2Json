@@ -1,17 +1,8 @@
 package io.nimbly.test.any2json.java
 
 import com.intellij.testFramework.PsiTestUtil
-import io.nimbly.any2json.generator.TEST_BOOL
-import io.nimbly.any2json.generator.TEST_CHAR
-import io.nimbly.any2json.generator.TEST_DOUBLE
-import io.nimbly.any2json.generator.TEST_INT
-import io.nimbly.any2json.generator.TEST_NOW
 import io.nimbly.test.any2json.AbstractTestCase
 import org.junit.Ignore
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.Month
 
 @Ignore
 abstract class AbstractJavaTestCase : AbstractTestCase() {
@@ -43,14 +34,14 @@ abstract class AbstractJavaTestCase : AbstractTestCase() {
                         t.substringAfter("interface ")
         }
 
-        configureBase(t)
+        val regex = """(class )|(interface )(\w*)""".toRegex()
+        val className = regex.find(text.trimEnd())!!.groupValues.last()
+
+        myFixture.configureByText("$className.java", t)
     }
 
-    protected fun configureBase(text: String) {
-        val regex = """(class )|(interface )(\w*)""".toRegex()
-        val className = regex.find(text)!!.groupValues.last()
-
-        myFixture.configureByText("$className.java", text)
+    protected fun addClass(text: String) {
+        myFixture.addClass(text)
     }
 
     override fun setUp() {
@@ -58,10 +49,9 @@ abstract class AbstractJavaTestCase : AbstractTestCase() {
 
         PsiTestUtil.addLibrary( myFixture.module, getTestDataPath() + '/' + LIB_JAVA)
 
-        //configure("""package java.lang; public class Object""".trimIndent())
-        configureBase("""package java.math; public class BigDecimal extends Number { }""".trimIndent())
-        configureBase("""package java.time; public class LocalDate { }""".trimIndent())
-        configureBase("""package java.time; public class LocalDateTime { }""".trimIndent())
-        configureBase("""package java.time; public class LocalTime { }""".trimIndent())
+        addClass("""package java.math; public class BigDecimal extends Number { }""".trimIndent())
+        addClass("""package java.time; public class LocalDate { }""".trimIndent())
+        addClass("""package java.time; public class LocalDateTime { }""".trimIndent())
+        addClass("""package java.time; public class LocalTime { }""".trimIndent())
     }
 }

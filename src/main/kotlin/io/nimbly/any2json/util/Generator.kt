@@ -26,7 +26,7 @@ class GInteger : Generator<Int>() {
 
 class GLong : Generator<Long>() {
     override fun generate(feed: Boolean, initializer: String?): Long
-            = if (initializer!=null) initializer.substringBeforeLast("l").toLongOrNull() ?: 0
+            = if (initializer!=null) initializer.substringBeforeLast("l").substringBeforeLast("L").toLongOrNull() ?: 0
     else if (feed) 100 else 0
 }
 

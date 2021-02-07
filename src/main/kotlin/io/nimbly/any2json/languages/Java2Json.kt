@@ -41,7 +41,8 @@ class Java2Json(val psiClass: PsiClass, val generateValues: Boolean) : AnyToJson
             return listOfNotNull(parse(type.getDeepComponentType(), initializer, done = done))
 
         // Enum
-        val psiClass = PsiUtil.resolveClassInClassTypeOnly(type) ?: return mapOf<String, Any?>()
+        val psiClass = PsiUtil.resolveClassInClassTypeOnly(type)
+            ?: return mapOf<String, Any?>()
         if (psiClass.isEnum)
             return psiClass.fields.find { it is PsiEnumConstant }?.name ?: ""
 
