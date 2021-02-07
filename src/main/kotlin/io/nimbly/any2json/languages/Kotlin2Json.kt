@@ -17,8 +17,10 @@ import org.jetbrains.kotlin.types.SimpleType
 import org.jetbrains.kotlin.types.typeUtil.isEnum
 import org.jetbrains.kotlin.types.typeUtil.supertypes
 
+
 class Kotlin2Json(val ktClass: KtClass, val generateValues: Boolean) : AnyToJsonBuilder() {
 
+    @Suppress("UNCHECKED_CAST")
     override fun buildMap(): Map<String, Any>
         = ktClass.getProperties().map { it.name to
             parse(it.type(), it.initializer?.text) }.filter { it.second != null }.toMap() as Map<String, Any>
@@ -70,7 +72,7 @@ class Kotlin2Json(val ktClass: KtClass, val generateValues: Boolean) : AnyToJson
             "Int" to GInteger(), "Number" to GInteger(),
             "Char" to GChar(),
             "CharSequence" to GString(), "String" to GString(),
-            "Double" to GDecimal(2), "Float" to GDecimal(6), "BigDecimal" to GDecimal(12),
+            "Double" to GDecimal(1), "Float" to GDecimal(6), "BigDecimal" to GDecimal(12),
             "Date" to GDateTime(), "LocalDateTime" to GDateTime(),
             "LocalDate" to GDate(),
             "LocalTime" to GTime(),

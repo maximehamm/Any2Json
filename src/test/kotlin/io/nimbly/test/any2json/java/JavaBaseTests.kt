@@ -1,0 +1,118 @@
+package io.nimbly.test.any2json.java
+
+class JavaBaseTests : AbstractJavaTestCase() {
+
+    fun testPrimitives() {
+        configure(
+            """
+                package io.nimbly;
+                public class Person<caret> {
+                    private boolean zeBoolean;
+                    private int zeInt;
+                    private long zeLong;
+                    private double zeDouble;
+                    private float zeFloat;
+                    private char zeChar;
+                }"""
+        )
+
+        assertEquals(toJson(), """
+            {
+              "zeBoolean": false,
+              "zeInt": 0,
+              "zeLong": 0,
+              "zeDouble": 0.0,
+              "zeFloat": 0.000000,
+              "zeChar": "a"
+            }
+        """.trimIndent())
+    }
+
+    fun testJavaLang() {
+        configure(
+            """
+                package io.nimbly;
+                public class Person<caret> {
+                    private Boolean zeBoolean;
+                    private Character zeCharacter;
+                    private String zeString;
+                    private Number zeNumber;
+                    private Double zeDouble;
+                    private Float zeFloat;
+                }"""
+        )
+
+        assertEquals(toJson(), """
+            {
+              "zeBoolean": false,
+              "zeCharacter": "a",
+              "zeString": "",
+              "zeNumber": 0,
+              "zeDouble": 0.0,
+              "zeFloat": 0.000000
+            }
+        """.trimIndent())
+    }
+
+    fun testJavaMath() {
+        configure(
+            """
+                package io.nimbly;
+                import java.math.BigDecimal;
+                public class Person<caret> {
+                    private BigDecimal zeBigDecimal;
+                }"""
+        )
+
+        assertEquals(toJson(), """
+            {
+              "zeBigDecimal": 0E-12
+            }
+        """.trimIndent())
+    }
+
+    fun testJavaTime() {
+        configure(
+            """
+                package io.nimbly;
+                import java.util.Date;
+                import java.time.LocalDateTime;
+                import java.time.LocalDate;
+                import java.time.LocalTime;
+                public class Person<caret> {
+                    public Date zeDate;
+                    public LocalDateTime zeLocalDateTime;
+                    public LocalDate zeLocalDate;
+                    public LocalTime zeLocalTime;
+                }"""
+        )
+
+        assertEquals(toJson(), """
+            {
+              "zeDate": "2020-03-23 00:00:00",
+              "zeLocalDateTime": "2020-03-23 00:00:00",
+              "zeLocalDate": "2020-03-23",
+              "zeLocalTime": "00:00:00"
+            }
+        """.trimIndent())
+    }
+
+
+    fun testIgnoreStatic() {
+        configure(
+            """
+                    package io.nimbly;
+                    public class Person<caret> {
+                        public static final String TEST = "TEST";
+                        private int name;
+                    }"""
+        )
+
+        assertEquals(toJson(), """
+            {
+              "name": 0
+            }
+        """.trimIndent())
+    }
+
+}

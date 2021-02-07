@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>io.nimly.json.Any2Json</id>
+    <id>io.nimbly.json.Any2Json</id>
     <name>Any to JSON</name>
     <vendor email="maxime.hamm@gmail.com"
             url="https://www.linkedin.com/in/maxime-hamm/">Maxime HAMM</vendor>
@@ -17,7 +17,7 @@
         </ul>
 
        <br/>
-       <a href="https://github.com/xxx/xxxx"></a>
+       <a href="https://github.com/maximehamm/Any2Json">https://github.com/maximehamm/Any2Json</a>
 
     ]]></description>
 
@@ -44,7 +44,7 @@
 
     <actions>
         <action class="io.nimbly.any2json.Any2JsonDefaultAction"
-                id="io.nimly.any2json.ANY2JsonDefaultAction"
+                id="io.nimbly.any2json.ANY2JsonDefaultAction"
                 text="Class > JSON"
                 description="Convert CLASS to JSON and copy to clipboard">
 
@@ -53,12 +53,12 @@
         </action>
 
         <action class="io.nimbly.any2json.Any2JsonRandomAction"
-                id="io.nimly.any2json.ANY2JsonRandomAction"
+                id="io.nimbly.any2json.ANY2JsonRandomAction"
                 text="Class > Json With Values"
                 description="Convert CLASS to JSON randomly generate some test data and copy to clipboard">
 
             <add-to-group group-id="EditorPopupMenu"
-                          relative-to-action="io.nimly.any2json.ANY2JsonDefaultAction"
+                          relative-to-action="io.nimbly.any2json.ANY2JsonDefaultAction"
                           anchor="after"/>
 
         </action>

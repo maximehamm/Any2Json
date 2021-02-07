@@ -6,6 +6,12 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+var TEST_NOW:LocalDateTime? = null
+var TEST_DOUBLE :Double? = null
+var TEST_INT :Int? = null
+var TEST_CHAR :Char? = null
+var TEST_BOOL :Boolean? = null
+
 class GString : Generator<String>() {
     override fun generate(feed: Boolean, initializer: String?): String
         = if (initializer!=null) initializer.substringAfter("\"").substringBeforeLast("\"")
@@ -26,7 +32,7 @@ class GDecimal(val digits: Int) : Generator<BigDecimal>() {
                 return tbd
         }
         return BigDecimal.valueOf(
-            if (feed) (random.nextFloat() * 100L).toDouble() * 1000000
+            if (feed) (TEST_DOUBLE ?: random.nextFloat() * 100L).toDouble() * 1000000
             else 0.0
         ).setScale(digits, RoundingMode.DOWN)
     }
@@ -36,15 +42,15 @@ class GChar : Generator<Char>() {
     override fun generate(feed: Boolean, initializer: String?): Char {
         if (initializer!=null) {
             val sub = initializer.substringAfter("'").substringBeforeLast("'")
-            if (sub.length > 0) return sub[0].toChar()
+            if (sub.length > 0) return sub[0]
         }
-        return if (feed) (random.nextInt(26) + 97).toChar() else 'a'
+        return if (feed) TEST_CHAR ?: (random.nextInt(26) + 97).toChar() else 'a'
     }
 }
 
 class GBoolean : Generator<Boolean>() {
     override fun generate(feed: Boolean, initializer: String?): Boolean
-        = if (feed) random.nextBoolean() else false
+        = if (feed) TEST_BOOL ?: random.nextBoolean() else false
 }
 
 class GDate : GeneratorFormated() {
@@ -69,5 +75,8 @@ abstract class Generator<T> {
 
 abstract class GeneratorFormated : Generator<String>() {
     protected fun generate(format: DateTimeFormatter)
-        = LocalDateTime.now().format(format)
+        = now().format(format)
 }
+
+fun now() = TEST_NOW ?: LocalDateTime.now()
+

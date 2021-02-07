@@ -4,8 +4,8 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.30'
 }
 
-group 'io.nimly.json'
-version '1.2.2-SNAPSHOT'
+group 'io.nimbly.json'
+version '1.2.3-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -17,7 +17,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
-sourceCompatibility = JavaVersion.VERSION_15
+sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
 compileKotlin {
@@ -34,14 +34,19 @@ intellij {
     intellij.type = 'IC'
 }
 
+tasks.buildSearchableOptions {
+    enabled = false
+}
+
 patchPluginXml {
     changeNotes """
-      Change note :
+      Change notes :
       <ul>
         <li><b>1.2</b> Supports of Kotlin</li>
         <li><b>1.1</b> Supports of Java</li>
         <li><b>1.0</b> Initial version</li>
       </ul>
+      <br/>
       Road map 
       <ul>
         <li><b>1.3</b> Mixing Kotlin and Java references</li>
@@ -50,9 +55,13 @@ patchPluginXml {
       """
 }
 
-test {
-    useJUnitPlatform()
-}
+//tasks.test {
+//    useJUnitPlatform()
+//}
+
+//test {
+//    useJUnitPlatform()
+//}
 
 publishPlugin {
     token = System.getenv("ORG_GRADLE_PROJECT_intellijPublishToken")

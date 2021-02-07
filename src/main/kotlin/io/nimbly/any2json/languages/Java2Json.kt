@@ -21,11 +21,13 @@ import io.nimbly.any2json.util.Any2PojoException
 
 class Java2Json(val psiClass: PsiClass, val generateValues: Boolean) : AnyToJsonBuilder() {
 
+    @Suppress("UNCHECKED_CAST")
     override fun buildMap(): Map<String, Any>
         = psiClass.allFields
             .filter { it.modifierList?.hasModifierProperty(PsiModifier.STATIC) == false }
             .map { it.name to parse(it.type, it.initializer?.text) }
-            .filter { it.second != null }.toMap() as Map<String, Any>
+            .filter { it.second != null }
+            .toMap() as Map<String, Any>
 
     private fun parse(type: PsiType, initializer: String?, done: MutableSet<PsiType> = mutableSetOf()): Any? {
 
@@ -53,12 +55,14 @@ class Java2Json(val psiClass: PsiClass, val generateValues: Boolean) : AnyToJson
         names += type.superTypes.map { it.presentableText }
         if (names.find { it.startsWith("Collection")
                     || it.startsWith("Iterable")
-                    || it.startsWith("Iterable")
+                    || it.startsWith("Iterator")
                     || it.startsWith("List") } != null) {
             val parameterType = PsiUtil.extractIterableTypeParameter(type, false)
                 ?: PsiUtil.substituteTypeParameter(type, CommonClassNames.JAVA_UTIL_ITERATOR, 0, true)
                 ?: PsiUtil.substituteTypeParameter(type, CommonClassNames.JAVA_UTIL_LIST, 0, true)
                 ?: return null
+            if (parameterType.presentableText == "Object")
+                return listOf<Int>()
             return listOfNotNull(parse(parameterType, null, done = done))
         }
 
@@ -82,7 +86,8 @@ class Java2Json(val psiClass: PsiClass, val generateValues: Boolean) : AnyToJson
         = when (type.canonicalText) {
             "boolean" -> getValue("Boolean", initializer)
             "int", "long", "byte", "short" -> getValue("Number", initializer)
-            "float", "double" -> getValue("BigDecimal", initializer)
+            "float" -> getValue("Float", initializer)
+            "double" -> getValue("Double", initializer)
             "char" -> getValue("Character", initializer)
             else -> throw Any2PojoException("Not supported primitive '$type.canonicalText'")
         }
@@ -93,7 +98,7 @@ class Java2Json(val psiClass: PsiClass, val generateValues: Boolean) : AnyToJson
             "Character" to GChar(),
             "CharSequence" to GString(),
             "Number" to GInteger(),
-            "Double" to GDecimal(2), "Float" to GDecimal(6), "BigDecimal" to GDecimal(12),
+            "Double" to GDecimal(1), "Float" to GDecimal(6), "BigDecimal" to GDecimal(12),
             "Date" to GDateTime(), "LocalDateTime" to GDateTime(),
             "LocalDate" to GDate(),
             "LocalTime" to GTime())
