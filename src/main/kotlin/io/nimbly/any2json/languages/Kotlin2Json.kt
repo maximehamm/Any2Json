@@ -53,13 +53,18 @@ class Kotlin2Json(val ktClass: KtClass, val generateValues: Boolean) : AnyToJson
 
         // Collections, iterables, arrays, etc.
         val names = mutableListOf<String>()
-        names += typeName
-        names += type.supertypes().map { it.toString().substringBeforeLast("?") }
+        names += typeName.substringAfterLast(".")
+        names += type.supertypes()
+                    .map { it.toString().substringBeforeLast("?") }
+                    .map { it.substringAfterLast(".")}
         if (names.find { it.startsWith("Collection")
+                    || it.startsWith("Array")
                     || it.startsWith("Iterable")
                     || it.startsWith("Iterator")
                     || it.startsWith("List") } != null) {
             val parameterType = type.arguments.first().type
+            if (parameterType.toString().substringBeforeLast("?") == "Any")
+                return listOf<Int>()
             return listOfNotNull(parse(parameterType, null, done = done))
         }
 

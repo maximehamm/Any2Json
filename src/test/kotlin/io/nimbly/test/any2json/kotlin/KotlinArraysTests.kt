@@ -1,21 +1,19 @@
-package io.nimbly.test.any2json.java
+package io.nimbly.test.any2json.kotlin
 
-class JavaArraysTests : AbstractJavaTestCase() {
+class KotlinArraysTests : AbstractKotlinTestCase() {
 
     fun testArraysBase() {
 
-        // language=Java
+        // language=Kt
         configure("""
-                package io.nimbly;
-                import java.util.List;
-                import java.util.Iterator;
-                import java.util.Collection;
-                public class Person {
-                    private Integer[] zeIntegers;
-                    private List<Boolean> zeBooleans;
-                    private Collection<Character> zeCharacters;
-                    private java.util.ArrayList<String> zeStrings;
-                    private Iterator<Number> zeNumbers;
+                package io.nimbly
+                import java.util.*
+                class Person {
+                    private val zeIntegers: Array<Int>? = null
+                    private val zeBooleans: List<Boolean>? = null
+                    private val zeCharacters: Collection<Char>? = null
+                    private val zeStrings: ArrayList<String>? = null
+                    private val zeNumbers: Iterator<Number>? = null
                 }""")
 
         // language=Json
@@ -63,12 +61,12 @@ class JavaArraysTests : AbstractJavaTestCase() {
 
     fun testArraysNoType() {
 
-        // language=Java
+        // language=Kt
         configure("""
-                package io.nimbly;
-                public class Person {
-                    private java.util.List zeThings;
-                }""")
+            package io.nimbly
+            class Person {
+                private val zeThings: List<*>? = null
+            }""")
 
         // language=Json
         assertEquals(toJson(), """

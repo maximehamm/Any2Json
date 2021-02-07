@@ -61,6 +61,7 @@ class Java2Json(val psiClass: PsiClass, val generateValues: Boolean) : AnyToJson
 
         // Collections, iterables, arrays, etc.
         if (names.find { it.startsWith("Collection")
+                    || it.startsWith("Array")
                     || it.startsWith("Iterable")
                     || it.startsWith("Iterator")
                     || it.startsWith("List") } != null) {

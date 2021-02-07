@@ -20,7 +20,7 @@ abstract class AbstractTestCase : JavaCodeInsightFixtureTestCase() {
 
     protected open fun configure(text: String, extension: String) {
 
-        var t = text.trimIndent()
+        var t = text.trimIndent().trim()
 
         TestCase.assertTrue(t.startsWith("package"))
 
@@ -34,6 +34,7 @@ abstract class AbstractTestCase : JavaCodeInsightFixtureTestCase() {
             import java.lang.Double;
             import java.lang.Long;
             import java.lang.Integer;
+            import java.lang.Number;
             import java.lang.Float;
             import java.lang.Character;
             """.trimIndent() + t.substringAfter(";")
