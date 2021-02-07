@@ -1,0 +1,66 @@
+<idea-plugin>
+    <id>io.nimly.json.Any2Json</id>
+    <name>Any to JSON</name>
+    <vendor email="maxime.hamm@gmail.com"
+            url="https://www.linkedin.com/in/maxime-hamm/">Maxime HAMM</vendor>
+
+    <description><![CDATA[
+
+       <b>Converting Java or Kotlin class to JSON</b><br/>
+       <p>Use it also from from debuger instance !</p>
+
+       <i>@author Maxime HAMM</i>
+        <ul>
+          <li><b>1.2</b> Supports of Kotlin</li>
+          <li><b>1.1</b> Supports of Java</li>
+          <li><b>1.0</b> Initial version</li>
+        </ul>
+
+       <br/>
+       <a href="https://github.com/xxx/xxxx"></a>
+
+    ]]></description>
+
+<!--    <change-notes><![CDATA[-->
+<!--       <ul>-->
+<!--          <li><b>1.2</b> Supports of Kotlin</li>-->
+<!--          <li><b>1.1</b> Supports of Java</li>-->
+<!--          <li><b>1.0</b> Initial version</li>-->
+<!--       </ul>-->
+<!--    ]]>-->
+<!--    </change-notes>-->
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup id="io.nimbly.notification.group" displayType="BALLOON"/>
+    </extensions>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.java</depends>
+    <depends>org.jetbrains.kotlin</depends>
+
+    <actions>
+        <action class="io.nimbly.any2json.Any2JsonDefaultAction"
+                id="io.nimly.any2json.ANY2JsonDefaultAction"
+                text="Class > JSON"
+                description="Convert CLASS to JSON and copy to clipboard">
+
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+
+        </action>
+
+        <action class="io.nimbly.any2json.Any2JsonRandomAction"
+                id="io.nimly.any2json.ANY2JsonRandomAction"
+                text="Class > Json With Values"
+                description="Convert CLASS to JSON randomly generate some test data and copy to clipboard">
+
+            <add-to-group group-id="EditorPopupMenu"
+                          relative-to-action="io.nimly.any2json.ANY2JsonDefaultAction"
+                          anchor="after"/>
+
+        </action>
+    </actions>
+</idea-plugin>
