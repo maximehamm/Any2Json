@@ -19,8 +19,7 @@ class Variable2Json() : AnyToJsonBuilder<XValueNodeImpl>()  {
     override fun buildMap(type: XValueNodeImpl, generateValues: Boolean): Map<String, Any> {
 
         return type.children().toList()
-            .filter { it is XValueNodeImpl }
-            .map { it as XValueNodeImpl }
+            .filterIsInstance<XValueNodeImpl>()
             .map { it.name to parse(it, generateValues) }
             .filter { it.second != null }
             .toMap() as Map<String, Any>
@@ -49,8 +48,6 @@ class Variable2Json() : AnyToJsonBuilder<XValueNodeImpl>()  {
                     else -> null
                 }
 
-                value.getValue()
-
                 if (any == null
                     && value2 is ObjectReferenceImpl
                     && value.getValue().type().name().startsWith("java.lang.")) {
@@ -60,6 +57,7 @@ class Variable2Json() : AnyToJsonBuilder<XValueNodeImpl>()  {
                         t == "Boolean" -> node.rawValue?.toBoolean()
                         t == "Integer" -> node.rawValue?.toInt()
                         t == "Long" -> node.rawValue?.toLong()
+                        t == "Double" -> node.rawValue?.toDouble()
                         else -> node.rawValue
                     }
                 }
@@ -81,7 +79,7 @@ class Variable2Json() : AnyToJsonBuilder<XValueNodeImpl>()  {
 
         if (node.children.size >0) {
 
-            var toMap = node.children
+            val toMap = node.children
                 .filterIsInstance<XValueNodeImpl>()
                 .map { it.name to parse(it, generateValues) }
                 .toMap()
@@ -91,7 +89,7 @@ class Variable2Json() : AnyToJsonBuilder<XValueNodeImpl>()  {
                 .forEachIndexed { index, k ->
                     if (k.toIntOrNull() != index) isList = false }
             if (isList) {
-                return toMap.values
+                return toMap.values.filterNotNull()
             }
             else {
                 return toMap
@@ -104,5 +102,5 @@ class Variable2Json() : AnyToJsonBuilder<XValueNodeImpl>()  {
         return null
     }
 
-    override fun presentation() = "from Variable"
+    override fun presentation() = ""
 }

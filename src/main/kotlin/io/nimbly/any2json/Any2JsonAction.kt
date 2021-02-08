@@ -1,16 +1,15 @@
 package io.nimbly.any2json
 
 import com.google.gson.GsonBuilder
+import com.intellij.debugger.actions.DebuggerAction
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.xdebugger.frame.XValueNode
 import com.intellij.xdebugger.impl.ui.tree.XDebuggerTree
 import com.intellij.xdebugger.impl.ui.tree.nodes.XStackFrameNode
-import com.intellij.xdebugger.impl.ui.tree.nodes.XValueContainerNode
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl
 import io.nimbly.any2json.debugger.Variable2Json
 import io.nimbly.any2json.languages.Java2Json
@@ -22,7 +21,6 @@ import io.nimbly.any2json.util.warn
 import org.jetbrains.kotlin.psi.KtClass
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
-import javax.swing.tree.TreeNode
 
 class Any2JsonDefaultAction : Any2JsonAction(false) {
     override fun presentationSuffix() = ""
@@ -32,7 +30,7 @@ class Any2JsonRandomAction : Any2JsonAction(true) {
     override fun presentationSuffix() = " with Data"
 }
 
-abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
+abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() { //DebuggerAction()
 
     override fun actionPerformed(e: AnActionEvent) {
 
@@ -76,10 +74,7 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
 
     private fun buildDebugger(e: AnActionEvent): Pair<String, Map<String, Any>>? {
         val xtree: XDebuggerTree = e.dataContext.getData("xdebugger.tree") as XDebuggerTree
-        val xroot: XStackFrameNode = xtree.root as XStackFrameNode
-        val xnode: XValueNodeImpl = xroot.children.find { it is XValueNodeImpl && it.name != "this" } as XValueNodeImpl?
-            ?: return null
-
+        val xnode: XValueNodeImpl = xtree.selectionPath.lastPathComponent as XValueNodeImpl
         return Pair(xnode.name!!,
             Variable2Json().buildMap(xnode, generateValues))
     }
@@ -118,8 +113,10 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
             }
         }
         else {
-            visible = true
-            text = "Generate JSON " + Variable2Json().presentation() + presentationSuffix()
+            if (!generateValues) {
+                visible = true
+                text = "Generate JSON " + Variable2Json().presentation() + presentationSuffix()
+            }
         }
 
         e.presentation.text = text
