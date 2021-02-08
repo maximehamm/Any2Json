@@ -76,18 +76,17 @@ class JavaToKotlinTests : AbstractJavaKotlinTestCase() {
             {
               "school": {
                 "schoolName": "Something",
-                "schoolNameShort": "Something",
-                "students": []
+                "schoolNameShort": "Something"
               },
               "students": [
                 {
                   "school": {
                     "schoolName": "Something",
-                    "schoolNameShort": "Something",
-                    "students": []
+                    "schoolNameShort": "Something"
                   },
                   "teatchers": [
                     {
+                      "students": [],
                       "name": "Something",
                       "age": 100,
                       "gender": "MALE",
@@ -106,4 +105,6 @@ class JavaToKotlinTests : AbstractJavaKotlinTestCase() {
             }
         """.trimIndent())
     }
+
+
 }

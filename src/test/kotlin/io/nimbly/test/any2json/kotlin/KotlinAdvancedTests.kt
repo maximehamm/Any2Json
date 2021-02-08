@@ -55,7 +55,8 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
               "students": [
                 {
                   "school": {
-                    "schoolName": "Something"
+                    "schoolName": "Something",
+                    "students": []
                   },
                   "age": 100,
                   "name": "Something"
@@ -110,12 +111,15 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
                   "school": {
                     "teatchers": [
                       {
+                        "students": [],
                         "age": 100,
                         "name": "Something"
                       }
                     ],
-                    "schoolName": "Something"
+                    "schoolName": "Something",
+                    "students": []
                   },
+                  "teatchers": [],
                   "age": 100,
                   "name": "Something"
                 }
@@ -123,14 +127,17 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
               "teatchers": [
                 {
                   "shcool": {
+                    "teatchers": [],
                     "schoolName": "Something",
                     "students": [
                       {
+                        "teatchers": [],
                         "age": 100,
                         "name": "Something"
                       }
                     ]
                   },
+                  "students": [],
                   "age": 100,
                   "name": "Something"
                 }
@@ -197,12 +204,15 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
                   "school": {
                     "teatchers": [
                       {
+                        "students": [],
                         "age": 100,
                         "name": "Something"
                       }
                     ],
-                    "schoolName": "Something"
+                    "schoolName": "Something",
+                    "students": []
                   },
+                  "teatchers": [],
                   "age": 100,
                   "name": "Something"
                 }
@@ -210,14 +220,17 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
               "teatchers": [
                 {
                   "shcool": {
+                    "teatchers": [],
                     "schoolName": "Something",
                     "students": [
                       {
+                        "teatchers": [],
                         "age": 100,
                         "name": "Something"
                       }
                     ]
                   },
+                  "students": [],
                   "age": 100,
                   "name": "Something"
                 }

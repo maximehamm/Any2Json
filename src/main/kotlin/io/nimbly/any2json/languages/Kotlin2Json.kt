@@ -76,11 +76,6 @@ class Kotlin2Json() : AnyToJsonBuilder<KtClass>()  {
             return it.generate(generateValues, initializer)
         }
 
-        // Avoid stack overflow
-        if (done.contains(type))
-            return null
-        done.add(type)
-
         // Collections, iterables, arrays, etc.
         val names = mutableListOf<String>()
         names += typeName.substringAfterLast(".")
@@ -97,6 +92,11 @@ class Kotlin2Json() : AnyToJsonBuilder<KtClass>()  {
                 return listOf<Int>()
             return listOfNotNull(parse(parameterType, null, generateValues, lookupLocation, done = done))
         }
+
+        // Avoid stack overflow
+        if (done.contains(type))
+            return null
+        done.add(type)
 
         // Recurse
         return type.memberScope.getVariableNames().map {

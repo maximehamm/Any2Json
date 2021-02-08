@@ -75,7 +75,8 @@ class KotlinToJavaTests : AbstractJavaKotlinTestCase() {
                     "teatcherName": "Something",
                     "students": [
                       {
-                        "studentName": "Something"
+                        "studentName": "Something",
+                        "teatchers": []
                       }
                     ]
                   }
@@ -159,7 +160,8 @@ class KotlinToJavaTests : AbstractJavaKotlinTestCase() {
                 {
                   "school": {
                     "schoolNameShort": "Something",
-                    "schoolName": "Something"
+                    "schoolName": "Something",
+                    "students": []
                   },
                   "teatchers": [
                     {

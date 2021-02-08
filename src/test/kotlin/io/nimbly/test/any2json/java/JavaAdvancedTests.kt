@@ -54,7 +54,8 @@ class JavaAdvancedTests : AbstractJavaTestCase() {
               "students": [
                 {
                   "school": {
-                    "schoolName": "Something"
+                    "schoolName": "Something",
+                    "students": []
                   },
                   "name": "Something",
                   "age": 100,
@@ -109,14 +110,17 @@ class JavaAdvancedTests : AbstractJavaTestCase() {
                 {
                   "school": {
                     "schoolName": "Something",
+                    "students": [],
                     "teatchers": [
                       {
+                        "students": [],
                         "name": "Something",
                         "age": 100,
                         "id": 123456789
                       }
                     ]
                   },
+                  "teatchers": [],
                   "name": "Something",
                   "age": 100,
                   "id": 123456789
@@ -128,12 +132,15 @@ class JavaAdvancedTests : AbstractJavaTestCase() {
                     "schoolName": "Something",
                     "students": [
                       {
+                        "teatchers": [],
                         "name": "Something",
                         "age": 100,
                         "id": 123456789
                       }
-                    ]
+                    ],
+                    "teatchers": []
                   },
+                  "students": [],
                   "name": "Something",
                   "age": 100,
                   "id": 123456789
@@ -195,43 +202,49 @@ class JavaAdvancedTests : AbstractJavaTestCase() {
 
         // language=Json
         assertEquals(toJsonRandom(), """
+        {
+          "schoolName": "Something",
+          "students": [
             {
-              "schoolName": "Something",
-              "students": [
-                {
-                  "school": {
-                    "schoolName": "Something",
-                    "teatchers": [
-                      {
-                        "name": "Something",
-                        "age": 100,
-                        "id": 123456789
-                      }
-                    ]
-                  },
-                  "name": "Something",
-                  "age": 100,
-                  "id": 123456789
-                }
-              ],
-              "teatchers": [
-                {
-                  "shcool": {
-                    "schoolName": "Something",
-                    "students": [
-                      {
-                        "name": "Something",
-                        "age": 100,
-                        "id": 123456789
-                      }
-                    ]
-                  },
-                  "name": "Something",
-                  "age": 100,
-                  "id": 123456789
-                }
-              ]
+              "school": {
+                "schoolName": "Something",
+                "students": [],
+                "teatchers": [
+                  {
+                    "students": [],
+                    "name": "Something",
+                    "age": 100,
+                    "id": 123456789
+                  }
+                ]
+              },
+              "teatchers": [],
+              "name": "Something",
+              "age": 100,
+              "id": 123456789
             }
+          ],
+          "teatchers": [
+            {
+              "shcool": {
+                "schoolName": "Something",
+                "students": [
+                  {
+                    "teatchers": [],
+                    "name": "Something",
+                    "age": 100,
+                    "id": 123456789
+                  }
+                ],
+                "teatchers": []
+              },
+              "students": [],
+              "name": "Something",
+              "age": 100,
+              "id": 123456789
+            }
+          ]
+        }
         """.trimIndent())
     }
 

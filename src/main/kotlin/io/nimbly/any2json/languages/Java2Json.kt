@@ -63,11 +63,6 @@ class Java2Json() : AnyToJsonBuilder<PsiClass>()  {
             return getValue(it, generateValues, initializer)
         }
 
-        // Prevent stack overflow
-        if (done.contains(type))
-            return null
-        done.add(type)
-
         // Collections, iterables, arrays, etc.
         if (names.find { it.startsWith("Collection")
                     || it.startsWith("Array")
@@ -82,6 +77,11 @@ class Java2Json() : AnyToJsonBuilder<PsiClass>()  {
                 return listOf<Int>()
             return listOfNotNull(parse(parameterType, null, generateValues, done = done))
         }
+
+        // Prevent stack overflow
+        if (done.contains(type))
+            return null
+        done.add(type)
 
         // Recurse
         return psiClass.allFields.map {
