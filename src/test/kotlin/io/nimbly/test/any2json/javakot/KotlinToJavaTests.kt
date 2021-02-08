@@ -5,7 +5,7 @@ import io.nimbly.test.any2json.AbstractTestCase.EXT.kt
 
 class KotlinToJavaTests : AbstractJavaKotlinTestCase() {
 
-    fun test() {
+    fun testKotlin2Java() {
 
         // language=Java
         addClass(java, """
@@ -72,7 +72,7 @@ class KotlinToJavaTests : AbstractJavaKotlinTestCase() {
 
         // language=Json
         assertEquals(toJsonRandom(), """
-            xxx
+            xxxxx
         """.trimIndent())
     }
 }

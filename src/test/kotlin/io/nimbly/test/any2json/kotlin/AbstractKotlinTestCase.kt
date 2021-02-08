@@ -15,5 +15,5 @@ abstract class AbstractKotlinTestCase : AbstractTestCase() {
     }
 
     fun addClass(text: String)
-            = addClass(EXT.java, text)
+            = addClass(EXT.kt, text)
 }

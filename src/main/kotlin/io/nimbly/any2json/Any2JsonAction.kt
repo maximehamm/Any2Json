@@ -58,16 +58,18 @@ abstract class Any2JsonAction(val generateValues: Boolean): AnAction() {
     private fun buildFromJava(element: PsiElement?): Pair<String, Map<String, Any>>? {
         val psiClass = PsiTreeUtil.getContextOfType(element, PsiClass::class.java)
             ?: return null
-        return Pair(psiClass.name!!, Java2Json(psiClass, generateValues).buildMap())
+        return Pair(psiClass.name!!,
+            Java2Json().buildMap(psiClass, generateValues))
     }
 
     private fun buildFromKotlin(element: PsiElement?): Pair<String, Map<String, Any>>? {
         val ktClass = PsiTreeUtil.getContextOfType(element, KtClass::class.java)
             ?: return null
-        return Pair(ktClass.name!!, Kotlin2Json(ktClass, generateValues).buildMap())
+        return Pair(ktClass.name!!,
+            Kotlin2Json().buildMap(ktClass, generateValues))
     }
 }
 
-abstract class AnyToJsonBuilder {
-    abstract fun buildMap(): Map<String, Any>
+abstract class AnyToJsonBuilder<T : PsiElement> {
+    abstract fun buildMap(type: T, generateValues: Boolean): Map<String, Any>
 }

@@ -14,31 +14,35 @@ import io.nimbly.any2json.generator.GChar
 import io.nimbly.any2json.generator.GDate
 import io.nimbly.any2json.generator.GDateTime
 import io.nimbly.any2json.generator.GDecimal
-import io.nimbly.any2json.generator.GInteger
 import io.nimbly.any2json.generator.GLong
 import io.nimbly.any2json.generator.GString
 import io.nimbly.any2json.generator.GTime
 import io.nimbly.any2json.util.Any2PojoException
 
-class Java2Json(val psiClass: PsiClass, val generateValues: Boolean) : AnyToJsonBuilder() {
+class Java2Json() : AnyToJsonBuilder<PsiClass>()  {
 
     @Suppress("UNCHECKED_CAST")
-    override fun buildMap(): Map<String, Any>
-        = psiClass.allFields
-            .filter { it.modifierList?.hasModifierProperty(PsiModifier.STATIC) == false || psiClass.isInterface }
-            .map { it.name to parse(it.type, it.initializer?.text) }
+    override fun buildMap(type: PsiClass, generateValues: Boolean): Map<String, Any>
+        = type.allFields
+            .filter { it.modifierList?.hasModifierProperty(PsiModifier.STATIC) == false || type.isInterface }
+            .map { it.name to parse(it.type, it.initializer?.text, generateValues) }
             .filter { it.second != null }
             .toMap() as Map<String, Any>
 
-    private fun parse(type: PsiType, initializer: String?, done: MutableSet<PsiType> = mutableSetOf()): Any? {
+    private fun parse(
+        type: PsiType,
+        initializer: String?,
+        generateValues: Boolean,
+        done: MutableSet<PsiType> = mutableSetOf()
+    ): Any? {
 
         // Primitives
         if (type is PsiPrimitiveType)
-            return getValue(type, initializer)
+            return getValue(type, generateValues, initializer)
 
         // Primitive array
         if (type is PsiArrayType)
-            return listOfNotNull(parse(type.getDeepComponentType(), initializer, done = done))
+            return listOfNotNull(parse(type.getDeepComponentType(), initializer, generateValues, done = done))
 
         // Enum
         val psiClass = PsiUtil.resolveClassInClassTypeOnly(type)
@@ -51,7 +55,7 @@ class Java2Json(val psiClass: PsiClass, val generateValues: Boolean) : AnyToJson
         names += type.presentableText
         names += type.superTypes.map { it.presentableText }
         names.find { GENERATORS[it] != null }?.let {
-            return getValue(it, initializer)
+            return getValue(it, generateValues, initializer)
         }
 
         // Prevent stack overflow
@@ -71,7 +75,7 @@ class Java2Json(val psiClass: PsiClass, val generateValues: Boolean) : AnyToJson
                 ?: return null
             if (parameterType.presentableText == "Object")
                 return listOf<Int>()
-            return listOfNotNull(parse(parameterType, null, done = done))
+            return listOfNotNull(parse(parameterType, null, generateValues, done = done))
         }
 
         // Recurse
@@ -79,19 +83,20 @@ class Java2Json(val psiClass: PsiClass, val generateValues: Boolean) : AnyToJson
             it.name to parse(
                 it.type,
                 it.initializer?.text,
+                generateValues,
                 done = done) }.toMap()
     }
 
-    private fun getValue(type: String, initializer: String?)
+    private fun getValue(type: String, generateValues: Boolean, initializer: String?)
         = GENERATORS[type]!!.generate(generateValues, initializer)
 
-    private fun getValue(type: PsiType, initializer: String?)
+    private fun getValue(type: PsiType, generateValues: Boolean, initializer: String?)
         = when (type.canonicalText) {
-            "boolean" -> getValue("Boolean", initializer)
-            "int", "long", "byte", "short" -> getValue("Number", initializer)
-            "float" -> getValue("Float", initializer)
-            "double" -> getValue("Double", initializer)
-            "char" -> getValue("Character", initializer)
+            "boolean" -> getValue("Boolean", generateValues, initializer)
+            "int", "long", "byte", "short" -> getValue("Number", generateValues, initializer)
+            "float" -> getValue("Float", generateValues, initializer)
+            "double" -> getValue("Double", generateValues, initializer)
+            "char" -> getValue("Character", generateValues, initializer)
             else -> throw Any2PojoException("Not supported primitive '$type.canonicalText'")
         }
 

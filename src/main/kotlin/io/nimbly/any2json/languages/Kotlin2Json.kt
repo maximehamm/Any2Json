@@ -10,6 +10,7 @@ import io.nimbly.any2json.generator.GInteger
 import io.nimbly.any2json.generator.GLong
 import io.nimbly.any2json.generator.GString
 import io.nimbly.any2json.generator.GTime
+import org.jetbrains.kotlin.incremental.components.LookupLocation
 import org.jetbrains.kotlin.nj2k.postProcessing.type
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.resolve.calls.callUtil.createLookupLocation
@@ -20,15 +21,30 @@ import org.jetbrains.kotlin.types.typeUtil.isEnum
 import org.jetbrains.kotlin.types.typeUtil.supertypes
 
 
-class Kotlin2Json(val ktClass: KtClass, val generateValues: Boolean) : AnyToJsonBuilder() {
+class Kotlin2Json() : AnyToJsonBuilder<KtClass>()  {
 
     @Suppress("UNCHECKED_CAST")
-    override fun buildMap(): Map<String, Any>
-        = ktClass.getProperties().map { it.name to
-            parse(it.type(), it.initializer?.text) }.filter { it.second != null }.toMap() as Map<String, Any>
+    override fun buildMap(type: KtClass, generateValues: Boolean): Map<String, Any> {
+        val lookupLocation = type.createLookupLocation()!!
+        return type.getProperties()
+            .map { it.name to parse(
+                it.type(),
+                it.initializer?.text,
+                generateValues,
+                lookupLocation
+            ) }
+            .filter { it.second != null }
+            .toMap() as Map<String, Any>
+    }
 
     @Suppress("NAME_SHADOWING")
-    private fun parse(type: KotlinType?, initializer: String?, done: MutableSet<String> = mutableSetOf()): Any? {
+    private fun parse(
+        type: KotlinType?,
+        initializer: String?,
+        generateValues: Boolean,
+        lookupLocation: LookupLocation,
+        done: MutableSet<String> = mutableSetOf()
+    ): Any? {
 
         val initializer = if (initializer == "null") null else initializer
 
@@ -68,16 +84,15 @@ class Kotlin2Json(val ktClass: KtClass, val generateValues: Boolean) : AnyToJson
             val parameterType = type.arguments.first().type
             if (parameterType.toString().substringBeforeLast("?") == "Any")
                 return listOf<Int>()
-            return listOfNotNull(parse(parameterType, null, done = done))
+            return listOfNotNull(parse(parameterType, null, generateValues, lookupLocation, done = done))
         }
 
         // Recurse
-        val location = ktClass.createLookupLocation()!!
         return type.memberScope.getVariableNames().map {
             it.identifier to parse(
-                type.memberScope.getContributedVariables(it, location).firstOrNull()?.returnType,
-                type.memberScope.getContributedVariables(it, location).firstOrNull()?.compileTimeInitializer?.value.toString(),
-                done = done)
+                type.memberScope.getContributedVariables(it, lookupLocation).firstOrNull()?.returnType,
+                type.memberScope.getContributedVariables(it, lookupLocation).firstOrNull()?.compileTimeInitializer?.value.toString(),
+                generateValues, lookupLocation, done)
         }.toMap()
     }
 
