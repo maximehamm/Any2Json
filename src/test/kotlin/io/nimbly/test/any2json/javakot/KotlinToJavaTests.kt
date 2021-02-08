@@ -5,6 +5,81 @@ import io.nimbly.test.any2json.AbstractTestCase.EXT.kt
 
 class KotlinToJavaTests : AbstractJavaKotlinTestCase() {
 
+    fun testKotlin2JavaEnum() {
+
+        // language=Java
+        addClass(java, """
+            package io.nimbly.java.sub;
+            public enum EGender {MALE, FEMALE, OTHER}
+            """)
+
+        // language=Kt
+        configure(kt, """
+            package io.nimbly.kt
+            import io.nimbly.java.sub.EGender
+            open class Person {
+                private val name = "Nobody"
+                private val age: Int? = null
+                private val gender: EGender? = null
+            }
+            """)
+
+        // language=Json
+        assertEquals(toJsonRandom(), """
+            {
+              "name": "Nobody",
+              "age": 100,
+              "gender": "MALE"
+            }
+        """.trimIndent())
+    }
+
+    fun testKotlin2JavaBug1() {
+
+        // language=Java
+        addClass(java, """
+            package io.nimbly.java;
+            import java.util.Set;
+            public class Student { 
+                private String studentName;
+                private Set<Teatcher> teatchers;
+            }
+            """)
+
+        // language=Java
+        addClass(java, """
+            package io.nimbly.java;
+            import java.util.Set;
+            public class Teatcher {
+                private String teatcherName;
+                private Set<Student> students;
+            }
+            """)
+
+        // language=Kt
+        configure(kt, """
+            package io.nimbly.kt
+            import io.nimbly.java.Student
+            class Truc {
+                private val students: Student? = null
+            }
+            """)
+
+        // language=Json
+        assertEquals(toJsonRandom(), """
+            {
+              "students": {
+                "studentName": {},
+                "teatchers": [
+                  {
+                    "students": []
+                  }
+                ]
+              }
+            }
+        """.trimIndent())
+    }
+
     fun testKotlin2Java() {
 
         // language=Java
@@ -72,7 +147,24 @@ class KotlinToJavaTests : AbstractJavaKotlinTestCase() {
 
         // language=Json
         assertEquals(toJsonRandom(), """
-            xxxxx
+            {
+              "schoolName": "Something",
+              "schoolNameShort": "Something",
+              "students": [
+                {
+                  "school": {
+                    "schoolNameShort": "Something",
+                    "schoolName": "Something"
+                  },
+                  "teatchers": {
+                    "size": 100
+                  },
+                  "gender": "MALE",
+                  "age": 100,
+                  "name": "Something"
+                }
+              ]
+            }
         """.trimIndent())
     }
 }

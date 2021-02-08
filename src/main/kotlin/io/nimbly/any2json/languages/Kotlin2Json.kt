@@ -11,6 +11,8 @@ import io.nimbly.any2json.generator.GLong
 import io.nimbly.any2json.generator.GString
 import io.nimbly.any2json.generator.GTime
 import org.jetbrains.kotlin.incremental.components.LookupLocation
+import org.jetbrains.kotlin.js.descriptorUtils.nameIfStandardType
+import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.nj2k.postProcessing.type
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.resolve.calls.callUtil.createLookupLocation
@@ -57,8 +59,14 @@ class Kotlin2Json() : AnyToJsonBuilder<KtClass>()  {
         val typeName = type.toString().substringBeforeLast("?")
 
         // Enum
-        if (type is SimpleType && type.isEnum())
-            return type.memberScope.getVariableNames().map { it.identifier }.filter { it != "name" && it != "ordinal" }.first()
+        if (type is SimpleType && type.isEnum()) {
+            val names = mutableListOf<Name>()
+            type.memberScope.getClassifierNames()?.let { names.addAll(it) }
+            type.memberScope.getVariableNames().let { names.addAll(it) }
+            return names
+                .map { it.identifier }
+                .firstOrNull { it != "name" && it != "ordinal" && it != "Companion" }
+        }
 
         // Known object with generator
         GENERATORS[typeName]?.let {
@@ -74,7 +82,7 @@ class Kotlin2Json() : AnyToJsonBuilder<KtClass>()  {
         val names = mutableListOf<String>()
         names += typeName.substringAfterLast(".")
         names += type.supertypes()
-                    .map { it.toString().substringBeforeLast("?") }
+                    .map { it.nameIfStandardType?.identifier ?: it.toString() }
                     .map { it.substringAfterLast(".")}
         if (names.find { it.startsWith("Collection")
                     || it.startsWith("Array")
