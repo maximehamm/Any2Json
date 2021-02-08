@@ -12,7 +12,6 @@ import com.jetbrains.jdi.LongValueImpl
 import com.jetbrains.jdi.ObjectReferenceImpl
 import com.jetbrains.jdi.StringReferenceImpl
 import io.nimbly.any2json.AnyToJsonBuilder
-import org.jetbrains.kotlin.idea.debugger.isSubtype
 
 class Variable2Json() : AnyToJsonBuilder<XValueNodeImpl>()  {
 
@@ -81,12 +80,22 @@ class Variable2Json() : AnyToJsonBuilder<XValueNodeImpl>()  {
             return node.rawValue
 
         if (node.children.size >0) {
-            val toMap = node.children
+
+            var toMap = node.children
                 .filterIsInstance<XValueNodeImpl>()
                 .map { it.name to parse(it, generateValues) }
                 .toMap()
 
-            return toMap
+            var isList = true
+            toMap.keys.filterNotNull()
+                .forEachIndexed { index, k ->
+                    if (k.toIntOrNull() != index) isList = false }
+            if (isList) {
+                return toMap.values
+            }
+            else {
+                return toMap
+            }
         }
 
         if (node.rawValue !=null)
