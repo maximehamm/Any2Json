@@ -1,11 +1,15 @@
 package io.nimbly.test.any2json
 
+import com.intellij.testFramework.PsiTestUtil
 import com.intellij.testFramework.fixtures.JavaCodeInsightFixtureTestCase
+import com.intellij.testFramework.fixtures.kotlin.KotlinTester
 import io.nimbly.any2json.generator.TEST_BOOL
 import io.nimbly.any2json.generator.TEST_CHAR
 import io.nimbly.any2json.generator.TEST_DOUBLE
 import io.nimbly.any2json.generator.TEST_INT
 import io.nimbly.any2json.generator.TEST_NOW
+import io.nimbly.test.any2json.AbstractTestCase.EXT.java
+import io.nimbly.test.any2json.AbstractTestCase.EXT.kt
 import junit.framework.TestCase
 import org.junit.Ignore
 import java.awt.Toolkit
@@ -18,7 +22,49 @@ import java.time.Month
 @Ignore
 abstract class AbstractTestCase : JavaCodeInsightFixtureTestCase() {
 
-    protected open fun configure(text: String, extension: String) {
+    enum class EXT { java, kt }
+
+    val LIB_JAVA = "/lib/rt-small.jar"
+    val LIB_KOTLIN = "/lib/kotlin-stdlib-1.4.30.jar"
+
+    protected fun setupForJava() {
+        PsiTestUtil.addLibrary(myFixture.module, getTestDataPath() + '/' + LIB_JAVA)
+
+        addClass(java, """package java.math; public class BigDecimal extends Number { }""".trimIndent())
+        addClass(java, """package java.time; public class LocalDate { }""".trimIndent())
+        addClass(java, """package java.time; public class LocalDateTime { }""".trimIndent())
+        addClass(java, """package java.time; public class LocalTime { }""".trimIndent())
+    }
+
+    protected fun setupForKotlin() {
+        PsiTestUtil.addLibrary(myFixture.module, getTestDataPath() + '/' + LIB_KOTLIN)
+        KotlinTester.assumeCanUseKotlin()
+
+        addClass(kt, """package kotlin; public class BigDecimal : Number { }""".trimIndent())
+        addClass(kt, """package java.time; public class LocalDate { }""".trimIndent())
+        addClass(kt, """package java.time; public class LocalDateTime { }""".trimIndent())
+        addClass(kt, """package java.time; public class LocalTime { }""".trimIndent())
+
+        addClass(kt, """package java.util; public class Date { }""".trimIndent())
+    }
+
+    fun addClass(extension: EXT, text: String) {
+
+        if (extension == java) {
+
+            // Java
+            myFixture.addClass(text)
+        }
+        else if (extension == kt) {
+
+            // Kotlin
+            val regex = """(class|interface) *([\w]+)""".toRegex()
+            val className = regex.find(text.trimIndent())!!.groupValues.last()
+            myFixture.configureByText("$className.kt", text)
+        }
+    }
+
+    protected open fun configure(extension: EXT, text: String) {
 
         var t = text.trimIndent().trim()
 
@@ -52,11 +98,7 @@ abstract class AbstractTestCase : JavaCodeInsightFixtureTestCase() {
         val regex = """(class|interface) *([\w]+)""".toRegex()
         val className = regex.find(text.trimIndent())!!.groupValues.last()
 
-        myFixture.configureByText("$className.$extension", t)
-    }
-
-    open protected fun addClass(text: String) {
-        myFixture.addClass(text)
+        myFixture.configureByText("$className.${extension.name}", t)
     }
 
     protected fun toJson(): String {
