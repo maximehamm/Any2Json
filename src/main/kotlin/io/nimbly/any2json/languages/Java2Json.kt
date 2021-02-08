@@ -106,6 +106,8 @@ class Java2Json() : AnyToJsonBuilder<PsiClass>()  {
             else -> throw Any2PojoException("Not supported primitive '$type.canonicalText'")
         }
 
+    override fun presentation(): String = "from Class"
+
     companion object {
         val GENERATORS = mapOf(
             "Boolean" to GBoolean(),

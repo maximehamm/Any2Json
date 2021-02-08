@@ -51,17 +51,10 @@ patchPluginXml {
       Road map 
       <ul>
         <li><b>1.4</b> Supports using from debugger</li>
+        <li><b>1.4</b> Supports of XML</li>
       </ul>
       """
 }
-
-//tasks.test {
-//    useJUnitPlatform()
-//}
-
-//test {
-//    useJUnitPlatform()
-//}
 
 publishPlugin {
     token = System.getenv("ORG_GRADLE_PROJECT_intellijPublishToken")

@@ -107,6 +107,8 @@ class Kotlin2Json() : AnyToJsonBuilder<KtClass>()  {
         }.toMap()
     }
 
+    override fun presentation(): String = "from Kotlin class"
+
     companion object {
         val GENERATORS = mapOf(
             "Boolean" to GBoolean(),
