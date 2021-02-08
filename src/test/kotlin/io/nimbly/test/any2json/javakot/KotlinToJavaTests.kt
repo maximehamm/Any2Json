@@ -69,10 +69,15 @@ class KotlinToJavaTests : AbstractJavaKotlinTestCase() {
         assertEquals(toJsonRandom(), """
             {
               "students": {
-                "studentName": {},
+                "studentName": "Something",
                 "teatchers": [
                   {
-                    "students": []
+                    "teatcherName": "Something",
+                    "students": [
+                      {
+                        "studentName": "Something"
+                      }
+                    ]
                   }
                 ]
               }
@@ -156,9 +161,14 @@ class KotlinToJavaTests : AbstractJavaKotlinTestCase() {
                     "schoolNameShort": "Something",
                     "schoolName": "Something"
                   },
-                  "teatchers": {
-                    "size": 100
-                  },
+                  "teatchers": [
+                    {
+                      "students": [],
+                      "gender": "MALE",
+                      "age": 100,
+                      "name": "Something"
+                    }
+                  ],
                   "gender": "MALE",
                   "age": 100,
                   "name": "Something"

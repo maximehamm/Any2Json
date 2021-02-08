@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.nj2k.postProcessing.type
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.resolve.calls.callUtil.createLookupLocation
 import org.jetbrains.kotlin.types.DeferredType
+import org.jetbrains.kotlin.types.FlexibleType
 import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.SimpleType
 import org.jetbrains.kotlin.types.typeUtil.isEnum
@@ -26,18 +27,16 @@ import org.jetbrains.kotlin.types.typeUtil.supertypes
 class Kotlin2Json() : AnyToJsonBuilder<KtClass>()  {
 
     @Suppress("UNCHECKED_CAST")
-    override fun buildMap(type: KtClass, generateValues: Boolean): Map<String, Any> {
-        val lookupLocation = type.createLookupLocation()!!
-        return type.getProperties()
+    override fun buildMap(type: KtClass, generateValues: Boolean): Map<String, Any>
+        = type.getProperties()
             .map { it.name to parse(
-                it.type(),
-                it.initializer?.text,
-                generateValues,
-                lookupLocation
-            ) }
+                    it.type(),
+                    it.initializer?.text,
+                    generateValues,
+                    type.createLookupLocation()!!
+                )}
             .filter { it.second != null }
             .toMap() as Map<String, Any>
-    }
 
     @Suppress("NAME_SHADOWING")
     private fun parse(
@@ -45,7 +44,7 @@ class Kotlin2Json() : AnyToJsonBuilder<KtClass>()  {
         initializer: String?,
         generateValues: Boolean,
         lookupLocation: LookupLocation,
-        done: MutableSet<String> = mutableSetOf()
+        done: MutableSet<KotlinType> = mutableSetOf()
     ): Any? {
 
         val initializer = if (initializer == "null") null else initializer
@@ -56,7 +55,9 @@ class Kotlin2Json() : AnyToJsonBuilder<KtClass>()  {
 
         if (type is DeferredType)
             type = type.unwrap()
-        val typeName = type.toString().substringBeforeLast("?")
+
+        if (type is FlexibleType)
+            type = type.delegate
 
         // Enum
         if (type is SimpleType && type.isEnum()) {
@@ -69,14 +70,16 @@ class Kotlin2Json() : AnyToJsonBuilder<KtClass>()  {
         }
 
         // Known object with generator
+        val typeName = type.nameIfStandardType?.identifier ?:
+            type.toString().substringBeforeLast("?")
         GENERATORS[typeName]?.let {
             return it.generate(generateValues, initializer)
         }
 
         // Avoid stack overflow
-        if (done.contains(typeName))
+        if (done.contains(type))
             return null
-        done.add(typeName)
+        done.add(type)
 
         // Collections, iterables, arrays, etc.
         val names = mutableListOf<String>()
