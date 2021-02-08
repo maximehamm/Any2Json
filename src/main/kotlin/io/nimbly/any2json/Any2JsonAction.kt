@@ -21,7 +21,7 @@ class Any2JsonDefaultAction : Any2JsonAction(false)
 
 class Any2JsonRandomAction : Any2JsonAction(true)
 
-abstract class Any2JsonAction(val generateValues: Boolean): AnAction() {
+abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
 
@@ -67,6 +67,22 @@ abstract class Any2JsonAction(val generateValues: Boolean): AnAction() {
             ?: return null
         return Pair(ktClass.name!!,
             Kotlin2Json().buildMap(ktClass, generateValues))
+    }
+
+    override fun update(e: AnActionEvent) {
+
+        var visible = false;
+        val editor = e.getData(CommonDataKeys.EDITOR)
+        val psiFile = e.getData(CommonDataKeys.PSI_FILE)
+        if (psiFile != null) {
+            val element = psiFile.findElementAt(editor!!.caretModel.offset)
+            visible = element != null
+                    && (PsiTreeUtil.getContextOfType(element, KtClass::class.java) !=null
+                    || PsiTreeUtil.getContextOfType(element, PsiClass::class.java) != null)
+        }
+
+        e.presentation.isVisible = visible
+        e.presentation.isEnabled = true
     }
 }
 

@@ -7,15 +7,9 @@
     <description><![CDATA[
 
        <b>Converting Java or Kotlin class to JSON</b><br/>
-       <p>Use it also from from debuger instance !</p>
+       <p>Use it also from from debuger instance (comming soon)</p>
 
        <i>@author Maxime HAMM</i>
-        <ul>
-          <li><b>1.2</b> Supports of Kotlin</li>
-          <li><b>1.1</b> Supports of Java</li>
-          <li><b>1.0</b> Initial version</li>
-        </ul>
-
        <br/>
        <a href="https://github.com/maximehamm/Any2Json">https://github.com/maximehamm/Any2Json</a>
 
@@ -34,24 +28,29 @@
     <depends>org.jetbrains.kotlin</depends>
 
     <actions>
-        <action class="io.nimbly.any2json.Any2JsonDefaultAction"
-                id="io.nimbly.any2json.ANY2JsonDefaultAction"
-                text="Class > JSON"
-                description="Convert CLASS to JSON and copy to clipboard">
 
-            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        <group id="io.nimbly.any2json.Any2Json">
 
-        </action>
+            <separator/>
 
-        <action class="io.nimbly.any2json.Any2JsonRandomAction"
-                id="io.nimbly.any2json.ANY2JsonRandomAction"
-                text="Class > Json With Values"
-                description="Convert CLASS to JSON randomly generate some test data and copy to clipboard">
+            <action class="io.nimbly.any2json.Any2JsonDefaultAction"
+                    id="io.nimbly.any2json.ANY2JsonDefaultAction"
+                    text="Generate JSON from Class"
+                    description="Convert CLASS to JSON and copy to clipboard">
+            </action>
 
-            <add-to-group group-id="EditorPopupMenu"
-                          relative-to-action="io.nimbly.any2json.ANY2JsonDefaultAction"
-                          anchor="after"/>
+            <action class="io.nimbly.any2json.Any2JsonRandomAction"
+                    id="io.nimbly.any2json.ANY2JsonRandomAction"
+                    text="Generate JSON from Class with Values"
+                    description="Convert CLASS to JSON randomly generate some test data and copy to clipboard">
+            </action>
 
-        </action>
+            <add-to-group group-id="CutCopyPasteGroup" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="EditorToggleColumnMode"/>
+
+            <separator/>
+
+        </group>
     </actions>
+
 </idea-plugin>
