@@ -147,7 +147,7 @@ class KotlinToJavaTests : AbstractJavaKotlinTestCase() {
             abstract class School {
                 private val schoolName: String? = null
                 private val schoolNameShort = schoolName!!.substring(3)
-                abstract var students: List<Student>?
+                var allStudents: List<Student>? = mutableListOf()
             }
             """)
 
@@ -156,12 +156,12 @@ class KotlinToJavaTests : AbstractJavaKotlinTestCase() {
             {
               "schoolName": "Something",
               "schoolNameShort": "Something",
-              "students": [
+              "allStudents": [
                 {
                   "school": {
                     "schoolNameShort": "Something",
-                    "schoolName": "Something",
-                    "students": []
+                    "allStudents": [],
+                    "schoolName": "Something"
                   },
                   "teatchers": [
                     {
