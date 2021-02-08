@@ -5,7 +5,7 @@ import io.nimbly.test.any2json.AbstractTestCase.EXT.kt
 
 class JavaToKotlinTests : AbstractJavaKotlinTestCase() {
 
-    fun testKotlin2Java() {
+    fun testJava2Kotlin() {
 
         // language=Kt
         addClass(kt, """
@@ -32,6 +32,7 @@ class JavaToKotlinTests : AbstractJavaKotlinTestCase() {
         // language=Java
         addClass(java, """
             package io.nimbly.java.sub;
+            import java.lang.Long;
             public interface ISchool {
                 Long id = 123456789L;
             }
@@ -77,25 +78,26 @@ class JavaToKotlinTests : AbstractJavaKotlinTestCase() {
                 "schoolName": "Something",
                 "schoolNameShort": "Something",
                 "students": []
-              },,
+              },
               "students": [
                 {
                   "school": {
                     "schoolName": "Something",
-                    "schoolNameShort": "Something"
+                    "schoolNameShort": "Something",
+                    "students": []
                   },
                   "teatchers": [
                     {
                       "name": "Something",
                       "age": 100,
                       "gender": "MALE",
-                      "id": {}
+                      "id": 123456789
                     }
                   ],
                   "name": "Something",
                   "age": 100,
                   "gender": "MALE",
-                  "id": {}
+                  "id": 123456789
                 }
               ],
               "name": "Something",

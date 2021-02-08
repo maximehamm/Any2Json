@@ -7,6 +7,7 @@ import com.intellij.psi.PsiEnumConstant
 import com.intellij.psi.PsiModifier
 import com.intellij.psi.PsiPrimitiveType
 import com.intellij.psi.PsiType
+import com.intellij.psi.impl.source.PsiClassReferenceType
 import com.intellij.psi.util.PsiUtil
 import io.nimbly.any2json.AnyToJsonBuilder
 import io.nimbly.any2json.generator.GBoolean
@@ -44,9 +45,13 @@ class Java2Json() : AnyToJsonBuilder<PsiClass>()  {
         if (type is PsiArrayType)
             return listOfNotNull(parse(type.getDeepComponentType(), initializer, generateValues, done = done))
 
-        // Enum
+        // Resolve Psi class
         val psiClass = PsiUtil.resolveClassInClassTypeOnly(type)
+            ?: (if (type is PsiClassReferenceType)
+                type.resolve() else null)
             ?: return mapOf<String, Any?>()
+
+        // Enum
         if (psiClass.isEnum)
             return psiClass.fields.find { it is PsiEnumConstant }?.name ?: ""
 
