@@ -6,10 +6,21 @@
 
     <description><![CDATA[
 
-       <b>Converting Java or Kotlin class to JSON</b><br/>
-       <p>Use it also from from debuger instance (comming soon)</p>
+       <b>Converting "Anything" to JSON !</b><br/>
+
+       <ul>
+        <li>From Java editor: right click near class name</li>
+        <li>From Kotlin editor: right click near class name</li>
+        <li>From Debugger Variable: expand variable, then right click on a it</li>
+       </ul>
+
+       <br/>
+        Converting XML to Json will come soon !<br/><br/>
+        Any suggestion ? Let me know !<br/>
+       <br/>
 
        <i>@author Maxime HAMM</i>
+       <br/>
        <br/>
        <a href="https://github.com/maximehamm/Any2Json">https://github.com/maximehamm/Any2Json</a>
 
