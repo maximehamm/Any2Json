@@ -5,14 +5,15 @@ plugins {
 }
 
 group 'io.nimbly.json'
-version '1.4.3-SNAPSHOT'
+version '1.5.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib'
+    implementation 'org.json:json:20180813'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
@@ -42,6 +43,7 @@ patchPluginXml {
     changeNotes """
       Change notes :
       <ul>
+        <li><b>1.5</b> Supports of XML</li>
         <li><b>1.4</b> Supports using from debugger</li>
         <li><b>1.3</b> Mixing Kotlin and Java references</li>
         <li><b>1.2</b> Supports of Kotlin</li>
@@ -51,8 +53,7 @@ patchPluginXml {
       <br/>
       Road map 
       <ul>
-       
-        <li><b>1.4</b> Supports of XML</li>
+        <li><b>1.6</b> Supports of Python</li>
       </ul>
       """
 }

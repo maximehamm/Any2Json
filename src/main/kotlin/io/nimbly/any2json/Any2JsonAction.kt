@@ -1,19 +1,19 @@
 package io.nimbly.any2json
 
 import com.google.gson.GsonBuilder
-import com.intellij.debugger.actions.DebuggerAction
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.xml.XmlTag
 import com.intellij.xdebugger.impl.ui.tree.XDebuggerTree
-import com.intellij.xdebugger.impl.ui.tree.nodes.XStackFrameNode
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl
 import io.nimbly.any2json.debugger.Variable2Json
 import io.nimbly.any2json.languages.Java2Json
 import io.nimbly.any2json.languages.Kotlin2Json
+import io.nimbly.any2json.languages.Xml2Json
 import io.nimbly.any2json.util.Any2PojoException
 import io.nimbly.any2json.util.error
 import io.nimbly.any2json.util.info
@@ -44,8 +44,10 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
             var result: Pair<String, Map<String, Any>>? = null
             if (psiFile != null && editor!=null) {
                 val element = psiFile.findElementAt(editor.caretModel.offset)
+
                 result = buildFromJava(element)
                       ?: buildFromKotlin(element)
+                      ?: buildFromXml(element)
                       ?: throw Any2PojoException("Not supported target !")
             }
             else {
@@ -93,35 +95,47 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
             Kotlin2Json().buildMap(ktClass, generateValues))
     }
 
+    private fun buildFromXml(element: PsiElement?): Pair<String, Map<String, Any>>? {
+        val xmlTag = PsiTreeUtil.getContextOfType(element, XmlTag::class.java)
+            ?: return null
+        return Pair(xmlTag.name,
+            Xml2Json().buildMap(xmlTag, generateValues))
+    }
+
     override fun update(e: AnActionEvent) {
 
-        var visible = false;
-        var text = "Generate JSON"
         val editor = e.getData(CommonDataKeys.EDITOR)
         val psiFile = e.getData(CommonDataKeys.PSI_FILE)
-        if (psiFile != null) {
-            if (editor != null) {
+        val any2Json: AnyToJsonBuilder<out Any>? =
+            if (psiFile != null && editor != null) {
                 val element = psiFile.findElementAt(editor.caretModel.offset)
                 if (PsiTreeUtil.getContextOfType(element, PsiClass::class.java) !=null) {
-                    visible = true;
-                    text = "Generate JSON " + Java2Json().presentation() + presentationSuffix()
+                    Java2Json()
                 }
                 else if (PsiTreeUtil.getContextOfType(element, KtClass::class.java) !=null) {
-                    visible = true;
-                    text = "Generate JSON " + Kotlin2Json().presentation() + presentationSuffix()
+                    Kotlin2Json()
+                }
+                else if (PsiTreeUtil.getContextOfType(element, XmlTag::class.java) !=null) {
+                    Xml2Json()
+                }
+                else {
+                    null
                 }
             }
+            else {
+                Variable2Json()
+            }
+
+
+        if (any2Json != null) {
+            e.presentation.text = "Generate JSON " + any2Json.presentation() + presentationSuffix()
+            e.presentation.isVisible = any2Json.isVisible(generateValues)
+            e.presentation.isEnabled = true
         }
         else {
-            if (!generateValues) {
-                visible = true
-                text = "Generate JSON " + Variable2Json().presentation() + presentationSuffix()
-            }
+            e.presentation.isVisible = false
+            e.presentation.isEnabled = false
         }
-
-        e.presentation.text = text
-        e.presentation.isVisible = visible
-        e.presentation.isEnabled = true
     }
 
     abstract fun presentationSuffix(): String
@@ -130,4 +144,5 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
 abstract class AnyToJsonBuilder<T : Any> {
     abstract fun buildMap(type: T, generateValues: Boolean): Map<String, Any>
     abstract fun presentation(): String
+    abstract fun isVisible(generateValues: Boolean): Boolean
 }

@@ -11,6 +11,7 @@
        <ul>
         <li>From Java editor: right click near class name</li>
         <li>From Kotlin editor: right click near class name</li>
+        <li>From XML editor: right click near tag name</li>
         <li>From Debugger Variable: expand variable, then right click on a it</li>
        </ul>
 

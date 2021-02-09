@@ -103,4 +103,6 @@ class Variable2Json() : AnyToJsonBuilder<XValueNodeImpl>()  {
     }
 
     override fun presentation() = ""
+
+    override fun isVisible(generateValues: Boolean) = !generateValues
 }
