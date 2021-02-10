@@ -10,6 +10,8 @@ import com.intellij.psi.PsiType
 import com.intellij.psi.impl.source.PsiClassReferenceType
 import com.intellij.psi.util.PsiUtil
 import io.nimbly.any2json.AnyToJsonBuilder
+import io.nimbly.any2json.EType
+import io.nimbly.any2json.EType.SECONDARY
 import io.nimbly.any2json.generator.GBoolean
 import io.nimbly.any2json.generator.GChar
 import io.nimbly.any2json.generator.GDate
@@ -20,30 +22,29 @@ import io.nimbly.any2json.generator.GString
 import io.nimbly.any2json.generator.GTime
 import io.nimbly.any2json.util.Any2PojoException
 
-class Java2Json() : AnyToJsonBuilder<PsiClass, Map<String, Any>>()  {
+class Java2Json(actionType: EType) : AnyToJsonBuilder<PsiClass, Map<String, Any>>(actionType)  {
 
     @Suppress("UNCHECKED_CAST")
-    override fun buildMap(type: PsiClass, generateValues: Boolean): Map<String, Any>
+    override fun buildMap(type: PsiClass): Map<String, Any>
         = type.allFields
             .filter { it.modifierList?.hasModifierProperty(PsiModifier.STATIC) == false || type.isInterface }
-            .map { it.name to parse(it.type, it.initializer?.text, generateValues) }
+            .map { it.name to parse(it.type, it.initializer?.text) }
             .filter { it.second != null }
             .toMap() as Map<String, Any>
 
     private fun parse(
         type: PsiType,
         initializer: String?,
-        generateValues: Boolean,
         done: MutableSet<PsiType> = mutableSetOf()
     ): Any? {
 
         // Primitives
         if (type is PsiPrimitiveType)
-            return getValue(type, generateValues, initializer)
+            return getValue(type, actionType == SECONDARY, initializer)
 
         // Primitive array
         if (type is PsiArrayType)
-            return listOfNotNull(parse(type.getDeepComponentType(), initializer, generateValues, done = done))
+            return listOfNotNull(parse(type.getDeepComponentType(), initializer, done = done))
 
         // Resolve Psi class
         val psiClass = PsiUtil.resolveClassInClassTypeOnly(type)
@@ -60,7 +61,7 @@ class Java2Json() : AnyToJsonBuilder<PsiClass, Map<String, Any>>()  {
         names += type.presentableText
         names += type.superTypes.map { it.presentableText }
         names.find { GENERATORS[it] != null }?.let {
-            return getValue(it, generateValues, initializer)
+            return getValue(it, actionType == SECONDARY, initializer)
         }
 
         // Collections, iterables, arrays, etc.
@@ -75,7 +76,7 @@ class Java2Json() : AnyToJsonBuilder<PsiClass, Map<String, Any>>()  {
                 ?: return null
             if (parameterType.presentableText == "Object")
                 return listOf<Int>()
-            return listOfNotNull(parse(parameterType, null, generateValues, done = done))
+            return listOfNotNull(parse(parameterType, null, done = done))
         }
 
         // Prevent stack overflow
@@ -88,7 +89,6 @@ class Java2Json() : AnyToJsonBuilder<PsiClass, Map<String, Any>>()  {
             it.name to parse(
                 it.type,
                 it.initializer?.text,
-                generateValues,
                 done = done) }.toMap()
     }
 
@@ -105,9 +105,10 @@ class Java2Json() : AnyToJsonBuilder<PsiClass, Map<String, Any>>()  {
             else -> throw Any2PojoException("Not supported primitive '$type.canonicalText'")
         }
 
-    override fun presentation() = "from Class"
+    override fun presentation()
+        = "from Class" + if (actionType == SECONDARY) " with Data" else ""
 
-    override fun isVisible(generateValues: Boolean) = true
+    override fun isVisible() = true
 
     companion object {
         val GENERATORS = mapOf(

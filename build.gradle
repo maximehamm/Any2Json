@@ -1,3 +1,5 @@
+import org.jetbrains.intellij.tasks.RunPluginVerifierTask
+
 plugins {
     id 'java'
     id 'org.jetbrains.intellij' version '0.6.5'
@@ -43,18 +45,19 @@ compileTestKotlin {
 intellij {
     version '2020.3'
     plugins = ['java','Kotlin']
-    intellij.type = 'IC'
+    intellij.type = 'IC' // IU, IC
 }
 
 tasks.buildSearchableOptions {
     enabled = false
 }
 
-//tasks {
-//    runPluginVerifier {
-//        ideVersions(listOf<String>("2020.1.4", "2020.2.3", "2020.3"))
-//    }
-//}
+tasks.runPluginVerifier {
+    ideVersions("IC-203.7148.40, IC-193.7288.26")
+    setFailureLevel(RunPluginVerifierTask.FailureLevel.ALL)
+}
+
+//        https://stackoverflow.com/questions/23871694/java-properties-to-json
 
 patchPluginXml {
     changeNotes """
@@ -72,6 +75,7 @@ patchPluginXml {
       <br/>
       Road map 
       <ul>
+        <li><b>1.X</b> Supports of Java Properties</li>
         <li><b>1.X</b> Supports of other languages !</li>
       </ul>
       """

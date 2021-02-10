@@ -12,20 +12,21 @@ import com.jetbrains.jdi.LongValueImpl
 import com.jetbrains.jdi.ObjectReferenceImpl
 import com.jetbrains.jdi.StringReferenceImpl
 import io.nimbly.any2json.AnyToJsonBuilder
+import io.nimbly.any2json.EType
 
-class Variable2Json() : AnyToJsonBuilder<XValueNodeImpl, Map<String, Any>>()  {
+class Variable2Json(type: EType) : AnyToJsonBuilder<XValueNodeImpl, Map<String, Any>>(type)  {
 
     @Suppress("UNCHECKED_CAST")
-    override fun buildMap(type: XValueNodeImpl, generateValues: Boolean): Map<String, Any> {
+    override fun buildMap(type: XValueNodeImpl): Map<String, Any> {
 
         return type.children().toList()
             .filterIsInstance<XValueNodeImpl>()
-            .map { it.name to parse(it, generateValues) }
+            .map { it.name to parse(it) }
             .filter { it.second != null }
             .toMap() as Map<String, Any>
     }
 
-    private fun parse(node: XValueNodeImpl, generateValues: Boolean): Any? {
+    private fun parse(node: XValueNodeImpl): Any? {
 
         if (node.valuePresentation is JavaValuePresentation) {
 
@@ -81,7 +82,7 @@ class Variable2Json() : AnyToJsonBuilder<XValueNodeImpl, Map<String, Any>>()  {
 
             val toMap = node.children
                 .filterIsInstance<XValueNodeImpl>()
-                .map { it.name to parse(it, generateValues) }
+                .map { it.name to parse(it) }
                 .toMap()
 
             var isList = true
@@ -104,5 +105,6 @@ class Variable2Json() : AnyToJsonBuilder<XValueNodeImpl, Map<String, Any>>()  {
 
     override fun presentation() = ""
 
-    override fun isVisible(generateValues: Boolean) = !generateValues
+    override fun isVisible()
+        = actionType == EType.MAIN
 }

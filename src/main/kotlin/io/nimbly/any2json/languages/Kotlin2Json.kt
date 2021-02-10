@@ -1,6 +1,8 @@
 package io.nimbly.any2json.languages
 
 import io.nimbly.any2json.AnyToJsonBuilder
+import io.nimbly.any2json.EType
+import io.nimbly.any2json.EType.SECONDARY
 import io.nimbly.any2json.generator.GBoolean
 import io.nimbly.any2json.generator.GChar
 import io.nimbly.any2json.generator.GDate
@@ -24,16 +26,15 @@ import org.jetbrains.kotlin.types.typeUtil.isEnum
 import org.jetbrains.kotlin.types.typeUtil.supertypes
 
 
-class Kotlin2Json() : AnyToJsonBuilder<KtClass, Map<String, Any>>()  {
+class Kotlin2Json(actionType: EType) : AnyToJsonBuilder<KtClass, Map<String, Any>>(actionType)  {
 
     @Suppress("UNCHECKED_CAST")
-    override fun buildMap(type: KtClass, generateValues: Boolean): Map<String, Any>
+    override fun buildMap(type: KtClass): Map<String, Any>
         = type.getProperties()
             .map { it.name to parse(
                     it.type(),
                     it.initializer?.text,
-                    generateValues,
-                    type.createLookupLocation()!!
+                type.createLookupLocation()!!
                 )}
             .filter { it.second != null }
             .toMap() as Map<String, Any>
@@ -42,7 +43,6 @@ class Kotlin2Json() : AnyToJsonBuilder<KtClass, Map<String, Any>>()  {
     private fun parse(
         type: KotlinType?,
         initializer: String?,
-        generateValues: Boolean,
         lookupLocation: LookupLocation,
         done: MutableSet<KotlinType> = mutableSetOf()
     ): Any? {
@@ -73,7 +73,7 @@ class Kotlin2Json() : AnyToJsonBuilder<KtClass, Map<String, Any>>()  {
         val typeName = type.nameIfStandardType?.identifier ?:
             type.toString().substringBeforeLast("?")
         GENERATORS[typeName]?.let {
-            return it.generate(generateValues, initializer)
+            return it.generate(actionType == SECONDARY, initializer)
         }
 
         // Collections, iterables, arrays, etc.
@@ -90,7 +90,7 @@ class Kotlin2Json() : AnyToJsonBuilder<KtClass, Map<String, Any>>()  {
             val parameterType = type.arguments.first().type
             if (parameterType.toString().substringBeforeLast("?") == "Any")
                 return listOf<Int>()
-            return listOfNotNull(parse(parameterType, null, generateValues, lookupLocation, done = done))
+            return listOfNotNull(parse(parameterType, null, lookupLocation, done = done))
         }
 
         // Avoid stack overflow
@@ -103,13 +103,14 @@ class Kotlin2Json() : AnyToJsonBuilder<KtClass, Map<String, Any>>()  {
             it.identifier to parse(
                 type.memberScope.getContributedVariables(it, lookupLocation).firstOrNull()?.returnType,
                 type.memberScope.getContributedVariables(it, lookupLocation).firstOrNull()?.compileTimeInitializer?.value.toString(),
-                generateValues, lookupLocation, done)
+                lookupLocation, done)
         }.toMap()
     }
 
-    override fun presentation() = "from Class"
+    override fun presentation()
+        = "from Class" + if (actionType == SECONDARY) " with Data" else ""
 
-    override fun isVisible(generateValues: Boolean) = true
+    override fun isVisible() = true
 
     companion object {
         val GENERATORS = mapOf(

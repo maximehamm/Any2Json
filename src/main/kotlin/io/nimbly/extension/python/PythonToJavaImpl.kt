@@ -3,6 +3,7 @@ package io.nimbly.extension.python
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import io.nimbly.any2json.Any2JsonExtensionPoint
+import io.nimbly.any2json.EType
 
 class PythonToJavaImpl : Any2JsonExtensionPoint<String> {
 
@@ -18,7 +19,7 @@ class PythonToJavaImpl : Any2JsonExtensionPoint<String> {
 //        return Pair("NULL", emptyMap())
     }
 
-    override fun isEnabled(event: AnActionEvent, generateValues: Boolean): Boolean {
+    override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
         return false
     }
 

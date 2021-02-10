@@ -5,7 +5,7 @@ interface Any2JsonExtensionPoint<T : Any> {
 
     fun build(e: AnActionEvent) : Pair<String, Map<String, Any>>?
 
-    fun isEnabled(event: AnActionEvent, generateValues: Boolean): Boolean
+    fun isEnabled(event: AnActionEvent, actionType: EType): Boolean
 
     fun presentation() : String
 }

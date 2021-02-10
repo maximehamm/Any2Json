@@ -12,12 +12,13 @@ import com.fasterxml.jackson.dataformat.csv.CsvParser.Feature.SKIP_EMPTY_LINES
 import com.fasterxml.jackson.dataformat.csv.CsvParser.Feature.TRIM_SPACES
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import io.nimbly.any2json.AnyToJsonBuilder
+import io.nimbly.any2json.EType
 import io.nimbly.any2json.util.Any2PojoException
 
-class Csv2Json() : AnyToJsonBuilder<String, List<Map<String, Any>>>() {
+class Csv2Json(actionType: EType) : AnyToJsonBuilder<String, List<Map<String, Any>>>(actionType) {
 
     @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-    override fun buildMap(csv: String, generateValues: Boolean): List<Map<String, Any>> {
+    override fun buildMap(csv: String): List<Map<String, Any>> {
 
         val separatorsCandidates = listOf(
             ';' to csv.count { it == ';' },
@@ -55,7 +56,9 @@ class Csv2Json() : AnyToJsonBuilder<String, List<Map<String, Any>>>() {
         return lines
     }
 
-    override fun presentation(): String = "from CSV"
+    override fun presentation()
+        = "from CSV"
 
-    override fun isVisible(generateValues: Boolean) = !generateValues
+    override fun isVisible()
+        = actionType == EType.MAIN
 }

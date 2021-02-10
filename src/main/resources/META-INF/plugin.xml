@@ -4,6 +4,8 @@
     <vendor email="maxime.hamm@gmail.com"
             url="https://www.linkedin.com/in/maxime-hamm/">Maxime HAMM</vendor>
 
+    <!-- https://plugins.jetbrains.com/plugin/16055-any-to-json -->
+
     <description><![CDATA[
 
        <b>Converting "Anything" to JSON !</b><br/>
@@ -14,7 +16,7 @@
         <li>From Debugger Variable: expand variable, then right click on a it</li>
         <li>From XML editor: right click near tag name in file named *.xml</li>
         <li>From CSV editor: right click anywhere in file named *.csv</li>
-        <li>From YAML editor: right click anywhere in file named *.yaml</li>
+        <li>From YAML editor: right click anywhere in file named *.yaml or *.yml</li>
        </ul>
 
        <br/>
