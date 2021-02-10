@@ -14,6 +14,7 @@
         <li>From Debugger Variable: expand variable, then right click on a it</li>
         <li>From XML editor: right click near tag name in file named *.xml</li>
         <li>From CSV editor: right click anywhere in file named *.csv</li>
+        <li>From YAML editor: right click anywhere in file named *.yaml</li>
        </ul>
 
        <br/>

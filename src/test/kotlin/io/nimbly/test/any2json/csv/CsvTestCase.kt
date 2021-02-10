@@ -1,4 +1,4 @@
-package io.nimbly.test.any2json.xml
+package io.nimbly.test.any2json.csv
 
 import io.nimbly.test.any2json.AbstractTestCase
 import org.junit.Ignore

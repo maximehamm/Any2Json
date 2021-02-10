@@ -15,6 +15,7 @@ import io.nimbly.any2json.languages.Csv2Json
 import io.nimbly.any2json.languages.Java2Json
 import io.nimbly.any2json.languages.Kotlin2Json
 import io.nimbly.any2json.languages.Xml2Json
+import io.nimbly.any2json.languages.Yaml2Json
 import io.nimbly.any2json.util.Any2PojoException
 import io.nimbly.any2json.util.error
 import io.nimbly.any2json.util.info
@@ -52,6 +53,7 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
                       ?: buildFromKotlin(element)
                       ?: buildFromXml(element)
                       ?: buildFromCsv(psiFile)
+                      ?: buildFromYaml(psiFile)
             }
 
             // Try using extensions
@@ -121,10 +123,18 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
             Xml2Json().buildMap(xmlTag, generateValues))
     }
 
-    private fun buildFromCsv(element: PsiElement?): Pair<String, List<Map<String, Any>>>? {
-        element ?: return null
+    private fun buildFromCsv(element: PsiElement): Pair<String, List<Map<String, Any>>>? {
+        if (!element.containingFile.name.toUpperCase().endsWith("CSV"))
+            return null
         return Pair("CSV",
             Csv2Json().buildMap(element.containingFile.text, generateValues))
+    }
+
+    private fun buildFromYaml(element: PsiElement): Pair<String, List<Map<String, Any>>>? {
+        if (!element.containingFile.name.toUpperCase().endsWith("YAML"))
+            return null
+        return Pair("YAML",
+            Yaml2Json().buildMap(element.containingFile.text, generateValues))
     }
 
     override fun update(e: AnActionEvent) {
@@ -145,6 +155,9 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
                 }
                 else if (psiFile.name.endsWith(".csv")) {
                     Csv2Json()
+                }
+                else if (psiFile.name.endsWith(".yaml")) {
+                    Yaml2Json()
                 }
                 else {
                     null
