@@ -18,6 +18,7 @@ import io.nimbly.any2json.util.Any2PojoException
 import io.nimbly.any2json.util.error
 import io.nimbly.any2json.util.info
 import io.nimbly.any2json.util.warn
+import io.nimbly.extension.ANY2JSON
 import org.jetbrains.kotlin.psi.KtClass
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
@@ -41,6 +42,7 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
             val editor = e.getData(CommonDataKeys.EDITOR)
             val psiFile = e.getData(CommonDataKeys.PSI_FILE)
 
+            // Try community languages
             var result: Pair<String, Map<String, Any>>? = null
             if (psiFile != null && editor!=null) {
                 val element = psiFile.findElementAt(editor.caretModel.offset)
@@ -48,23 +50,34 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
                 result = buildFromJava(element)
                       ?: buildFromKotlin(element)
                       ?: buildFromXml(element)
-                      ?: throw Any2PojoException("Not supported target !")
             }
-            else {
+
+            // Try using extensions
+            if (result == null) {
+                ANY2JSON().extensionList.forEach {
+                    result = it.build(e)
+                    if (result != null)
+                        return@forEach
+                }
+            }
+
+            // Should be the debugger impl
+            if (result == null && psiFile == null) {
                 result = buildDebugger(e)
             }
 
+            // Oups !?
             if (result == null)
                 throw Any2PojoException("Unable to define context !")
 
             // Convert to Json
-            val json = GsonBuilder().setPrettyPrinting().create().toJson(result.second)
+            val json = GsonBuilder().setPrettyPrinting().create().toJson(result!!.second)
 
             // Put to clipboard
             Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(json), StringSelection(json))
 
             // Report notificagton
-            info("${result.first} to JSON copied to clipboard !", project)
+            info("${result!!.first} to JSON copied to clipboard !", project)
 
         } catch (ex: Any2PojoException) {
             warn(ex.message!!, project)
@@ -75,8 +88,12 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
     }
 
     private fun buildDebugger(e: AnActionEvent): Pair<String, Map<String, Any>>? {
-        val xtree: XDebuggerTree = e.dataContext.getData("xdebugger.tree") as XDebuggerTree
-        val xnode: XValueNodeImpl = xtree.selectionPath.lastPathComponent as XValueNodeImpl
+        val xtree: XDebuggerTree = e.dataContext.getData("xdebugger.tree") as XDebuggerTree?
+            ?: return null
+        val xpath = xtree.selectionPath?.lastPathComponent
+        if (xpath !is XValueNodeImpl)
+            return null
+        val xnode: XValueNodeImpl = xpath
         return Pair(xnode.name!!,
             Variable2Json().buildMap(xnode, generateValues))
     }
@@ -126,16 +143,24 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
                 Variable2Json()
             }
 
-
         if (any2Json != null) {
             e.presentation.text = "Generate JSON " + any2Json.presentation() + presentationSuffix()
             e.presentation.isVisible = any2Json.isVisible(generateValues)
             e.presentation.isEnabled = true
+            return
         }
-        else {
-            e.presentation.isVisible = false
-            e.presentation.isEnabled = false
+
+        ANY2JSON().extensionList.forEach { ext ->
+            if (ext.isEnabled(e, generateValues)) {
+                e.presentation.text = "Generate JSON " + ext.presentation() + presentationSuffix()
+                e.presentation.isVisible = true
+                e.presentation.isEnabled = true
+                return
+            }
         }
+
+        e.presentation.isVisible = false
+        e.presentation.isEnabled = false
     }
 
     abstract fun presentationSuffix(): String

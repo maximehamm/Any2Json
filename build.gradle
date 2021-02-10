@@ -14,6 +14,10 @@ repositories {
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib'
     implementation 'org.json:json:20180813'
+
+    // Non mandatory
+    //implementation 'com.intellij.modules.python-core-capable'
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
@@ -39,6 +43,12 @@ tasks.buildSearchableOptions {
     enabled = false
 }
 
+//tasks {
+//    runPluginVerifier {
+//        ideVersions(listOf<String>("2020.1.4", "2020.2.3", "2020.3"))
+//    }
+//}
+
 patchPluginXml {
     changeNotes """
       Change notes :
@@ -53,7 +63,8 @@ patchPluginXml {
       <br/>
       Road map 
       <ul>
-        <li><b>1.6</b> Supports of Python</li>
+        <li><b>1.6</b> Supports of CSV</li>
+        <li><b>1.X</b> Supports of other languages !</li>
       </ul>
       """
 }

@@ -39,6 +39,18 @@
     <depends>com.intellij.java</depends>
     <depends>org.jetbrains.kotlin</depends>
 
+    <!-- Extension point
+    https://developerlife.com/2020/11/21/idea-plugin-example-intro/#extensions-and-extension-points -->
+
+    <!-- Optional dependency
+    https://jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html#optional-plugin-dependencies -->
+
+    <extensionPoints>
+        <extensionPoint name="io.nimbly.json.Any2Json.lang" interface="io.nimbly.any2json.Any2JsonExtensionPoint"/>
+    </extensionPoints>
+
+    <depends optional="true" config-file="plugin-withPython.xml">com.intellij.modules.python-core-capable</depends>
+
     <actions>
 
         <group id="io.nimbly.any2json.Any2Json">
