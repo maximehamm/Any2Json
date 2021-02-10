@@ -32,14 +32,15 @@ class Properties2Json(actionType: EType) : AnyToJsonBuilder<String, Any>(actionT
             var p = it.first.substringAfter(prefix, "").substringBefore(".", "")
             if (p == "") {
                 p = it.first.substringAfterLast(".")
-                groups.put(p, it.second)
+                put(p, groups, it.second)
             }
             else if (lp == null) {
                 lp = p
                 lg.add(it)
             }
             else if (lp != p) {
-                groups.put(lp!!, buildMap(lg, "$prefix$lp."))
+                put(lp!!, groups, buildMap(lg, "$prefix$lp."))
+                //groups.put(lp!!, buildMap(lg, "$prefix$lp."))
                 lp = p
                 lg = mutableListOf()
                 lg.add(it)
@@ -50,13 +51,32 @@ class Properties2Json(actionType: EType) : AnyToJsonBuilder<String, Any>(actionT
         }
 
         if (lg.isNotEmpty())
-            groups[lp!!] = buildMap(lg, "$prefix$lp.")
+            put(lp!!, groups, buildMap(lg, "$prefix$lp."))
+            //groups[lp!!] = buildMap(lg, "$prefix$lp.")
 
         return groups
     }
 
+    private fun put(
+        key: String,
+        groups: MutableMap<String, Any>,
+        value: Any
+    ) {
+        val temp = groups.get(key)
+        if (temp == null) {
+            groups.put(key, value)
+        } else if (temp is MutableList<*>) {
+            (temp as MutableList<Any>).add(value)
+        } else {
+            val l = mutableListOf<Any>()
+            l.add(temp)
+            l.add(value)
+            groups.put(key, l)
+        }
+    }
+
     override fun presentation()
-        = "from PROPERTIES" + if (actionType == EType.MAIN) " (flat)" else " (hierarchical)"
+        = "from PROPERTIES" + if (actionType == MAIN) " (flat)" else " (hierarchical)"
 
     override fun isVisible() = true
 }
