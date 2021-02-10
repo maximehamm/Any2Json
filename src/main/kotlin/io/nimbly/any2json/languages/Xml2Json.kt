@@ -4,7 +4,7 @@ import com.intellij.psi.xml.XmlTag
 import io.nimbly.any2json.AnyToJsonBuilder
 import org.json.XML
 
-class Xml2Json() : AnyToJsonBuilder<XmlTag>() {
+class Xml2Json() : AnyToJsonBuilder<XmlTag, Map<String, Any>>() {
 
     override fun buildMap(type: XmlTag, generateValues: Boolean): Map<String, Any> {
         val json = XML.toJSONObject(type.text)

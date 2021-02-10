@@ -13,7 +13,7 @@ import com.jetbrains.jdi.ObjectReferenceImpl
 import com.jetbrains.jdi.StringReferenceImpl
 import io.nimbly.any2json.AnyToJsonBuilder
 
-class Variable2Json() : AnyToJsonBuilder<XValueNodeImpl>()  {
+class Variable2Json() : AnyToJsonBuilder<XValueNodeImpl, Map<String, Any>>()  {
 
     @Suppress("UNCHECKED_CAST")
     override fun buildMap(type: XValueNodeImpl, generateValues: Boolean): Map<String, Any> {

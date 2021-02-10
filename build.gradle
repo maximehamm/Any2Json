@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'io.nimbly.json'
-version '1.5.0-SNAPSHOT'
+version '1.6.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -14,6 +14,9 @@ repositories {
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib'
     implementation 'org.json:json:20180813'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.11.2'
 
     // Non mandatory
     //implementation 'com.intellij.modules.python-core-capable'
@@ -53,6 +56,7 @@ patchPluginXml {
     changeNotes """
       Change notes :
       <ul>
+        <li><b>1.6</b> Supports of CSV</li>
         <li><b>1.5</b> Supports of XML</li>
         <li><b>1.4</b> Supports using from debugger</li>
         <li><b>1.3</b> Mixing Kotlin and Java references</li>
@@ -63,7 +67,7 @@ patchPluginXml {
       <br/>
       Road map 
       <ul>
-        <li><b>1.6</b> Supports of CSV</li>
+        <li><b>1.X</b> Supports of YAML</li>
         <li><b>1.X</b> Supports of other languages !</li>
       </ul>
       """

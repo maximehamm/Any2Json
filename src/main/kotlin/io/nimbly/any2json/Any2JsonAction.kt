@@ -11,6 +11,7 @@ import com.intellij.psi.xml.XmlTag
 import com.intellij.xdebugger.impl.ui.tree.XDebuggerTree
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl
 import io.nimbly.any2json.debugger.Variable2Json
+import io.nimbly.any2json.languages.Csv2Json
 import io.nimbly.any2json.languages.Java2Json
 import io.nimbly.any2json.languages.Kotlin2Json
 import io.nimbly.any2json.languages.Xml2Json
@@ -43,13 +44,14 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
             val psiFile = e.getData(CommonDataKeys.PSI_FILE)
 
             // Try community languages
-            var result: Pair<String, Map<String, Any>>? = null
+            var result: Pair<String, Any>? = null
             if (psiFile != null && editor!=null) {
                 val element = psiFile.findElementAt(editor.caretModel.offset)
 
                 result = buildFromJava(element)
                       ?: buildFromKotlin(element)
                       ?: buildFromXml(element)
+                      ?: buildFromCsv(psiFile)
             }
 
             // Try using extensions
@@ -119,11 +121,17 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
             Xml2Json().buildMap(xmlTag, generateValues))
     }
 
+    private fun buildFromCsv(element: PsiElement?): Pair<String, List<Map<String, Any>>>? {
+        element ?: return null
+        return Pair("CSV",
+            Csv2Json().buildMap(element.containingFile.text, generateValues))
+    }
+
     override fun update(e: AnActionEvent) {
 
         val editor = e.getData(CommonDataKeys.EDITOR)
         val psiFile = e.getData(CommonDataKeys.PSI_FILE)
-        val any2Json: AnyToJsonBuilder<out Any>? =
+        val any2Json: AnyToJsonBuilder<out Any, out Any>? =
             if (psiFile != null && editor != null) {
                 val element = psiFile.findElementAt(editor.caretModel.offset)
                 if (PsiTreeUtil.getContextOfType(element, PsiClass::class.java) !=null) {
@@ -134,6 +142,9 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
                 }
                 else if (PsiTreeUtil.getContextOfType(element, XmlTag::class.java) !=null) {
                     Xml2Json()
+                }
+                else if (psiFile.name.endsWith(".csv")) {
+                    Csv2Json()
                 }
                 else {
                     null
@@ -166,8 +177,8 @@ abstract class Any2JsonAction(private val generateValues: Boolean): AnAction() {
     abstract fun presentationSuffix(): String
 }
 
-abstract class AnyToJsonBuilder<T : Any> {
-    abstract fun buildMap(type: T, generateValues: Boolean): Map<String, Any>
+abstract class AnyToJsonBuilder<T : Any, J : Any> {
+    abstract fun buildMap(type: T, generateValues: Boolean): J
     abstract fun presentation(): String
     abstract fun isVisible(generateValues: Boolean): Boolean
 }

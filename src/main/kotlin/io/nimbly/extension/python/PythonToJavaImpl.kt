@@ -8,9 +8,9 @@ class PythonToJavaImpl : Any2JsonExtensionPoint<String> {
 
     override fun build(e: AnActionEvent) : Pair<String, Map<String, Any>>? {
 
-        val editor = e.getData(CommonDataKeys.EDITOR) ?: return null
-        val psiFile = e.getData(CommonDataKeys.PSI_FILE) ?: return null
-        val element = psiFile.findElementAt(editor.caretModel.offset)
+//        val editor = e.getData(CommonDataKeys.EDITOR) ?: return null
+//        val psiFile = e.getData(CommonDataKeys.PSI_FILE) ?: return null
+//        val element = psiFile.findElementAt(editor.caretModel.offset)
 
         return null
 //        if (element !is Python)
@@ -19,7 +19,7 @@ class PythonToJavaImpl : Any2JsonExtensionPoint<String> {
     }
 
     override fun isEnabled(event: AnActionEvent, generateValues: Boolean): Boolean {
-        return true
+        return false
     }
 
     override fun presentation() = "from Class"

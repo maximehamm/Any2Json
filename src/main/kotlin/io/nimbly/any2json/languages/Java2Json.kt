@@ -20,7 +20,7 @@ import io.nimbly.any2json.generator.GString
 import io.nimbly.any2json.generator.GTime
 import io.nimbly.any2json.util.Any2PojoException
 
-class Java2Json() : AnyToJsonBuilder<PsiClass>()  {
+class Java2Json() : AnyToJsonBuilder<PsiClass, Map<String, Any>>()  {
 
     @Suppress("UNCHECKED_CAST")
     override fun buildMap(type: PsiClass, generateValues: Boolean): Map<String, Any>

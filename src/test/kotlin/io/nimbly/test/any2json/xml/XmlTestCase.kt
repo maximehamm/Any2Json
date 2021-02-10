@@ -1,7 +1,6 @@
 package io.nimbly.test.any2json.xml
 
 import io.nimbly.test.any2json.AbstractTestCase
-import org.junit.Ignore
 
 class XmlTestCase : AbstractTestCase() {
 
@@ -9,7 +8,7 @@ class XmlTestCase : AbstractTestCase() {
 
         // language=Xml
         configure("""
-            <book id="bk101"><caret>
+            <book id="bk101">
                 <author>Gambardella, Matthew</author>
                 <title>XML Developer's Guide</title>
                 <genre>Computer</genre>
@@ -27,7 +26,7 @@ class XmlTestCase : AbstractTestCase() {
                 "author": "Gambardella, Matthew",
                 "price": 44.95,
                 "genre": "Computer",
-                "description": "An in-depth look at creating applications\n                    with XML.",
+                "description": "An in-depth look at creating applications\n        with XML.",
                 "id": "bk101",
                 "title": "XML Developer\u0027s Guide",
                 "publish_date": "2000-10-01"
@@ -39,6 +38,9 @@ class XmlTestCase : AbstractTestCase() {
 
 
     fun configure(text: String) {
-        myFixture.configureByText("test.xml", text)
+        val trimed = text.trimIndent()
+        myFixture.configureByText("test.xml", StringBuilder(trimed).insert(
+            trimed.indexOf('>')+1, "<caret>").toString()
+        )
     }
 }

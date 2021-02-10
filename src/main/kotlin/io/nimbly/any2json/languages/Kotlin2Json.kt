@@ -24,7 +24,7 @@ import org.jetbrains.kotlin.types.typeUtil.isEnum
 import org.jetbrains.kotlin.types.typeUtil.supertypes
 
 
-class Kotlin2Json() : AnyToJsonBuilder<KtClass>()  {
+class Kotlin2Json() : AnyToJsonBuilder<KtClass, Map<String, Any>>()  {
 
     @Suppress("UNCHECKED_CAST")
     override fun buildMap(type: KtClass, generateValues: Boolean): Map<String, Any>
