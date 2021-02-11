@@ -1,0 +1,10 @@
+<idea-plugin>
+
+<!--    <depends>com.intellij.modules.python-core-capable</depends>-->
+
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.extension.typescript.TypeScriptToJson">
+        </io.nimbly.json.Any2Json.lang>
+    </extensions>
+
+</idea-plugin>

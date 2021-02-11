@@ -81,6 +81,16 @@ class GDateTime : GeneratorFormated() {
     override fun generate(feed: Boolean, initializer: String?): String = generate(format)
 }
 
+class GNull : Generator<Any?>() {
+    override fun generate(feed: Boolean, initializer: String?): Any?
+            = null
+}
+
+class GObject : Generator<Map<String, String>>() {
+    override fun generate(feed: Boolean, initializer: String?): Map<String, String>
+            = mapOf()
+}
+
 abstract class Generator<T> {
     val random = Random()
     abstract fun generate(feed: Boolean, initializer: String?): T

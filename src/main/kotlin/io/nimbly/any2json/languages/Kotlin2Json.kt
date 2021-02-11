@@ -34,7 +34,7 @@ class Kotlin2Json(actionType: EType) : AnyToJsonBuilder<KtClass, Map<String, Any
             .map { it.name to parse(
                     it.type(),
                     it.initializer?.text,
-                type.createLookupLocation()!!
+                    type.createLookupLocation()!!
                 )}
             .filter { it.second != null }
             .toMap() as Map<String, Any>

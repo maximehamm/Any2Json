@@ -32,7 +32,7 @@ class Any2JsonDefaultAction : Any2JsonAction(MAIN)
 
 class Any2JsonRandomAction : Any2JsonAction(SECONDARY)
 
-abstract class Any2JsonAction(private val type: EType): AnAction() { //DebuggerAction()
+abstract class Any2JsonAction(private val actionType: EType): AnAction() { //DebuggerAction()
 
     override fun actionPerformed(e: AnActionEvent) {
 
@@ -59,7 +59,7 @@ abstract class Any2JsonAction(private val type: EType): AnAction() { //DebuggerA
             // Try using extensions
             if (result == null) {
                 ANY2JSON().extensionList.forEach {
-                    result = it.build(e)
+                    result = it.build(e, actionType)
                     if (result != null)
                         return@forEach
                 }
@@ -103,35 +103,35 @@ abstract class Any2JsonAction(private val type: EType): AnAction() { //DebuggerA
             return null
         val xnode: XValueNodeImpl = xpath
         return Pair(xnode.name!!,
-            Variable2Json(type).buildMap(xnode))
+            Variable2Json(actionType).buildMap(xnode))
     }
 
     private fun buildFromJava(element: PsiElement?): Pair<String, Map<String, Any>>? {
         val psiClass = PsiTreeUtil.getContextOfType(element, PsiClass::class.java)
             ?: return null
         return Pair(psiClass.name!!,
-            Java2Json(type).buildMap(psiClass))
+            Java2Json(actionType).buildMap(psiClass))
     }
 
     private fun buildFromKotlin(element: PsiElement?): Pair<String, Map<String, Any>>? {
         val ktClass = PsiTreeUtil.getContextOfType(element, KtClass::class.java)
             ?: return null
         return Pair(ktClass.name!!,
-            Kotlin2Json(type).buildMap(ktClass))
+            Kotlin2Json(actionType).buildMap(ktClass))
     }
 
     private fun buildFromXml(element: PsiElement?): Pair<String, Map<String, Any>>? {
         val xmlTag = PsiTreeUtil.getContextOfType(element, XmlTag::class.java)
             ?: return null
         return Pair(xmlTag.name,
-            Xml2Json(type).buildMap(xmlTag))
+            Xml2Json(actionType).buildMap(xmlTag))
     }
 
     private fun buildFromCsv(element: PsiElement): Pair<String, List<Map<String, Any>>>? {
         if (!element.containingFile.name.toLowerCase().endsWith("csv"))
             return null
         return Pair("CSV",
-            Csv2Json(type).buildMap(element.containingFile.text))
+            Csv2Json(actionType).buildMap(element.containingFile.text))
     }
 
     private fun buildFromYaml(element: PsiElement): Pair<String, List<Map<String, Any>>>? {
@@ -139,14 +139,14 @@ abstract class Any2JsonAction(private val type: EType): AnAction() { //DebuggerA
             && !element.containingFile.name.toLowerCase().endsWith("yml"))
             return null
         return Pair("YAML",
-            Yaml2Json(type).buildMap(element.containingFile.text))
+            Yaml2Json(actionType).buildMap(element.containingFile.text))
     }
 
     private fun buildFromProperties(element: PsiElement): Pair<String, Any>? {
         if (!element.containingFile.name.toLowerCase().endsWith("properties"))
             return null
         return Pair("PROPERTIES",
-            Properties2Json(type).buildMap(element.containingFile.text))
+            Properties2Json(actionType).buildMap(element.containingFile.text))
     }
 
     override fun update(e: AnActionEvent) {
@@ -157,24 +157,24 @@ abstract class Any2JsonAction(private val type: EType): AnAction() { //DebuggerA
             if (psiFile != null && editor != null) {
                 val element = psiFile.findElementAt(editor.caretModel.offset)
                 if (PsiTreeUtil.getContextOfType(element, PsiClass::class.java) !=null) {
-                    Java2Json(type)
+                    Java2Json(actionType)
                 }
                 else if (PsiTreeUtil.getContextOfType(element, KtClass::class.java) !=null) {
-                    Kotlin2Json(type)
+                    Kotlin2Json(actionType)
                 }
                 else if (PsiTreeUtil.getContextOfType(element, XmlTag::class.java) !=null) {
-                    Xml2Json(type)
+                    Xml2Json(actionType)
                 }
                 else {
                     val fileName = psiFile.name.toLowerCase()
                     if (fileName.endsWith(".csv")) {
-                        Csv2Json(type)
+                        Csv2Json(actionType)
                     }
                     else if (fileName.endsWith(".yaml") || fileName.endsWith(".yml")) {
-                        Yaml2Json(type)
+                        Yaml2Json(actionType)
                     }
                     else if (fileName.endsWith(".properties")) {
-                        Properties2Json(type)
+                        Properties2Json(actionType)
                     }
                     else {
                         null
@@ -182,7 +182,7 @@ abstract class Any2JsonAction(private val type: EType): AnAction() { //DebuggerA
                 }
             }
             else {
-                Variable2Json(type)
+                Variable2Json(actionType)
             }
 
         if (any2Json != null) {
@@ -193,8 +193,8 @@ abstract class Any2JsonAction(private val type: EType): AnAction() { //DebuggerA
         }
 
         ANY2JSON().extensionList.forEach { ext ->
-            if (ext.isEnabled(e, type)) {
-                e.presentation.text = "Generate JSON " + ext.presentation()
+            if (ext.isEnabled(e, actionType)) {
+                e.presentation.text = "Generate JSON " + ext.presentation(actionType)
                 e.presentation.isVisible = true
                 e.presentation.isEnabled = true
                 return

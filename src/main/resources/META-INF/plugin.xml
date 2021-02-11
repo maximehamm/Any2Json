@@ -54,7 +54,7 @@
         <extensionPoint name="io.nimbly.json.Any2Json.lang" interface="io.nimbly.any2json.Any2JsonExtensionPoint"/>
     </extensionPoints>
 
-    <depends optional="true" config-file="plugin-withPython.xml">com.intellij.modules.python-core-capable</depends>
+    <depends optional="true" config-file="plugin-withTypeScript.xml">JavaScript</depends>
 
     <actions>
 

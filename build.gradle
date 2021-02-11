@@ -7,10 +7,18 @@ plugins {
 }
 
 group 'io.nimbly.json'
-version '1.8.1-SNAPSHOT'
+version '1.9.0-beta-SNAPSHOT'
+
+// Plugin url : https://plugins.jetbrains.com/plugin/16055-any-to-json/
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+    maven {
+        url 'https://dl.bintray.com/jetbrains/intellij-plugin-service'
+    }
 }
 
 dependencies {
@@ -23,9 +31,6 @@ dependencies {
 
     // YAML supports
     implementation 'org.yaml:snakeyaml:1.27'
-
-    // Non mandatory
-    //implementation 'com.intellij.modules.python-core-capable'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
@@ -44,16 +49,25 @@ compileTestKotlin {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version '2020.3'
-    plugins = ['java','Kotlin']
-    intellij.type = 'IC' // IU, IC
+    plugins = ['java',
+               'Kotlin',
+               'JavaScriptLanguage',
+               //'java-i18n',
+               //'properties',
+    ]
+    intellij.type = 'IU' // IU, IC
 }
+
+// DEPENDENCY MANAGEMENT :
+//  Example : https://github.com/adelf/idea-php-dotenv-plugin/blob/master/build.gradle
+//  Other examples : https://www.programcreek.com/java-api-examples/?api=com.intellij.lang.javascript.psi.JSReferenceExpression
 
 tasks.buildSearchableOptions {
     enabled = false
 }
 
 tasks.runPluginVerifier {
-    ideVersions("IC-203.7148.40") //, IC-193.7288.26")
+    ideVersions("IU-203.7148.40") //IC-203.7148.40, IIU-203.7148.40
     setFailureLevel(RunPluginVerifierTask.FailureLevel.ALL)
 }
 
