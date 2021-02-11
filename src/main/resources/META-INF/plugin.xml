@@ -17,6 +17,7 @@
         <li>From XML editor: right click near tag name in file named *.xml</li>
         <li>From CSV editor: right click anywhere in file named *.csv</li>
         <li>From YAML editor: right click anywhere in file named *.yaml or *.yml</li>
+        <li>From Java Properties editor: right click anywhere in file named *.properties</li>
        </ul>
 
        <br/>

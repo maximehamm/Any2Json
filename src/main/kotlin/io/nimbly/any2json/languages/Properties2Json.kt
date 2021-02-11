@@ -3,6 +3,7 @@ package io.nimbly.any2json.languages
 import io.nimbly.any2json.AnyToJsonBuilder
 import io.nimbly.any2json.EType
 import io.nimbly.any2json.EType.MAIN
+import org.apache.commons.lang.StringEscapeUtils.unescapeHtml
 import java.util.*
 
 @Suppress("UNCHECKED_CAST")
@@ -11,7 +12,6 @@ class Properties2Json(actionType: EType) : AnyToJsonBuilder<String, Any>(actionT
     @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
     override fun buildMap(content: String): Any {
 
-        //unescapeHtml(bundle.getString(key))
         val properties = Properties().apply { load(content.byteInputStream()) }
         if (actionType == MAIN) {
             return properties
@@ -40,7 +40,6 @@ class Properties2Json(actionType: EType) : AnyToJsonBuilder<String, Any>(actionT
             }
             else if (lp != p) {
                 put(lp!!, groups, buildMap(lg, "$prefix$lp."))
-                //groups.put(lp!!, buildMap(lg, "$prefix$lp."))
                 lp = p
                 lg = mutableListOf()
                 lg.add(it)
@@ -52,7 +51,6 @@ class Properties2Json(actionType: EType) : AnyToJsonBuilder<String, Any>(actionT
 
         if (lg.isNotEmpty())
             put(lp!!, groups, buildMap(lg, "$prefix$lp."))
-            //groups[lp!!] = buildMap(lg, "$prefix$lp.")
 
         return groups
     }
@@ -64,10 +62,12 @@ class Properties2Json(actionType: EType) : AnyToJsonBuilder<String, Any>(actionT
     ) {
         val temp = groups.get(key)
         if (temp == null) {
-            groups.put(key, value)
-        } else if (temp is MutableList<*>) {
+            groups[key] = value
+        }
+        else if (temp is MutableList<*>) {
             (temp as MutableList<Any>).add(value)
-        } else {
+        }
+        else {
             val l = mutableListOf<Any>()
             l.add(temp)
             l.add(value)

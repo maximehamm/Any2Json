@@ -28,7 +28,7 @@ class XmlTestCase : AbstractTestCase() {
                 "genre": "Computer",
                 "description": "An in-depth look at creating applications\n        with XML.",
                 "id": "bk101",
-                "title": "XML Developer\u0027s Guide",
+                "title": "XML Developer's Guide",
                 "publish_date": "2000-10-01"
               }
             }

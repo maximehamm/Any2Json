@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'io.nimbly.json'
-version '1.7.0-SNAPSHOT'
+version '1.8.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -53,16 +53,15 @@ tasks.buildSearchableOptions {
 }
 
 tasks.runPluginVerifier {
-    ideVersions("IC-203.7148.40, IC-193.7288.26")
+    ideVersions("IC-203.7148.40") //, IC-193.7288.26")
     setFailureLevel(RunPluginVerifierTask.FailureLevel.ALL)
 }
-
-//        https://stackoverflow.com/questions/23871694/java-properties-to-json
 
 patchPluginXml {
     changeNotes """
       Change notes :
       <ul>
+        <li><b>1.8</b> Supports of Java Properties</li>
         <li><b>1.7</b> Supports of YAML</li>
         <li><b>1.6</b> Supports of CSV</li>
         <li><b>1.5</b> Supports of XML</li>
@@ -75,7 +74,6 @@ patchPluginXml {
       <br/>
       Road map 
       <ul>
-        <li><b>1.X</b> Supports of Java Properties</li>
         <li><b>1.X</b> Supports of other languages !</li>
       </ul>
       """

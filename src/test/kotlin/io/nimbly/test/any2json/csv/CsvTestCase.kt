@@ -25,7 +25,7 @@ class CsvTestCase : AbstractTestCase() {
                 "Access code": "12se74",
                 "Recovery code": "rb9012",
                 "First name": "Rachel",
-                "Last name": "Booker\u0027",
+                "Last name": "Booker'",
                 "Department": "Sales",
                 "Location": "Manchester",
                 "Description": "The description"
@@ -37,7 +37,7 @@ class CsvTestCase : AbstractTestCase() {
                 "First name": "Jamie",
                 "Last name": "Smith",
                 "Department": "Engineering",
-                "Description": "Quit good; let\u0027s see !"
+                "Description": "Quit good; let's see !"
               },
               {
                 "Identifier": "4081",

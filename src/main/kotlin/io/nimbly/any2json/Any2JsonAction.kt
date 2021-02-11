@@ -75,7 +75,11 @@ abstract class Any2JsonAction(private val type: EType): AnAction() { //DebuggerA
                 throw Any2PojoException("Unable to define context !")
 
             // Convert to Json
-            val json = GsonBuilder().setPrettyPrinting().create().toJson(result!!.second)
+            val json = GsonBuilder()
+                .setPrettyPrinting()
+                .disableHtmlEscaping()
+                .create()
+                .toJson(result!!.second)
 
             // Put to clipboard
             Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(json), StringSelection(json))
