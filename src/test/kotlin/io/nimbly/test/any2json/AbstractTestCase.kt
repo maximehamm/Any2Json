@@ -106,7 +106,7 @@ abstract class AbstractTestCase : JavaCodeInsightFixtureTestCase() {
         return Toolkit.getDefaultToolkit().systemClipboard.getData(DataFlavor.stringFlavor).toString()
     }
 
-    protected fun toJsonRandom(): String {
+    protected fun toJson2(): String {
         myFixture.performEditorAction("io.nimbly.any2json.ANY2JsonRandomAction")
         return Toolkit.getDefaultToolkit().systemClipboard.getData(DataFlavor.stringFlavor).toString()
     }

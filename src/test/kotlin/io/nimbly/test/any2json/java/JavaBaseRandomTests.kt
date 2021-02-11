@@ -16,7 +16,7 @@ class JavaBaseRandomTests : AbstractJavaTestCase() {
                 }"""
         )
 
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "zeBoolean": true,
               "zeInt": 100,
@@ -42,7 +42,7 @@ class JavaBaseRandomTests : AbstractJavaTestCase() {
                 }"""
         )
 
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "zeBoolean": true,
               "zeCharacter": "w",
@@ -64,7 +64,7 @@ class JavaBaseRandomTests : AbstractJavaTestCase() {
                 }"""
         )
 
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "zeBigDecimal": 9999900000.000000000000
             }
@@ -87,7 +87,7 @@ class JavaBaseRandomTests : AbstractJavaTestCase() {
                 }"""
         )
 
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "zeDate": "2020-03-23 00:00:00",
               "zeLocalDateTime": "2020-03-23 00:00:00",

@@ -16,7 +16,7 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "name": "Something",
               "age": 100,
@@ -49,7 +49,7 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "schoolName": "Something",
               "students": [
@@ -103,7 +103,7 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
         )
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "schoolName": "Something",
               "students": [
@@ -196,7 +196,7 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "schoolName": "Something",
               "students": [
@@ -251,7 +251,7 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "schoolName": "Something",
               "schoolNameShort": "Something"

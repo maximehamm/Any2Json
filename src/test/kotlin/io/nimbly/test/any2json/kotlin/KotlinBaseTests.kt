@@ -83,7 +83,7 @@ class KotlinBaseTests : AbstractKotlinTestCase() {
         """.trimIndent())
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "zeBoolean": true,
               "zeInt": 100,
@@ -172,7 +172,7 @@ class KotlinBaseTests : AbstractKotlinTestCase() {
             }""")
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {}
         """.trimIndent())
     }

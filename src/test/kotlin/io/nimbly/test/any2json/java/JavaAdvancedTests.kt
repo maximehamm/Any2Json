@@ -16,7 +16,7 @@ class JavaAdvancedTests : AbstractJavaTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "name": "Something",
               "age": 100,
@@ -48,7 +48,7 @@ class JavaAdvancedTests : AbstractJavaTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "schoolName": "Something",
               "students": [
@@ -103,7 +103,7 @@ class JavaAdvancedTests : AbstractJavaTestCase() {
         )
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "schoolName": "Something",
               "students": [
@@ -201,7 +201,7 @@ class JavaAdvancedTests : AbstractJavaTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
         {
           "schoolName": "Something",
           "students": [
@@ -260,7 +260,7 @@ class JavaAdvancedTests : AbstractJavaTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "schoolName": "Something",
               "schoolNameShort": "Something"

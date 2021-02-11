@@ -72,7 +72,7 @@ class JavaToKotlinTests : AbstractJavaKotlinTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "school": {
                 "schoolName": "Something",
@@ -179,7 +179,7 @@ class JavaToKotlinTests : AbstractJavaKotlinTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "school": {
                 "schoolName": "Something",

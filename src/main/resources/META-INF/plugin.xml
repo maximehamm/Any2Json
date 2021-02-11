@@ -13,6 +13,7 @@
        <ul>
         <li>From Java editor: right click near class name</li>
         <li>From Kotlin editor: right click near class name</li>
+        <li>From TypeScript editor: right click near type name (Ultimate Edition is required)</li>
         <li>From Debugger Variable: expand variable, then right click on a it</li>
         <li>From XML editor: right click near tag name in file named *.xml</li>
         <li>From CSV editor: right click anywhere in file named *.csv</li>

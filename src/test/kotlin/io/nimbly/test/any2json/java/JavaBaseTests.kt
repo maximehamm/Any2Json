@@ -129,7 +129,7 @@ class JavaBaseTests : AbstractJavaTestCase() {
             }""")
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "id": 123456789
             }

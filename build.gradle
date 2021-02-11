@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'io.nimbly.json'
-version '1.9.0-beta-SNAPSHOT'
+version '1.9.0-SNAPSHOT'
 
 // Plugin url : https://plugins.jetbrains.com/plugin/16055-any-to-json/
 
@@ -75,6 +75,7 @@ patchPluginXml {
     changeNotes """
       Change notes :
       <ul>
+        <li><b>1.9</b> Supports of TypeScript</li>
         <li><b>1.8</b> Supports of Java Properties</li>
         <li><b>1.7</b> Supports of YAML</li>
         <li><b>1.6</b> Supports of CSV</li>

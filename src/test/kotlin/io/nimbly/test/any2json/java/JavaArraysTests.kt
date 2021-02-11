@@ -40,7 +40,7 @@ class JavaArraysTests : AbstractJavaTestCase() {
         """.trimIndent())
 
         // language=Json
-        assertEquals(toJsonRandom(), """
+        assertEquals(toJson2(), """
             {
               "zeIntegers": [
                 100

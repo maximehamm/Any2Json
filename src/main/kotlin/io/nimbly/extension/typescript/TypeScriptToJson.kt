@@ -100,10 +100,9 @@ class TypeScriptToJson : Any2JsonExtensionPoint<String> {
     companion object {
         val GENERATORS = mapOf(
             "Boolean" to GBoolean(),
-            "Null" to GNull(),
+            "Null" to GNull(), "Unknown" to GNull(),
             "Object" to GObject(), "any" to GObject(),
-            "Number" to GInteger(), "Bigint" to GLong(),
-            "Unknown" to GString(),
+            "Number" to GInteger(), "BigInt" to GLong(),
             "String" to GString(), "Color" to GString()
         )
     }

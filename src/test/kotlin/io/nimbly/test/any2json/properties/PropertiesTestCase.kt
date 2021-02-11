@@ -1,7 +1,6 @@
 package io.nimbly.test.any2json.properties
 
 import io.nimbly.test.any2json.AbstractTestCase
-import org.junit.Ignore
 
 class PropertiesTestCase : AbstractTestCase() {
 
@@ -26,6 +25,23 @@ class PropertiesTestCase : AbstractTestCase() {
 
         // language=Json
         assertEquals(toJson(), """
+            {
+              "spring.rabbitmq.dynamic": "true",
+              "spring.rabbitmq.password": "guest",
+              "spring.rabbitmq.port": "5672",
+              "git.user.default.gitFolder": "/tmp/git",
+              "spring.rabbitmq.host": "localhost",
+              "git.user.default": "Maxime",
+              "git.user.default.gitPassword": "1234a*=12",
+              "git.user.default.login": "default#User",
+              "git.user.default.gitUser": "",
+              "spring.rabbitmq.username": "guest",
+              "git.user.default.email": "defaultUser@akwatype.io"
+            }
+        """.trimIndent())
+
+        // language=Json
+        assertEquals(toJson2(), """
             {
               "git": {
                 "user": {
@@ -57,6 +73,6 @@ class PropertiesTestCase : AbstractTestCase() {
 
 
     fun configure(text: String) {
-        myFixture.configureByText("test.csv", text.trimIndent())
+        myFixture.configureByText("test.properties", text.trimIndent())
     }
 }
