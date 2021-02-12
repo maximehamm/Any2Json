@@ -15,7 +15,7 @@ import io.nimbly.any2json.EType.SECONDARY
 import io.nimbly.any2json.debugger.Variable2Json
 import io.nimbly.any2json.languages.Csv2Json
 import io.nimbly.any2json.languages.Java2Json
-import io.nimbly.any2json.languages.Kotlin2Json
+//import io.nimbly.any2json.languages.Kotlin2Json
 import io.nimbly.any2json.languages.Properties2Json
 import io.nimbly.any2json.languages.Xml2Json
 import io.nimbly.any2json.languages.Yaml2Json
@@ -48,7 +48,7 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
                 val element = psiFile.findElementAt(editor.caretModel.offset)
 
                 result = buildFromJava(element)
-                      ?: buildFromKotlin(element)
+//                      ?: buildFromKotlin(element)
                       ?: buildFromXml(element)
                       ?: buildFromCsv(psiFile)
                       ?: buildFromYaml(psiFile)
@@ -112,12 +112,12 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
             Java2Json(actionType).buildMap(psiClass))
     }
 
-    private fun buildFromKotlin(element: PsiElement?): Pair<String, Map<String, Any>>? {
-        val ktClass = PsiTreeUtil.getContextOfType(element, KtClass::class.java)
-            ?: return null
-        return Pair(ktClass.name!!,
-            Kotlin2Json(actionType).buildMap(ktClass))
-    }
+//    private fun buildFromKotlin(element: PsiElement?): Pair<String, Map<String, Any>>? {
+//        val ktClass = PsiTreeUtil.getContextOfType(element, KtClass::class.java)
+//            ?: return null
+//        return Pair(ktClass.name!!,
+//            Kotlin2Json(actionType).buildMap(ktClass))
+//    }
 
     private fun buildFromXml(element: PsiElement?): Pair<String, Map<String, Any>>? {
         val xmlTag = PsiTreeUtil.getContextOfType(element, XmlTag::class.java)
@@ -158,9 +158,9 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
                 if (PsiTreeUtil.getContextOfType(element, PsiClass::class.java) !=null) {
                     Java2Json(actionType)
                 }
-                else if (PsiTreeUtil.getContextOfType(element, KtClass::class.java) !=null) {
-                    Kotlin2Json(actionType)
-                }
+//                else if (PsiTreeUtil.getContextOfType(element, KtClass::class.java) !=null) {
+//                    Kotlin2Json(actionType)
+//                }
                 else if (PsiTreeUtil.getContextOfType(element, XmlTag::class.java) !=null) {
                     Xml2Json(actionType)
                 }

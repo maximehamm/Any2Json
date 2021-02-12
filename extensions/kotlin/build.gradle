@@ -6,19 +6,17 @@ plugins {
 
 group 'io.nimbly.json'
 
+jar {
+    archiveBaseName = 'any2json-kotlin'
+}
+
 dependencies {
-
-    // Json
-    implementation 'org.json:json:20180813'
-
-    // CSV supports
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.11.2'
-
-    // YAML supports
-    implementation 'org.yaml:snakeyaml:1.27'
+    implementation project(':plugin')
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+
+    testRuntimeOnly project(':extensions:java')
+    testRuntimeOnly project(':extensions:typescript')
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
@@ -31,8 +29,7 @@ compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 intellij {
     version '2020.3'
     plugins = ['java',
-               'Kotlin'
-    ]
+               'Kotlin']
     intellij.type = 'IU' // IU, IC
 }
 

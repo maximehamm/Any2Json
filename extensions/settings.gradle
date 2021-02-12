@@ -1,4 +1,4 @@
-include 'typescript'
-include 'kotlin'
 include 'java'
+include 'kotlin'
+include 'typescript'
 

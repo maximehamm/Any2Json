@@ -12,6 +12,12 @@ jar {
 
 dependencies {
     compile project(':plugin')
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+
+    testRuntimeOnly project(':extensions:java')
+    testRuntimeOnly project(':extensions:kotlin')
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
