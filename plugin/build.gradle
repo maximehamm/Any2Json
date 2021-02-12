@@ -8,9 +8,6 @@ group 'io.nimbly.json'
 
 dependencies {
 
-    // Kotlin
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib'
-
     // Json
     implementation 'org.json:json:20180813'
 
@@ -27,13 +24,8 @@ dependencies {
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "11"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "11"
-}
+compileKotlin { kotlinOptions.jvmTarget = "11" }
+compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {

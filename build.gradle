@@ -24,13 +24,8 @@ allprojects {
 
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
-
-    compileKotlin {
-        kotlinOptions.jvmTarget = "11"
-    }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = "11"
-    }
+    compileKotlin { kotlinOptions.jvmTarget = "11" }
+    compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 }
 
 // DEPENDENCY MANAGEMENT :
@@ -38,9 +33,8 @@ allprojects {
 //  Other examples : https://www.programcreek.com/java-api-examples/?api=com.intellij.lang.javascript.psi.JSReferenceExpression
 dependencies {
 
-    // Extension
     implementation project(':plugin')
-    implementation project(':extension')
+    implementation project(':extensions:typescript')
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/

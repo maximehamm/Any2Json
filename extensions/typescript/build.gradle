@@ -6,18 +6,12 @@ plugins {
 
 group 'io.nimbly.json'
 
+jar {
+    archiveBaseName = 'any2json-typescript'
+}
+
 dependencies {
     compile project(':plugin')
-}
-
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "11"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "11"
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
@@ -28,6 +22,11 @@ intellij {
                'JavaScriptLanguage']
     intellij.type = 'IU' // IU, IC
 }
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+compileKotlin { kotlinOptions.jvmTarget = "11" }
+compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 
 tasks.buildSearchableOptions {
     enabled = false
