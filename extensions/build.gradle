@@ -1,6 +1,1 @@
 group 'io.nimbly.json'
-
-//sourceCompatibility = JavaVersion.VERSION_11
-//targetCompatibility = JavaVersion.VERSION_11
-//compileKotlin { kotlinOptions.jvmTarget = "11" }
-//compileTestKotlin { kotlinOptions.jvmTarget = "11" }
