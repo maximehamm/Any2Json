@@ -1,4 +1,4 @@
-package io.nimbly.any2json.generator
+package io.nimbly.any2json
 
 import org.jetbrains.kotlin.cli.common.toBooleanLenient
 import java.math.BigDecimal

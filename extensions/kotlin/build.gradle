@@ -11,7 +11,10 @@ jar {
 }
 
 dependencies {
-    implementation project(':plugin')
+
+    implementation project(':common')
+
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
 

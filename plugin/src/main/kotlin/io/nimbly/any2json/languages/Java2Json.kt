@@ -12,14 +12,14 @@ import com.intellij.psi.util.PsiUtil
 import io.nimbly.any2json.AnyToJsonBuilder
 import io.nimbly.any2json.EType
 import io.nimbly.any2json.EType.SECONDARY
-import io.nimbly.any2json.generator.GBoolean
-import io.nimbly.any2json.generator.GChar
-import io.nimbly.any2json.generator.GDate
-import io.nimbly.any2json.generator.GDateTime
-import io.nimbly.any2json.generator.GDecimal
-import io.nimbly.any2json.generator.GLong
-import io.nimbly.any2json.generator.GString
-import io.nimbly.any2json.generator.GTime
+import io.nimbly.any2json.GBoolean
+import io.nimbly.any2json.GChar
+import io.nimbly.any2json.GDate
+import io.nimbly.any2json.GDateTime
+import io.nimbly.any2json.GDecimal
+import io.nimbly.any2json.GLong
+import io.nimbly.any2json.GString
+import io.nimbly.any2json.GTime
 import io.nimbly.any2json.util.Any2PojoException
 
 class Java2Json(actionType: EType) : AnyToJsonBuilder<PsiClass, Map<String, Any>>(actionType)  {
@@ -120,6 +120,7 @@ class Java2Json(actionType: EType) : AnyToJsonBuilder<PsiClass, Map<String, Any>
             "Double" to GDecimal(1), "Float" to GDecimal(6), "BigDecimal" to GDecimal(12),
             "Date" to GDateTime(), "LocalDateTime" to GDateTime(),
             "LocalDate" to GDate(),
-            "LocalTime" to GTime())
+            "LocalTime" to GTime()
+        )
     }
 }

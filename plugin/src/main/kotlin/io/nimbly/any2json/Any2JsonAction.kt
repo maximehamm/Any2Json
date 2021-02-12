@@ -15,7 +15,6 @@ import io.nimbly.any2json.EType.SECONDARY
 import io.nimbly.any2json.debugger.Variable2Json
 import io.nimbly.any2json.languages.Csv2Json
 import io.nimbly.any2json.languages.Java2Json
-//import io.nimbly.any2json.languages.Kotlin2Json
 import io.nimbly.any2json.languages.Properties2Json
 import io.nimbly.any2json.languages.Xml2Json
 import io.nimbly.any2json.languages.Yaml2Json
@@ -23,7 +22,6 @@ import io.nimbly.any2json.util.Any2PojoException
 import io.nimbly.any2json.util.error
 import io.nimbly.any2json.util.info
 import io.nimbly.any2json.util.warn
-import org.jetbrains.kotlin.psi.KtClass
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 
@@ -57,10 +55,9 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
 
             // Try using extensions
             if (result == null) {
-                ANY2JSON().extensionList.forEach {
+                ANY2JSON().extensionList.find {
                     result = it.build(e, actionType)
-                    if (result != null)
-                        return@forEach
+                    result != null
                 }
             }
 
@@ -205,10 +202,9 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
     }
 }
 
-enum class EType { MAIN, SECONDARY }
-
 abstract class AnyToJsonBuilder<T:Any, J:Any>(
-        val actionType: EType) {
+        val actionType: EType
+) {
 
     abstract fun buildMap(type: T): J
     abstract fun presentation(): String

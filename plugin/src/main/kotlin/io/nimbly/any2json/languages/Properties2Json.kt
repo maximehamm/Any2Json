@@ -3,7 +3,6 @@ package io.nimbly.any2json.languages
 import io.nimbly.any2json.AnyToJsonBuilder
 import io.nimbly.any2json.EType
 import io.nimbly.any2json.EType.MAIN
-import org.apache.commons.lang.StringEscapeUtils.unescapeHtml
 import java.util.*
 
 @Suppress("UNCHECKED_CAST")

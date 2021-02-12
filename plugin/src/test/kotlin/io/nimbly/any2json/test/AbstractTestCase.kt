@@ -3,11 +3,11 @@ package io.nimbly.any2json.test
 import com.intellij.testFramework.PsiTestUtil
 import com.intellij.testFramework.fixtures.JavaCodeInsightFixtureTestCase
 import com.intellij.testFramework.fixtures.kotlin.KotlinTester
-import io.nimbly.any2json.generator.TEST_BOOL
-import io.nimbly.any2json.generator.TEST_CHAR
-import io.nimbly.any2json.generator.TEST_DOUBLE
-import io.nimbly.any2json.generator.TEST_INT
-import io.nimbly.any2json.generator.TEST_NOW
+import io.nimbly.any2json.TEST_BOOL
+import io.nimbly.any2json.TEST_CHAR
+import io.nimbly.any2json.TEST_DOUBLE
+import io.nimbly.any2json.TEST_INT
+import io.nimbly.any2json.TEST_NOW
 import io.nimbly.any2json.test.AbstractTestCase.EXT.java
 import io.nimbly.any2json.test.AbstractTestCase.EXT.kt
 import junit.framework.TestCase

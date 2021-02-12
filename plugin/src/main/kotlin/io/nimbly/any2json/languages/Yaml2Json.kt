@@ -2,6 +2,7 @@ package io.nimbly.any2json.languages
 
 import io.nimbly.any2json.AnyToJsonBuilder
 import io.nimbly.any2json.EType
+import io.nimbly.any2json.EType.MAIN
 import org.yaml.snakeyaml.Yaml
 
 class Yaml2Json(actionType: EType) : AnyToJsonBuilder<String, List<Map<String, Any>>>(actionType) {
@@ -15,5 +16,5 @@ class Yaml2Json(actionType: EType) : AnyToJsonBuilder<String, List<Map<String, A
         = "from YAML"
 
     override fun isVisible()
-        = actionType == EType.MAIN
+        = actionType == MAIN
 }

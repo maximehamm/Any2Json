@@ -1,4 +1,4 @@
-package io.nimbly.any2json.typescript
+package io.nimbly.any2json
 
 import com.intellij.lang.javascript.psi.JSType
 import com.intellij.lang.javascript.psi.ecma6.TypeScriptInterface
@@ -10,14 +10,6 @@ import com.intellij.openapi.actionSystem.CommonDataKeys.EDITOR
 import com.intellij.openapi.actionSystem.CommonDataKeys.PSI_FILE
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
-import io.nimbly.any2json.Any2JsonExtensionPoint
-import io.nimbly.any2json.EType
-import io.nimbly.any2json.generator.GBoolean
-import io.nimbly.any2json.generator.GInteger
-import io.nimbly.any2json.generator.GLong
-import io.nimbly.any2json.generator.GNull
-import io.nimbly.any2json.generator.GObject
-import io.nimbly.any2json.generator.GString
 
 class TypeScriptToJson : Any2JsonExtensionPoint<String> {
 

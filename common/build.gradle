@@ -7,25 +7,15 @@ plugins {
 group 'io.nimbly.json'
 
 jar {
-    archiveBaseName = 'any2json-typescript'
+    archiveBaseName = 'any2json-common'
 }
 
-dependencies {
-    implementation project(':common')
-
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-
-    testRuntimeOnly project(':extensions:java')
-    testRuntimeOnly project(':extensions:kotlin')
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-}
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version '2020.3'
     plugins = ['java',
-               'Kotlin',
-               'JavaScriptLanguage']
+               'Kotlin']
     intellij.type = 'IU' // IU, IC
 }
 

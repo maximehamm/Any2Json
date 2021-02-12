@@ -1,20 +1,9 @@
-package io.nimbly.any2json.kotlin
+package io.nimbly.any2json
 
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
-import io.nimbly.any2json.Any2JsonExtensionPoint
-import io.nimbly.any2json.EType
-import io.nimbly.any2json.generator.GBoolean
-import io.nimbly.any2json.generator.GChar
-import io.nimbly.any2json.generator.GDate
-import io.nimbly.any2json.generator.GDateTime
-import io.nimbly.any2json.generator.GDecimal
-import io.nimbly.any2json.generator.GInteger
-import io.nimbly.any2json.generator.GLong
-import io.nimbly.any2json.generator.GString
-import io.nimbly.any2json.generator.GTime
 import org.jetbrains.kotlin.incremental.components.LookupLocation
 import org.jetbrains.kotlin.js.descriptorUtils.nameIfStandardType
 import org.jetbrains.kotlin.name.Name

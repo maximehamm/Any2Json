@@ -1,11 +1,11 @@
 package io.nimbly.any2json.typescript.test
 
 import com.intellij.testFramework.fixtures.JavaCodeInsightFixtureTestCase
-import io.nimbly.any2json.generator.TEST_BOOL
-import io.nimbly.any2json.generator.TEST_CHAR
-import io.nimbly.any2json.generator.TEST_DOUBLE
-import io.nimbly.any2json.generator.TEST_INT
-import io.nimbly.any2json.generator.TEST_NOW
+import io.nimbly.any2json.TEST_BOOL
+import io.nimbly.any2json.TEST_CHAR
+import io.nimbly.any2json.TEST_DOUBLE
+import io.nimbly.any2json.TEST_INT
+import io.nimbly.any2json.TEST_NOW
 import org.junit.Ignore
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor

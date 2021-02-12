@@ -1,3 +1,5 @@
+import org.jetbrains.intellij.tasks.RunPluginVerifierTask
+
 plugins {
     id 'java'
     id 'org.jetbrains.intellij' //version '0.6.5'
@@ -7,6 +9,11 @@ plugins {
 group 'io.nimbly.json'
 
 dependencies {
+
+    implementation project(':common')
+    implementation project(':extensions:java')
+    implementation project(':extensions:kotlin')
+    implementation project(':extensions:typescript')
 
     // Json
     implementation 'org.json:json:20180813'
@@ -30,13 +37,44 @@ compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version '2020.3'
-    plugins = ['java',
-               'Kotlin'
-    ]
+    plugins = ['java', 'Kotlin']
     intellij.type = 'IU' // IU, IC
+}
+
+tasks.runPluginVerifier {
+    ideVersions("IU-203.7148.40") //IC-203.7148.40, IIU-203.7148.40
+    setFailureLevel(RunPluginVerifierTask.FailureLevel.ALL)
+}
+
+patchPluginXml {
+    changeNotes """
+      Change notes :
+      <ul>
+        <li><b>2.O</b> Supports of quite all IDEA products</li>
+        <li><b>1.9</b> Supports of TypeScript</li>
+        <li><b>1.8</b> Supports of Java Properties</li>
+        <li><b>1.7</b> Supports of YAML</li>
+        <li><b>1.6</b> Supports of CSV</li>
+        <li><b>1.5</b> Supports of XML</li>
+        <li><b>1.4</b> Supports using from debugger</li>
+        <li><b>1.3</b> Mixing Kotlin and Java references</li>
+        <li><b>1.2</b> Supports of Kotlin</li>
+        <li><b>1.1</b> Supports of Java</li>
+        <li><b>1.0</b> Initial version</li>
+      </ul>
+      <br/>
+      Road map 
+      <ul>
+        <li><b>1.X</b> Supports of other languages !</li>
+      </ul>
+      """
 }
 
 tasks.buildSearchableOptions {
     enabled = false
+}
+
+publishPlugin {
+    token = System.getenv("ORG_GRADLE_PROJECT_intellijPublishToken")
 }
 
