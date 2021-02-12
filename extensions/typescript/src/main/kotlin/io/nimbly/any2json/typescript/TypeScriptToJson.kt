@@ -1,4 +1,4 @@
-package io.nimbly.extension.typescript
+package io.nimbly.any2json.typescript
 
 import com.intellij.lang.javascript.psi.JSType
 import com.intellij.lang.javascript.psi.ecma6.TypeScriptInterface

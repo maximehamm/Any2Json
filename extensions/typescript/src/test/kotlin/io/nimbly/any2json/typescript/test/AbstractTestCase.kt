@@ -1,4 +1,4 @@
-package io.nimbly.test.any2json.extension
+package io.nimbly.any2json.typescript.test
 
 import com.intellij.testFramework.fixtures.JavaCodeInsightFixtureTestCase
 import io.nimbly.any2json.generator.TEST_BOOL
