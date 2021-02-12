@@ -1,7 +1,6 @@
-package io.nimbly.test.any2json.typescript
+package io.nimbly.test.any2json.extension.typescript
 
-import io.nimbly.test.any2json.AbstractTestCase
-import org.junit.Ignore
+import io.nimbly.test.any2json.extension.AbstractTestCase
 
 class TypeScriptTestCase : AbstractTestCase() {
 

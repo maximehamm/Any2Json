@@ -23,7 +23,6 @@ import io.nimbly.any2json.util.Any2PojoException
 import io.nimbly.any2json.util.error
 import io.nimbly.any2json.util.info
 import io.nimbly.any2json.util.warn
-import io.nimbly.extension.ANY2JSON
 import org.jetbrains.kotlin.psi.KtClass
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection

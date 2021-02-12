@@ -1,49 +1,46 @@
 import org.jetbrains.intellij.tasks.RunPluginVerifierTask
 
+// Plugin url : https://plugins.jetbrains.com/plugin/16055-any-to-json/
 plugins {
     id 'java'
     id 'org.jetbrains.intellij' version '0.6.5'
     id 'org.jetbrains.kotlin.jvm' version '1.4.30'
 }
 
-group 'io.nimbly.json'
-version '1.9.0-SNAPSHOT'
+allprojects {
 
-// Plugin url : https://plugins.jetbrains.com/plugin/16055-any-to-json/
+    group = 'io.nimbly.json'
+    version '2.0.0-beta-01.SNAPSHOT'
 
-repositories {
-    mavenCentral()
-    maven {
-        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven {
+            url 'https://dl.bintray.com/jetbrains/intellij-plugin-service'
+        }
     }
-    maven {
-        url 'https://dl.bintray.com/jetbrains/intellij-plugin-service'
+
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+
+    compileKotlin {
+        kotlinOptions.jvmTarget = "11"
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "11"
     }
 }
 
+// DEPENDENCY MANAGEMENT :
+//  Example : https://github.com/adelf/idea-php-dotenv-plugin/blob/master/build.gradle
+//  Other examples : https://www.programcreek.com/java-api-examples/?api=com.intellij.lang.javascript.psi.JSReferenceExpression
 dependencies {
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib'
-    implementation 'org.json:json:20180813'
 
-    // CSV supports
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.11.2'
-
-    // YAML supports
-    implementation 'org.yaml:snakeyaml:1.27'
-
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-}
-
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "11"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "11"
+    // Extension
+    implementation project(':plugin')
+    implementation project(':extension')
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
@@ -51,19 +48,9 @@ intellij {
     version '2020.3'
     plugins = ['java',
                'Kotlin',
-               'JavaScriptLanguage',
-               //'java-i18n',
-               //'properties',
+               'JavaScriptLanguage'
     ]
     intellij.type = 'IU' // IU, IC
-}
-
-// DEPENDENCY MANAGEMENT :
-//  Example : https://github.com/adelf/idea-php-dotenv-plugin/blob/master/build.gradle
-//  Other examples : https://www.programcreek.com/java-api-examples/?api=com.intellij.lang.javascript.psi.JSReferenceExpression
-
-tasks.buildSearchableOptions {
-    enabled = false
 }
 
 tasks.runPluginVerifier {
@@ -96,4 +83,8 @@ patchPluginXml {
 
 publishPlugin {
     token = System.getenv("ORG_GRADLE_PROJECT_intellijPublishToken")
+}
+
+tasks.buildSearchableOptions {
+    enabled = false
 }

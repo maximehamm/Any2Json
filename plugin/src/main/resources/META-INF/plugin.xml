@@ -40,22 +40,23 @@
         <notificationGroup id="io.nimbly.notification.group" displayType="BALLOON"/>
     </extensions>
 
+
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.java</depends>
     <depends>org.jetbrains.kotlin</depends>
 
+    <!-- Optional dependencies
+    https://jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html#optional-plugin-dependencies -->
+    <depends optional="true" config-file="plugin-withTypeScript.xml">JavaScript</depends>
+
     <!-- Extension point
     https://developerlife.com/2020/11/21/idea-plugin-example-intro/#extensions-and-extension-points -->
-
-    <!-- Optional dependency
-    https://jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html#optional-plugin-dependencies -->
 
     <extensionPoints>
         <extensionPoint name="io.nimbly.json.Any2Json.lang" interface="io.nimbly.any2json.Any2JsonExtensionPoint"/>
     </extensionPoints>
 
-    <depends optional="true" config-file="plugin-withTypeScript.xml">JavaScript</depends>
 
     <actions>
 
