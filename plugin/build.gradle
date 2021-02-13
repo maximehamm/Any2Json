@@ -1,7 +1,6 @@
 import org.jetbrains.intellij.tasks.RunPluginVerifierTask
 
 plugins {
-    id 'java'
     id 'org.jetbrains.intellij' //version '0.6.5'
     id 'org.jetbrains.kotlin.jvm' //version '1.4.30'
 }
@@ -25,20 +24,14 @@ dependencies {
 
     // YAML supports
     implementation 'org.yaml:snakeyaml:1.27'
-
-//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
 compileKotlin { kotlinOptions.jvmTarget = "11" }
 compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version '2020.3'
-    //plugins = ['java', 'Kotlin']
     intellij.type = 'IC' // IU, IC, CL, PS...
 }
 

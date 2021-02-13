@@ -1,5 +1,4 @@
 plugins {
-    id 'java'
     id 'org.jetbrains.intellij' //version '0.6.5'
     id 'org.jetbrains.kotlin.jvm' //version '1.4.30'
 }
@@ -11,18 +10,9 @@ jar {
 }
 
 dependencies {
-
     implementation project(':common')
-
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-
-    testRuntimeOnly project(':extensions:java')
-    testRuntimeOnly project(':extensions:typescript')
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
 compileKotlin { kotlinOptions.jvmTarget = "11" }
 compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 

@@ -1,5 +1,4 @@
 plugins {
-    id 'java'
     id 'org.jetbrains.intellij' //version '0.6.5'
     id 'org.jetbrains.kotlin.jvm' //version '1.4.30'
 }
@@ -16,7 +15,6 @@ dependencies {
     testImplementation project(':common')
 
     testImplementation "org.jetbrains.kotlin:kotlin-stdlib"
-
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
@@ -24,7 +22,7 @@ dependencies {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version '2020.3'
-    plugins = ['java', 'Kotlin']
+    plugins = ['java', 'Kotlin', 'JavaScriptLanguage']
     intellij.type = 'IU' // IU, IC
 }
 
