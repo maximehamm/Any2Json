@@ -22,7 +22,7 @@ import java.time.Month
 @Ignore
 abstract class AbstractTestCase : JavaCodeInsightFixtureTestCase() {
 
-    enum class EXT { java, kt, xml }
+    enum class EXT { java, kt }
 
     val LIB_JAVA = "/lib/rt-small.jar"
     val LIB_KOTLIN = "/lib/kotlin-stdlib-1.4.30.jar"
