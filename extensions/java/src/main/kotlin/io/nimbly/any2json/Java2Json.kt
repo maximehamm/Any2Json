@@ -1,4 +1,4 @@
-package io.nimbly.any2json.languages
+package io.nimbly.any2json
 
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -13,18 +13,7 @@ import com.intellij.psi.PsiType
 import com.intellij.psi.impl.source.PsiClassReferenceType
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.PsiUtil
-import io.nimbly.any2json.Any2JsonExtensionPoint
-import io.nimbly.any2json.Any2PojoException
-import io.nimbly.any2json.EType
 import io.nimbly.any2json.EType.SECONDARY
-import io.nimbly.any2json.GBoolean
-import io.nimbly.any2json.GChar
-import io.nimbly.any2json.GDate
-import io.nimbly.any2json.GDateTime
-import io.nimbly.any2json.GDecimal
-import io.nimbly.any2json.GLong
-import io.nimbly.any2json.GString
-import io.nimbly.any2json.GTime
 
 class Java2Json : Any2JsonExtensionPoint<String> {
 
@@ -129,7 +118,7 @@ class Java2Json : Any2JsonExtensionPoint<String> {
     }
 
     override fun presentation(actionType: EType)
-            = "from Class" + if (actionType == EType.SECONDARY) " with Data" else ""
+            = "from Class" + if (actionType == SECONDARY) " with Data" else ""
 
     companion object {
         val GENERATORS = mapOf(

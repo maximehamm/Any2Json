@@ -4,21 +4,15 @@ import com.google.gson.GsonBuilder
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlTag
-import com.intellij.xdebugger.impl.ui.tree.XDebuggerTree
-import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl
 import io.nimbly.any2json.EType.MAIN
 import io.nimbly.any2json.EType.SECONDARY
-import io.nimbly.any2json.debugger.Variable2Json
 import io.nimbly.any2json.languages.Csv2Json
-import io.nimbly.any2json.languages.Java2Json
 import io.nimbly.any2json.languages.Properties2Json
 import io.nimbly.any2json.languages.Xml2Json
 import io.nimbly.any2json.languages.Yaml2Json
-import io.nimbly.any2json.Any2PojoException
 import io.nimbly.any2json.util.error
 import io.nimbly.any2json.util.info
 import io.nimbly.any2json.util.warn
@@ -60,11 +54,6 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
                 }
             }
 
-            // Should be the debugger impl
-            if (result == null && psiFile == null) {
-                result = buildDebugger(e)
-            }
-
             // Oups !?
             if (result == null)
                 throw Any2PojoException("Unable to define context !")
@@ -88,17 +77,6 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
             ex.printStackTrace()
             error("Any to JSON error !", project)
         }
-    }
-
-    private fun buildDebugger(e: AnActionEvent): Pair<String, Map<String, Any>>? {
-        val xtree: XDebuggerTree = e.dataContext.getData("xdebugger.tree") as XDebuggerTree?
-            ?: return null
-        val xpath = xtree.selectionPath?.lastPathComponent
-        if (xpath !is XValueNodeImpl)
-            return null
-        val xnode: XValueNodeImpl = xpath
-        return Pair(xnode.name!!,
-            Variable2Json(actionType).buildMap(xnode))
     }
 
     private fun buildFromXml(element: PsiElement?): Pair<String, Map<String, Any>>? {
@@ -134,37 +112,23 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
 
         val editor = e.getData(CommonDataKeys.EDITOR)
         val psiFile = e.getData(CommonDataKeys.PSI_FILE)
-        val any2Json: AnyToJsonBuilder<out Any, out Any>? =
-            if (psiFile != null && editor != null) {
-                val element = psiFile.findElementAt(editor.caretModel.offset)
-//                if (PsiTreeUtil.getContextOfType(element, PsiClass::class.java) !=null) {
-//                    Java2Json(actionType)
-//                }
-//                else if (PsiTreeUtil.getContextOfType(element, KtClass::class.java) !=null) {
-//                    Kotlin2Json(actionType)
-//                } else
-                if (PsiTreeUtil.getContextOfType(element, XmlTag::class.java) !=null) {
-                    Xml2Json(actionType)
-                }
-                else {
-                    val fileName = psiFile.name.toLowerCase()
-                    if (fileName.endsWith(".csv")) {
-                        Csv2Json(actionType)
-                    }
-                    else if (fileName.endsWith(".yaml") || fileName.endsWith(".yml")) {
-                        Yaml2Json(actionType)
-                    }
-                    else if (fileName.endsWith(".properties")) {
-                        Properties2Json(actionType)
-                    }
-                    else {
-                        null
-                    }
+        var any2Json: AnyToJsonBuilder<out Any, out Any>? = null
+
+        if (psiFile != null && editor != null) {
+            val element = psiFile.findElementAt(editor.caretModel.offset)
+            if (PsiTreeUtil.getContextOfType(element, XmlTag::class.java) != null) {
+                any2Json = Xml2Json(actionType)
+            } else {
+                val fileName = psiFile.name.toLowerCase()
+                if (fileName.endsWith(".csv")) {
+                    any2Json = Csv2Json(actionType)
+                } else if (fileName.endsWith(".yaml") || fileName.endsWith(".yml")) {
+                    any2Json = Yaml2Json(actionType)
+                } else if (fileName.endsWith(".properties")) {
+                    any2Json = Properties2Json(actionType)
                 }
             }
-            else {
-                Variable2Json(actionType)
-            }
+        }
 
         if (any2Json != null) {
             e.presentation.text = "Generate JSON " + any2Json.presentation()
@@ -173,17 +137,25 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
             return
         }
 
-        ANY2JSON().extensionList.forEach { ext ->
+        var enabledByExtension: String? = null
+        ANY2JSON().extensionList.find { ext ->
             if (ext.isEnabled(e, actionType)) {
-                e.presentation.text = "Generate JSON " + ext.presentation(actionType)
-                e.presentation.isVisible = true
-                e.presentation.isEnabled = true
-                return
+                enabledByExtension = ext.presentation(actionType)
+                true
+            } else {
+                false
             }
         }
 
-        e.presentation.isVisible = false
-        e.presentation.isEnabled = false
+        if (enabledByExtension != null) {
+            e.presentation.text = "Generate JSON $enabledByExtension"
+            e.presentation.isVisible = true
+            e.presentation.isEnabled = true
+        }
+        else {
+            e.presentation.isVisible = false
+            e.presentation.isEnabled = false
+        }
     }
 }
 

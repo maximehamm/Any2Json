@@ -14,6 +14,7 @@ dependencies {
     implementation project(':extensions:java')
     implementation project(':extensions:kotlin')
     implementation project(':extensions:typescript')
+    implementation project(':extensions:debugger')
 
     // Json
     implementation 'org.json:json:20180813'
@@ -72,6 +73,10 @@ patchPluginXml {
 
 tasks.buildSearchableOptions {
     enabled = false
+}
+
+jar {
+    archiveBaseName = 'any2json'
 }
 
 publishPlugin {
