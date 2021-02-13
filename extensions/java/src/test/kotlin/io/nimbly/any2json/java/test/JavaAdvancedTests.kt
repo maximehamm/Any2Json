@@ -1,5 +1,7 @@
 package io.nimbly.any2json.test.java
 
+import io.nimbly.any2json.java.test.AbstractJavaTestCase
+
 class JavaAdvancedTests : AbstractJavaTestCase() {
 
     fun testEnum() {

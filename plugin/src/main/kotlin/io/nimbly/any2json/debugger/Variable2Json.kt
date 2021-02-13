@@ -51,9 +51,9 @@ class Variable2Json(type: EType) : AnyToJsonBuilder<XValueNodeImpl, Map<String, 
 
                 if (any == null
                     && value2 is ObjectReferenceImpl
-                    && value.getValue().type().name().startsWith("java.lang.")) {
+                    && value.value.type().name().startsWith("java.lang.")) {
 
-                    val t = value.getValue().type().name().substringAfter("java.lang.")
+                    val t = value.value.type().name().substringAfter("java.lang.")
                     any = when {
                         t == "Boolean" -> node.rawValue?.toBoolean()
                         t == "Integer" -> node.rawValue?.toInt()

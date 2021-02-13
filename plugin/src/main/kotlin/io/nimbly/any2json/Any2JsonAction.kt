@@ -18,7 +18,7 @@ import io.nimbly.any2json.languages.Java2Json
 import io.nimbly.any2json.languages.Properties2Json
 import io.nimbly.any2json.languages.Xml2Json
 import io.nimbly.any2json.languages.Yaml2Json
-import io.nimbly.any2json.util.Any2PojoException
+import io.nimbly.any2json.Any2PojoException
 import io.nimbly.any2json.util.error
 import io.nimbly.any2json.util.info
 import io.nimbly.any2json.util.warn
@@ -45,9 +45,8 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
             if (psiFile != null && editor!=null) {
                 val element = psiFile.findElementAt(editor.caretModel.offset)
 
-                result = buildFromJava(element)
-//                      ?: buildFromKotlin(element)
-                      ?: buildFromXml(element)
+                result =
+                      buildFromXml(element)
                       ?: buildFromCsv(psiFile)
                       ?: buildFromYaml(psiFile)
                       ?: buildFromProperties(psiFile)
@@ -102,20 +101,6 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
             Variable2Json(actionType).buildMap(xnode))
     }
 
-    private fun buildFromJava(element: PsiElement?): Pair<String, Map<String, Any>>? {
-        val psiClass = PsiTreeUtil.getContextOfType(element, PsiClass::class.java)
-            ?: return null
-        return Pair(psiClass.name!!,
-            Java2Json(actionType).buildMap(psiClass))
-    }
-
-//    private fun buildFromKotlin(element: PsiElement?): Pair<String, Map<String, Any>>? {
-//        val ktClass = PsiTreeUtil.getContextOfType(element, KtClass::class.java)
-//            ?: return null
-//        return Pair(ktClass.name!!,
-//            Kotlin2Json(actionType).buildMap(ktClass))
-//    }
-
     private fun buildFromXml(element: PsiElement?): Pair<String, Map<String, Any>>? {
         val xmlTag = PsiTreeUtil.getContextOfType(element, XmlTag::class.java)
             ?: return null
@@ -152,13 +137,13 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
         val any2Json: AnyToJsonBuilder<out Any, out Any>? =
             if (psiFile != null && editor != null) {
                 val element = psiFile.findElementAt(editor.caretModel.offset)
-                if (PsiTreeUtil.getContextOfType(element, PsiClass::class.java) !=null) {
-                    Java2Json(actionType)
-                }
+//                if (PsiTreeUtil.getContextOfType(element, PsiClass::class.java) !=null) {
+//                    Java2Json(actionType)
+//                }
 //                else if (PsiTreeUtil.getContextOfType(element, KtClass::class.java) !=null) {
 //                    Kotlin2Json(actionType)
-//                }
-                else if (PsiTreeUtil.getContextOfType(element, XmlTag::class.java) !=null) {
+//                } else
+                if (PsiTreeUtil.getContextOfType(element, XmlTag::class.java) !=null) {
                     Xml2Json(actionType)
                 }
                 else {

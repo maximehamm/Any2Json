@@ -1,4 +1,4 @@
-package io.nimbly.any2json.util
+package io.nimbly.any2json
 
 import java.lang.RuntimeException
 

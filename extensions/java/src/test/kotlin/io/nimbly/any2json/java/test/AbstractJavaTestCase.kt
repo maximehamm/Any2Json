@@ -1,6 +1,5 @@
-package io.nimbly.any2json.test.java
+package io.nimbly.any2json.java.test
 
-import io.nimbly.any2json.test.AbstractTestCase
 import org.junit.Ignore
 
 @Ignore

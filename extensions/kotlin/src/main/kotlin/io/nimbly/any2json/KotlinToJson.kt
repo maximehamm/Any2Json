@@ -117,7 +117,7 @@ class KotlinToJson : Any2JsonExtensionPoint<String> {
     }
 
     override fun presentation(actionType: EType)
-            = "from Type" + if (actionType == EType.SECONDARY) " with Data" else ""
+            = "from Class" + if (actionType == EType.SECONDARY) " with Data" else ""
 
     companion object {
         val GENERATORS = mapOf(

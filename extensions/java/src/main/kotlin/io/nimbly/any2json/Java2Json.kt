@@ -1,15 +1,20 @@
 package io.nimbly.any2json.languages
 
+import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.psi.CommonClassNames
 import com.intellij.psi.PsiArrayType
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiEnumConstant
+import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiModifier
 import com.intellij.psi.PsiPrimitiveType
 import com.intellij.psi.PsiType
 import com.intellij.psi.impl.source.PsiClassReferenceType
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.PsiUtil
-import io.nimbly.any2json.AnyToJsonBuilder
+import io.nimbly.any2json.Any2JsonExtensionPoint
+import io.nimbly.any2json.Any2PojoException
 import io.nimbly.any2json.EType
 import io.nimbly.any2json.EType.SECONDARY
 import io.nimbly.any2json.GBoolean
@@ -20,21 +25,33 @@ import io.nimbly.any2json.GDecimal
 import io.nimbly.any2json.GLong
 import io.nimbly.any2json.GString
 import io.nimbly.any2json.GTime
-import io.nimbly.any2json.util.Any2PojoException
 
-class Java2Json(actionType: EType) : AnyToJsonBuilder<PsiClass, Map<String, Any>>(actionType)  {
+class Java2Json : Any2JsonExtensionPoint<String> {
 
     @Suppress("UNCHECKED_CAST")
-    override fun buildMap(type: PsiClass): Map<String, Any>
-        = type.allFields
+    override fun build(event: AnActionEvent, actionType: EType) : Pair<String, Map<String, Any>>? {
+
+        if (!isEnabled(event, actionType))
+            return null
+
+        val editor = event.getData(CommonDataKeys.EDITOR) ?: return null
+        val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return null
+        val element = psiFile.findElementAt(editor.caretModel.offset)
+
+        val type = PsiTreeUtil.getContextOfType(element, PsiClass::class.java)
+            ?: return null
+
+        return type.name!! to type.allFields
             .filter { it.modifierList?.hasModifierProperty(PsiModifier.STATIC) == false || type.isInterface }
-            .map { it.name to parse(it.type, it.initializer?.text) }
+            .map { it.name to parse(it.type, it.initializer?.text, actionType) }
             .filter { it.second != null }
             .toMap() as Map<String, Any>
+    }
 
     private fun parse(
         type: PsiType,
         initializer: String?,
+        actionType: EType,
         done: MutableSet<PsiType> = mutableSetOf()
     ): Any? {
 
@@ -44,7 +61,7 @@ class Java2Json(actionType: EType) : AnyToJsonBuilder<PsiClass, Map<String, Any>
 
         // Primitive array
         if (type is PsiArrayType)
-            return listOfNotNull(parse(type.getDeepComponentType(), initializer, done = done))
+            return listOfNotNull(parse(type.getDeepComponentType(), initializer, actionType, done = done))
 
         // Resolve Psi class
         val psiClass = PsiUtil.resolveClassInClassTypeOnly(type)
@@ -76,7 +93,7 @@ class Java2Json(actionType: EType) : AnyToJsonBuilder<PsiClass, Map<String, Any>
                 ?: return null
             if (parameterType.presentableText == "Object")
                 return listOf<Int>()
-            return listOfNotNull(parse(parameterType, null, done = done))
+            return listOfNotNull(parse(parameterType, null, actionType, done = done))
         }
 
         // Prevent stack overflow
@@ -89,6 +106,7 @@ class Java2Json(actionType: EType) : AnyToJsonBuilder<PsiClass, Map<String, Any>
             it.name to parse(
                 it.type,
                 it.initializer?.text,
+                actionType,
                 done = done) }.toMap()
     }
 
@@ -105,10 +123,13 @@ class Java2Json(actionType: EType) : AnyToJsonBuilder<PsiClass, Map<String, Any>
             else -> throw Any2PojoException("Not supported primitive '$type.canonicalText'")
         }
 
-    override fun presentation()
-        = "from Class" + if (actionType == SECONDARY) " with Data" else ""
+    override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
+        val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return false
+        return psiFile.name.endsWith(".java")
+    }
 
-    override fun isVisible() = true
+    override fun presentation(actionType: EType)
+            = "from Class" + if (actionType == EType.SECONDARY) " with Data" else ""
 
     companion object {
         val GENERATORS = mapOf(

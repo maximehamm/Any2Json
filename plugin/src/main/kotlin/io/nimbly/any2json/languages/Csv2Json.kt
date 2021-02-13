@@ -13,7 +13,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvParser.Feature.TRIM_SPACES
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import io.nimbly.any2json.AnyToJsonBuilder
 import io.nimbly.any2json.EType
-import io.nimbly.any2json.util.Any2PojoException
+import io.nimbly.any2json.Any2PojoException
 
 class Csv2Json(actionType: EType) : AnyToJsonBuilder<String, List<Map<String, Any>>>(actionType) {
 
