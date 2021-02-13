@@ -1,38 +1,71 @@
 package io.nimbly.any2json
 
+import com.intellij.debugger.engine.JavaValue
 import com.intellij.debugger.engine.JavaValuePresentation
 import com.intellij.debugger.ui.impl.watch.FieldDescriptorImpl
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.xdebugger.XDebuggerUtil
+import com.intellij.xdebugger.XExpression
+import com.intellij.xdebugger.impl.breakpoints.XExpressionImpl
 import com.intellij.xdebugger.impl.ui.tree.XDebuggerTree
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl
-import com.sun.jdi.BooleanValue
-import com.sun.jdi.ClassType
-import com.sun.jdi.DoubleValue
-import com.sun.jdi.FloatValue
-import com.sun.jdi.IntegerValue
-import com.sun.jdi.LongValue
-import com.sun.jdi.ObjectReference
-import com.sun.jdi.StringReference
+import com.sun.jdi.*
+import org.jetbrains.debugger.Variable
+import org.jetbrains.debugger.VariableView
+import org.jetbrains.debugger.values.ArrayValue
+import org.jetbrains.debugger.values.ObjectValue
+import org.jetbrains.debugger.values.PrimitiveValue
+import org.jetbrains.debugger.values.StringValue
+import org.jetbrains.debugger.values.ValueType
+import org.jetbrains.debugger.values.ValueType.BIGINT
+import org.jetbrains.debugger.values.ValueType.BOOLEAN
+import org.jetbrains.debugger.values.ValueType.NULL
+import org.jetbrains.debugger.values.ValueType.NUMBER
+import org.jetbrains.uast.evaluation.toConstant
 
 class Debugger2Json : Any2JsonExtensionPoint<String> {
 
     @Suppress("UNCHECKED_CAST")
     override fun build(event: AnActionEvent, actionType: EType) : Pair<String, Map<String, Any>>? {
 
-        val xnode = findXNode(event) ?: return null
+        var xnode = findXNode(event) ?: return null
         val xname = xnode.name ?: return null
+
+        xnode = findXNode(event) ?: return null
+
         return xname to xnode.children().toList()
             .filterIsInstance<XValueNodeImpl>()
-            .map { it.name to parse(it) }
+            .map { it.name to parseJava(it) }
             .filter { it.second != null }
             .toMap() as Map<String, Any>
     }
 
-    private fun parse(node: XValueNodeImpl): Any? {
+    private fun parseJava(node: XValueNodeImpl, level: Int = 0): Any? {
+
+        if (node.name == "__proto__")
+            return null
+
+        if (level<=3)
+            node.valueContainer.calculateEvaluationExpression().blockingGet(200)
+
+        val modifier = node.valueContainer
+        if (modifier is VariableView) {
+
+            val vv = modifier.getValue()?.type?.name
+            if (vv != null) {
+                when (vv) {
+                    "STRING" -> return node.rawValue
+                    "BOOLEAN" -> return node.rawValue?.toBoolean()
+                    "NUMBER" -> return node.rawValue?.toInt()
+                    "BIGINT" -> return node.rawValue?.toLong()
+                    "NULL" -> return null
+                }
+            }
+            //XDebuggerUtil.getInstance().
+        }
 
         val p = node.valuePresentation
             ?: return null
-
         if (p is JavaValuePresentation) {
 
             val method = p.javaClass.declaredFields.find { it.name == "myValueDescriptor" }!!
@@ -80,14 +113,11 @@ class Debugger2Json : Any2JsonExtensionPoint<String> {
             }
         }
 
-        if (node.isLeaf)
-            return node.rawValue
-
         if (node.children.size >0) {
 
             val toMap = node.children
                 .filterIsInstance<XValueNodeImpl>()
-                .map { it.name to parse(it) }
+                .map { it.name to parseJava(it, level+1) }
                 .toMap()
 
             var isList = true
@@ -108,7 +138,6 @@ class Debugger2Json : Any2JsonExtensionPoint<String> {
         return null
     }
 
-
     private fun findXNode(event: AnActionEvent) : XValueNodeImpl? {
         val xtree: XDebuggerTree = event.dataContext.getData("xdebugger.tree") as XDebuggerTree?
             ?: return null
@@ -127,6 +156,5 @@ class Debugger2Json : Any2JsonExtensionPoint<String> {
        return actionType == EType.MAIN && findXNode(event) !=null
     }
 
-    override fun presentation(actionType: EType)
-            = "from Variable"
+    override fun presentation(actionType: EType) = ""
 }
