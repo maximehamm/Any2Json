@@ -78,9 +78,6 @@
             <add-to-group group-id="CutCopyPasteGroup" anchor="last"/>
             <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="EditorToggleColumnMode"/>
 
-<!--            <add-to-group group-id="XDebugger.Variables.Tree.Popup" anchor="last"/>-->
-<!--            <add-to-group group-id="XDebugger.Variables.Tree.Toolbar" anchor="last"/>-->
-
             <add-to-group group-id="XDebugger.Watches.Tree.Popup" anchor="last"/>
             <add-to-group group-id="XDebugger.Watches.Tree.Toolbar" anchor="last"/>
 

@@ -7,7 +7,18 @@ plugins {
 group 'io.nimbly.json'
 
 jar {
-    archiveBaseName = 'any2json-common'
+    archiveBaseName = 'any2json-tests'
+}
+
+dependencies {
+
+    testImplementation project(':plugin')
+    testImplementation project(':common')
+
+    testImplementation "org.jetbrains.kotlin:kotlin-stdlib"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
@@ -25,3 +36,6 @@ compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 tasks.buildSearchableOptions {
     enabled = false
 }
+
+
+

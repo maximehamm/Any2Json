@@ -26,8 +26,8 @@ dependencies {
     // YAML supports
     implementation 'org.yaml:snakeyaml:1.27'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -38,12 +38,12 @@ compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version '2020.3'
-    plugins = ['java', 'Kotlin']
-    intellij.type = 'IU' // IU, IC
+    //plugins = ['java', 'Kotlin']
+    intellij.type = 'IC' // IU, IC, CL, PS...
 }
 
 tasks.runPluginVerifier {
-    ideVersions("IU-203.7148.40") //IC-203.7148.40, IIU-203.7148.40
+    ideVersions("IC-203.7148.40, CL-211.5787.12, PS-211.5787.18") //IC-203.7148.40, IU-203.7148.40, CL-211.5787.12, PS-211.5787.18
     setFailureLevel(RunPluginVerifierTask.FailureLevel.ALL)
 }
 

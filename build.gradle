@@ -38,6 +38,8 @@ dependencies {
     implementation project(':extensions:java')
     implementation project(':extensions:kotlin')
     implementation project(':extensions:typescript')
+
+    testImplementation project(':tests')
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
