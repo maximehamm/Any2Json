@@ -1,5 +1,4 @@
 plugins {
-//    id 'java'
     id 'org.jetbrains.intellij' //version '0.6.5'
     id 'org.jetbrains.kotlin.jvm' //version '1.4.30'
 }
@@ -13,8 +12,7 @@ jar {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version '2020.3'
-    plugins = ['java', 'Kotlin']
-    intellij.type = 'IU' // IU, IC
+    intellij.type = 'IC'
 }
 
 sourceCompatibility = JavaVersion.VERSION_11

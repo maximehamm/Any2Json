@@ -1,6 +1,5 @@
 package io.nimbly.any2json
 
-import org.jetbrains.kotlin.cli.common.toBooleanLenient
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDateTime
@@ -58,9 +57,8 @@ class GChar : Generator<Char>() {
 class GBoolean : Generator<Boolean>() {
     override fun generate(feed: Boolean, initializer: String?): Boolean {
         if (initializer!=null) {
-            val sub = initializer.toBooleanLenient()
-            if (sub !=null)
-                return sub
+            val sub = initializer.toBoolean()
+            return sub
         }
         return if (feed) TEST_BOOL ?: random.nextBoolean() else false
     }

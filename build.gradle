@@ -10,7 +10,7 @@ plugins {
 allprojects {
 
     group = 'io.nimbly.json'
-    version '2.0.3.SNAPSHOT'
+    version '2.1.1.SNAPSHOT'
 
     repositories {
         mavenCentral()
@@ -41,16 +41,6 @@ dependencies {
 
     testImplementation project(':tests')
 }
-
-// See https://github.com/JetBrains/gradle-intellij-plugin/
-//intellij {
-//    version '2020.3'
-//    plugins = ['java',
-//               'Kotlin',
-//               'JavaScriptLanguage'
-//    ]
-//    intellij.type = 'IU' // IU, IC
-//}
 
 tasks.buildSearchableOptions {
     enabled = false
