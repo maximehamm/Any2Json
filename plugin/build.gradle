@@ -10,10 +10,10 @@ group 'io.nimbly.json'
 dependencies {
 
     implementation project(':common')
-    implementation project(':extensions:java')
-    implementation project(':extensions:kotlin')
-    implementation project(':extensions:typescript')
-    implementation project(':extensions:debugger')
+
+    runtimeOnly project(':extensions:java')
+    runtimeOnly project(':extensions:kotlin')
+    runtimeOnly project(':extensions:typescript')
 
     // Json
     implementation 'org.json:json:20180813'

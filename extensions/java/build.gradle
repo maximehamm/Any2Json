@@ -10,6 +10,7 @@ jar {
 }
 
 dependencies {
+    implementation project(':plugin')
     implementation project(':common')
 }
 

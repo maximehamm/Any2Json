@@ -56,6 +56,10 @@
         <extensionPoint name="io.nimbly.json.Any2Json.lang" interface="io.nimbly.any2json.Any2JsonExtensionPoint"/>
     </extensionPoints>
 
+    <extensionPoints>
+        <extensionPoint name="io.nimbly.json.Any2Json.debugger" interface="io.nimbly.any2json.Any2JsonDebuggerExtensionPoint"/>
+    </extensionPoints>
+
 
     <actions>
 

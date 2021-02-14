@@ -11,7 +11,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys.PSI_FILE
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
 
-class TypeScriptToJson : Any2JsonExtensionPoint<String> {
+class TypeScriptToJson : Any2JsonExtensionPoint {
 
     @Suppress("UNCHECKED_CAST")
     override fun build(event: AnActionEvent, actionType: EType) : Pair<String, Map<String, Any>>? {

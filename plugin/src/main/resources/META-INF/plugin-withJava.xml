@@ -6,8 +6,8 @@
     </extensions>
 
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
-        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.Debugger2Json">
-        </io.nimbly.json.Any2Json.lang>
+        <io.nimbly.json.Any2Json.debugger implementation="io.nimbly.any2json.JavaDebugger2Json">
+        </io.nimbly.json.Any2Json.debugger>
     </extensions>
 
 </idea-plugin>

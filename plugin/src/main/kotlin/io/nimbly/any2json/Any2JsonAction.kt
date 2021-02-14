@@ -9,6 +9,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlTag
 import io.nimbly.any2json.EType.MAIN
 import io.nimbly.any2json.EType.SECONDARY
+import io.nimbly.any2json.debugger.Debugger2Json
 import io.nimbly.any2json.languages.Csv2Json
 import io.nimbly.any2json.languages.Properties2Json
 import io.nimbly.any2json.languages.Xml2Json
@@ -25,14 +26,14 @@ class Any2JsonRandomAction : Any2JsonAction(SECONDARY)
 
 abstract class Any2JsonAction(private val actionType: EType): AnAction() { //DebuggerAction()
 
-    override fun actionPerformed(e: AnActionEvent) {
+    override fun actionPerformed(event: AnActionEvent) {
 
-        val project = e.project!!
+        val project = event.project!!
 
         try {
 
-            val editor = e.getData(CommonDataKeys.EDITOR)
-            val psiFile = e.getData(CommonDataKeys.PSI_FILE)
+            val editor = event.getData(CommonDataKeys.EDITOR)
+            val psiFile = event.getData(CommonDataKeys.PSI_FILE)
 
             // Try community languages
             var result: Pair<String, Any>? = null
@@ -49,9 +50,14 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
             // Try using extensions
             if (result == null) {
                 ANY2JSON().extensionList.find {
-                    result = it.build(e, actionType)
+                    result = it.build(event, actionType)
                     result != null
                 }
+            }
+
+            // Try debugger
+            if (result == null) {
+                result = Debugger2Json().build(event)
             }
 
             // Oups !?
@@ -108,10 +114,17 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
             Properties2Json(actionType).buildMap(element.containingFile.text))
     }
 
-    override fun update(e: AnActionEvent) {
+    private fun buildFromDebugger(element: PsiElement): Pair<String, Any>? {
+        if (!element.containingFile.name.toLowerCase().endsWith("properties"))
+            return null
+        return Pair("PROPERTIES",
+            Properties2Json(actionType).buildMap(element.containingFile.text))
+    }
 
-        val editor = e.getData(CommonDataKeys.EDITOR)
-        val psiFile = e.getData(CommonDataKeys.PSI_FILE)
+    override fun update(event: AnActionEvent) {
+
+        val editor = event.getData(CommonDataKeys.EDITOR)
+        val psiFile = event.getData(CommonDataKeys.PSI_FILE)
         var any2Json: AnyToJsonBuilder<out Any, out Any>? = null
 
         if (psiFile != null && editor != null) {
@@ -131,15 +144,23 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
         }
 
         if (any2Json != null) {
-            e.presentation.text = "Generate JSON " + any2Json.presentation()
-            e.presentation.isVisible = any2Json.isVisible()
-            e.presentation.isEnabled = true
+            event.presentation.text = "Generate JSON " + any2Json.presentation()
+            event.presentation.isVisible = any2Json.isVisible()
+            event.presentation.isEnabled = true
             return
         }
 
+        if (Debugger2Json().isVisible(event, actionType)) {
+            event.presentation.text = "Generate JSON"
+            event.presentation.isVisible = true
+            event.presentation.isEnabled = true
+            return
+        }
+
+
         var enabledByExtension: String? = null
         ANY2JSON().extensionList.find { ext ->
-            if (ext.isEnabled(e, actionType)) {
+            if (ext.isEnabled(event, actionType)) {
                 enabledByExtension = ext.presentation(actionType)
                 true
             } else {
@@ -148,13 +169,13 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
         }
 
         if (enabledByExtension != null) {
-            e.presentation.text = "Generate JSON $enabledByExtension"
-            e.presentation.isVisible = true
-            e.presentation.isEnabled = true
+            event.presentation.text = "Generate JSON $enabledByExtension"
+            event.presentation.isVisible = true
+            event.presentation.isEnabled = true
         }
         else {
-            e.presentation.isVisible = false
-            e.presentation.isEnabled = false
+            event.presentation.isVisible = false
+            event.presentation.isEnabled = false
         }
     }
 }

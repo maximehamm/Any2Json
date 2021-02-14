@@ -17,7 +17,7 @@ import org.jetbrains.kotlin.types.SimpleType
 import org.jetbrains.kotlin.types.typeUtil.isEnum
 import org.jetbrains.kotlin.types.typeUtil.supertypes
 
-class KotlinToJson : Any2JsonExtensionPoint<String> {
+class KotlinToJson : Any2JsonExtensionPoint {
 
     @Suppress("UNCHECKED_CAST")
     override fun build(event: AnActionEvent, actionType: EType) : Pair<String, Map<String, Any>>? {

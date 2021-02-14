@@ -15,7 +15,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.PsiUtil
 import io.nimbly.any2json.EType.SECONDARY
 
-class Java2Json : Any2JsonExtensionPoint<String> {
+class Java2Json : Any2JsonExtensionPoint {
 
     @Suppress("UNCHECKED_CAST")
     override fun build(event: AnActionEvent, actionType: EType) : Pair<String, Map<String, Any>>? {
