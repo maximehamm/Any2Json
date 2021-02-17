@@ -1,13 +1,10 @@
 package io.nimbly.any2json
 
-import com.intellij.database.dialects.base.introspector.jdbc.wrappers.DatabaseMetaDataWrapper
-import com.intellij.database.dialects.base.introspector.jdbc.wrappers.DatabaseMetaDataWrapper.TableColumn
 import com.intellij.database.dialects.postgres.model.PgLocalTableColumn
 import com.intellij.database.model.DasTable
 import com.intellij.database.model.ObjectKind
 import com.intellij.database.psi.DbElement
 import com.intellij.database.psi.DbTable
-import com.intellij.database.psi.DbTableImpl
 import com.intellij.database.util.DbImplUtil
 import com.intellij.database.view.DatabaseStructure
 import com.intellij.database.view.DatabaseStructure.FamilyGroup
@@ -56,11 +53,12 @@ class DatabaseToJson : Any2JsonExtensionPoint {
     companion object {
         val GENERATORS = mapOf(
             "varchar" to GString(), "text" to GString(),
+            "char" to GChar(),
             "uuid" to GUUID(),
-            "bigint" to GLong(),
+            "bigint" to GLong(), "float4" to GLong(),  "float8" to GLong(),
             "integer" to GInteger(),
-            "boolean" to GBoolean(),
-            "timestamp" to GObject()
+            "boolean" to GBoolean(), "bit" to GBoolean(), "bool" to GBoolean(),
+            "timestamp" to GObject(), "date" to GObject(), "time" to GObject()
         )
     }
 

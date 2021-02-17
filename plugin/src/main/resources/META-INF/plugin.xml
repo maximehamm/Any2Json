@@ -91,6 +91,8 @@
 
             <add-to-group group-id="DatabaseViewPopupMenu" anchor="last"/>
 
+<!--            <add-to-group group-id="DatabasePopupMenu" anchor="last"/>-->
+
             <separator/>
 
         </group>
