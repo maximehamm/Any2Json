@@ -89,6 +89,11 @@ class GObject : Generator<Map<String, String>>() {
             = mapOf()
 }
 
+class GUUID : Generator<String>() {
+    override fun generate(feed: Boolean, initializer: String?): String
+            = if (feed) UUID.randomUUID().toString() else ""
+}
+
 abstract class Generator<T> {
     val random = Random()
     abstract fun generate(feed: Boolean, initializer: String?): T

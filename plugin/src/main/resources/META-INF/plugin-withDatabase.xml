@@ -1,0 +1,8 @@
+<idea-plugin>
+
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.DatabaseToJson">
+        </io.nimbly.json.Any2Json.lang>
+    </extensions>
+
+</idea-plugin>

@@ -19,6 +19,8 @@
         <li>From CSV editor: right click anywhere in file named *.csv</li>
         <li>From YAML editor: right click anywhere in file named *.yaml or *.yml</li>
         <li>From Java Properties editor: right click anywhere in file named *.properties</li>
+        <li>From Database view : right onto table name</li>
+
        </ul>
 
        <br/>
@@ -48,6 +50,7 @@
     <depends optional="true" config-file="plugin-withJava.xml">com.intellij.java</depends>
     <depends optional="true" config-file="plugin-withKotlin.xml">org.jetbrains.kotlin</depends>
     <depends optional="true" config-file="plugin-withTypeScript.xml">JavaScript</depends>
+    <depends optional="true" config-file="plugin-withDatabase.xml">com.intellij.modules.database</depends>
 
     <!-- Extension point
     https://developerlife.com/2020/11/21/idea-plugin-example-intro/#extensions-and-extension-points -->
@@ -84,8 +87,9 @@
 
             <add-to-group group-id="XDebugger.Watches.Tree.Popup" anchor="last"/>
             <add-to-group group-id="XDebugger.Watches.Tree.Toolbar" anchor="last"/>
-
             <add-to-group group-id="XDebugger.Watches.Inline.Popup" anchor="last"/>
+
+            <add-to-group group-id="DatabaseViewPopupMenu" anchor="last"/>
 
             <separator/>
 

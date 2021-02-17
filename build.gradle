@@ -2,15 +2,13 @@
 
 // Plugin url : https://plugins.jetbrains.com/plugin/16055-any-to-json/
 plugins {
-    id 'java'
     id 'org.jetbrains.intellij' version '0.6.5'
-    id 'org.jetbrains.kotlin.jvm' version '1.4.30'
 }
 
 allprojects {
 
     group = 'io.nimbly.json'
-    version '2.1.1.SNAPSHOT'
+    version '2.2.0.SNAPSHOT'
 
     repositories {
         mavenCentral()
@@ -21,11 +19,6 @@ allprojects {
             url 'https://dl.bintray.com/jetbrains/intellij-plugin-service'
         }
     }
-
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-    compileKotlin { kotlinOptions.jvmTarget = "11" }
-    compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 }
 
 // DEPENDENCY MANAGEMENT :
@@ -38,6 +31,7 @@ dependencies {
     implementation project(':extensions:java')
     implementation project(':extensions:kotlin')
     implementation project(':extensions:typescript')
+    implementation project(':extensions:database')
 
     testImplementation project(':tests')
 }

@@ -115,6 +115,7 @@ class JavaAdvancedTests : AbstractJavaTestCase() {
                     "students": [],
                     "teatchers": [
                       {
+                        "shcool": null,
                         "students": [],
                         "name": "Something",
                         "age": 100,
@@ -134,6 +135,7 @@ class JavaAdvancedTests : AbstractJavaTestCase() {
                     "schoolName": "Something",
                     "students": [
                       {
+                        "school": null,
                         "teatchers": [],
                         "name": "Something",
                         "age": 100,
@@ -213,6 +215,7 @@ class JavaAdvancedTests : AbstractJavaTestCase() {
                 "students": [],
                 "teatchers": [
                   {
+                    "shcool": null,
                     "students": [],
                     "name": "Something",
                     "age": 100,
@@ -232,6 +235,7 @@ class JavaAdvancedTests : AbstractJavaTestCase() {
                 "schoolName": "Something",
                 "students": [
                   {
+                    "school": null,
                     "teatchers": [],
                     "name": "Something",
                     "age": 100,

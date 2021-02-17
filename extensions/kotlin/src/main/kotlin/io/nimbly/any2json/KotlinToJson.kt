@@ -74,8 +74,8 @@ class KotlinToJson : Any2JsonExtensionPoint {
         }
 
         // Known object with generator
-        val typeName = type.nameIfStandardType?.identifier ?:
-        type.toString().substringBeforeLast("?")
+        val typeName = type.nameIfStandardType?.identifier
+            ?: type.toString().substringBeforeLast("?")
         GENERATORS[typeName]?.let {
             return it.generate(actionType == EType.SECONDARY, initializer)
         }

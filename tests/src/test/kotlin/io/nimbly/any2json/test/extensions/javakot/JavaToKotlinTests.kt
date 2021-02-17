@@ -92,6 +92,7 @@ class JavaToKotlinTests : AbstractJavaKotlinTestCase() {
                   },
                   "teatchers": [
                     {
+                      "school": null,
                       "students": [],
                       "name": "Something",
                       "age": 100,

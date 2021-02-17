@@ -165,6 +165,7 @@ class KotlinToJavaTests : AbstractJavaKotlinTestCase() {
                   },
                   "teatchers": [
                     {
+                      "shcool": null,
                       "students": [],
                       "gender": "MALE",
                       "age": 100,

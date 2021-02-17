@@ -61,7 +61,8 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
                     "students": []
                   },
                   "age": 100,
-                  "name": "Something"
+                  "name": "Something",
+                  "Companion": null
                 }
               ]
             }
@@ -113,9 +114,11 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
                   "school": {
                     "teatchers": [
                       {
+                        "shcool": null,
                         "students": [],
                         "age": 100,
-                        "name": "Something"
+                        "name": "Something",
+                        "Companion": null
                       }
                     ],
                     "schoolName": "Something",
@@ -123,7 +126,8 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
                   },
                   "teatchers": [],
                   "age": 100,
-                  "name": "Something"
+                  "name": "Something",
+                  "Companion": null
                 }
               ],
               "teatchers": [
@@ -133,15 +137,18 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
                     "schoolName": "Something",
                     "students": [
                       {
+                        "school": null,
                         "teatchers": [],
                         "age": 100,
-                        "name": "Something"
+                        "name": "Something",
+                        "Companion": null
                       }
                     ]
                   },
                   "students": [],
                   "age": 100,
-                  "name": "Something"
+                  "name": "Something",
+                  "Companion": null
                 }
               ]
             }
@@ -206,9 +213,11 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
                   "school": {
                     "teatchers": [
                       {
+                        "shcool": null,
                         "students": [],
                         "age": 100,
-                        "name": "Something"
+                        "name": "Something",
+                        "Companion": null
                       }
                     ],
                     "schoolName": "Something",
@@ -216,7 +225,8 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
                   },
                   "teatchers": [],
                   "age": 100,
-                  "name": "Something"
+                  "name": "Something",
+                  "Companion": null
                 }
               ],
               "teatchers": [
@@ -226,15 +236,18 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
                     "schoolName": "Something",
                     "students": [
                       {
+                        "school": null,
                         "teatchers": [],
                         "age": 100,
-                        "name": "Something"
+                        "name": "Something",
+                        "Companion": null
                       }
                     ]
                   },
                   "students": [],
                   "age": 100,
-                  "name": "Something"
+                  "name": "Something",
+                  "Companion": null
                 }
               ]
             }

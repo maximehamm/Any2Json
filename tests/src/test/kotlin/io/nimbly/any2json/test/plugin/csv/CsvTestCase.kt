@@ -36,10 +36,17 @@ class CsvTestCase : AbstractTestCase() {
                 "First name": "Jamie",
                 "Last name": "Smith",
                 "Department": "Engineering",
+                "Location": null,
                 "Description": "Quit good; let's see !"
               },
               {
                 "Identifier": "4081",
+                "Access code": null,
+                "Recovery code": null,
+                "First name": null,
+                "Last name": null,
+                "Department": null,
+                "Location": null,
                 "Description": "The description !"
               },
               {

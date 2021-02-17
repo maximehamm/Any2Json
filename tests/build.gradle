@@ -1,6 +1,6 @@
 plugins {
     id 'org.jetbrains.intellij' //version '0.6.5'
-    id 'org.jetbrains.kotlin.jvm' //version '1.4.30'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.30'
 }
 
 group 'io.nimbly.json'
@@ -22,7 +22,7 @@ dependencies {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version '2020.3'
-    plugins = ['java', 'Kotlin', 'JavaScriptLanguage']
+    plugins = ['java', 'Kotlin', 'JavaScriptLanguage', 'DatabaseTools']
     intellij.type = 'IU' // IU, IC
 }
 

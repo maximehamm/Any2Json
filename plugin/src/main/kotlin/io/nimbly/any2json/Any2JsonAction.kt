@@ -67,6 +67,7 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
             // Convert to Json
             val json = GsonBuilder()
                 .setPrettyPrinting()
+                .serializeNulls()
                 .disableHtmlEscaping()
                 .create()
                 .toJson(result!!.second)

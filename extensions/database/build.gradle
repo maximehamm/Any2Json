@@ -6,25 +6,23 @@ plugins {
 group 'io.nimbly.json'
 
 jar {
-    archiveBaseName = 'any2json-kotlin'
+    archiveBaseName = 'any2json-database'
 }
 
 dependencies {
     implementation project(':common')
 }
 
-compileKotlin { kotlinOptions.jvmTarget = "11" }
-compileTestKotlin { kotlinOptions.jvmTarget = "11" }
-
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version '2020.3'
-    plugins = ['java',
-               'Kotlin']
+    plugins = ['DatabaseTools']
     intellij.type = 'IU' // IU, IC
 }
+
+compileKotlin { kotlinOptions.jvmTarget = "11" }
+compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 
 tasks.buildSearchableOptions {
     enabled = false
 }
-
