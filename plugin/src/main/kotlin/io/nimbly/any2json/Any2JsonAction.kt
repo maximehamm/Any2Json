@@ -162,7 +162,7 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
         var enabledByExtension: String? = null
         ANY2JSON().extensionList.find { ext ->
             if (ext.isEnabled(event, actionType)) {
-                enabledByExtension = ext.presentation(actionType)
+                enabledByExtension = ext.presentation(actionType, event)
                 true
             } else {
                 false

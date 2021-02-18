@@ -19,7 +19,8 @@
         <li>From CSV editor: right click anywhere in file named *.csv</li>
         <li>From YAML editor: right click anywhere in file named *.yaml or *.yml</li>
         <li>From Java Properties editor: right click anywhere in file named *.properties</li>
-        <li>From Database view : right onto table name</li>
+        <li>From Database view : right click onto table name</li>
+        <li>From Database result view : right click onto any line</li>
 
        </ul>
 
@@ -91,7 +92,8 @@
 
             <add-to-group group-id="DatabaseViewPopupMenu" anchor="last"/>
 
-<!--            <add-to-group group-id="DatabasePopupMenu" anchor="last"/>-->
+            <add-to-group group-id="Console.TableResult.CellEditor.Popup" anchor="last"/>
+            <add-to-group group-id="Console.TableResult.PopupGroup" anchor="last"/>
 
             <separator/>
 

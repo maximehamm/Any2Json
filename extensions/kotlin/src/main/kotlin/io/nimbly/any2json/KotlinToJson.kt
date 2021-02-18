@@ -2,7 +2,9 @@ package io.nimbly.any2json
 
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiIdentifier
 import com.intellij.psi.util.PsiTreeUtil
 import org.jetbrains.kotlin.incremental.components.LookupLocation
 import org.jetbrains.kotlin.js.descriptorUtils.nameIfStandardType
@@ -113,11 +115,27 @@ class KotlinToJson : Any2JsonExtensionPoint {
 
     override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
         val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return false
-        return psiFile.name.endsWith(".kt")
+        if (!psiFile.name.endsWith(".kt"))
+            return false
+
+        val editor = event.getData(CommonDataKeys.EDITOR) ?:
+        return false
+
+        val element = psiFile.findElementAt(editor.caretModel.offset)
+            ?: return false
+
+        val type = PsiTreeUtil.getContextOfType(element, KtClass::class.java)
+        return type!=null
+                && element.parent == type
     }
 
-    override fun presentation(actionType: EType)
-            = "from Class" + if (actionType == EType.SECONDARY) " with Data" else ""
+    override fun presentation(actionType: EType, event: AnActionEvent): String {
+        val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE)!!
+        val editor = event.getData(CommonDataKeys.EDITOR)!!
+        val element = psiFile.findElementAt(editor.caretModel.offset)!!
+        val type = PsiTreeUtil.getContextOfType(element, KtClass::class.java)!!
+        return "from class ${type.name}" + if (actionType == EType.SECONDARY) " with Data" else ""
+    }
 
     companion object {
         val GENERATORS = mapOf(

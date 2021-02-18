@@ -5,28 +5,59 @@ import com.intellij.database.model.DasTable
 import com.intellij.database.model.ObjectKind
 import com.intellij.database.psi.DbElement
 import com.intellij.database.psi.DbTable
+import com.intellij.database.run.ui.table.TableResultView
 import com.intellij.database.util.DbImplUtil
 import com.intellij.database.view.DatabaseStructure
 import com.intellij.database.view.DatabaseStructure.FamilyGroup
 import com.intellij.database.view.DatabaseView
 import com.intellij.ide.DataManager
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.DataKey
+import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.project.Project
 import com.intellij.util.containers.JBIterable
 
 class DatabaseToJson : Any2JsonExtensionPoint {
 
     @Suppress("UNCHECKED_CAST")
-    override fun build(event: AnActionEvent, actionType: EType) : Pair<String, Map<String, Any>>? {
+    override fun build(event: AnActionEvent, actionType: EType) : Pair<String, Any>? {
 
         val table = getTable(event)
+        val result = getTableResult(event)
+
+        if (result != null) {
+
+            val list = mutableListOf<Map<String, Any?>>()
+            val headers = result.columnModel.columns.toList().map { it.headerValue.toString() }
+
+            for (row in 0 until result.model.rowCount) {
+                val map = mutableMapOf<String, Any?>()
+                for (column in 0 until headers.count()) {
+                    map[headers[column]] = result.model.getValueAt(row, column)
+                }
+                list.add(map)
+            }
+
+            return "result" to list
+        }
+        else if (table != null) {
+            val columns = table.getDasChildren(ObjectKind.COLUMN).toList().map { it as PgLocalTableColumn }
+            return table.name to columns
+                .map { it.name to parse(it, actionType) }
+                .toMap()
+        }
+
+        return null
+    }
+
+    private fun getTableResult(event: AnActionEvent): TableResultView? {
+        val data = event.getData(PlatformDataKeys.CONTEXT_COMPONENT)
             ?: return null
 
-        val columns = table.getDasChildren(ObjectKind.COLUMN).toList().map { it as PgLocalTableColumn }
-        //columns[3].dataType.typeName
-        return table.name to columns
-            .map { it.name to parse( it, actionType) }
-            .toMap()
+        if (data !is TableResultView)
+            return null
+
+        return data
     }
 
     @Suppress("NAME_SHADOWING")
@@ -44,11 +75,20 @@ class DatabaseToJson : Any2JsonExtensionPoint {
     }
 
     override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
+
+        val result = getTableResult(event)
+        if (result !=null)
+            return actionType == EType.MAIN
+
         return getTable(event) != null
     }
 
-    override fun presentation(actionType: EType)
-            = "from Table" + if (actionType == EType.SECONDARY) " with Data" else ""
+    override fun presentation(actionType: EType, event: AnActionEvent): String {
+        val result = getTableResult(event)
+        if (result !=null)
+            return "from Results"
+        return "from Table" + if (actionType == EType.SECONDARY) " with Data" else ""
+    }
 
     companion object {
         val GENERATORS = mapOf(

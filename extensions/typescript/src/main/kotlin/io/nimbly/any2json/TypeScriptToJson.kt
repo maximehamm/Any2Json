@@ -6,6 +6,7 @@ import com.intellij.lang.javascript.psi.ecma6.TypeScriptStringLiteralType
 import com.intellij.lang.javascript.psi.ecma6.TypeScriptUnionOrIntersectionType
 import com.intellij.lang.javascript.psi.types.JSArrayType
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.CommonDataKeys.EDITOR
 import com.intellij.openapi.actionSystem.CommonDataKeys.PSI_FILE
 import com.intellij.psi.PsiFile
@@ -83,11 +84,27 @@ class TypeScriptToJson : Any2JsonExtensionPoint {
 
     override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
         val psiFile : PsiFile = event.getData(PSI_FILE) ?: return false
-        return psiFile.name.endsWith(".ts")
+        if (! psiFile.name.endsWith(".ts"))
+            return false
+
+        val editor = event.getData(EDITOR) ?:
+        return false
+
+        val element = psiFile.findElementAt(editor.caretModel.offset)
+            ?: return false
+
+        val type = PsiTreeUtil.getContextOfType(element, TypeScriptInterface::class.java)
+        return type!=null
+                && element.parent == type
     }
 
-    override fun presentation(actionType: EType)
-            = "from Type" + if (actionType == EType.SECONDARY) " with Data" else ""
+    override fun presentation(actionType: EType, event: AnActionEvent): String {
+        val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE)!!
+        val editor = event.getData(CommonDataKeys.EDITOR)!!
+        val element = psiFile.findElementAt(editor.caretModel.offset)!!
+        val type = PsiTreeUtil.getContextOfType(element, TypeScriptInterface::class.java)!!
+        return "from class ${type.name}" + if (actionType == EType.SECONDARY) " with Data" else ""
+    }
 
     companion object {
         val GENERATORS = mapOf(

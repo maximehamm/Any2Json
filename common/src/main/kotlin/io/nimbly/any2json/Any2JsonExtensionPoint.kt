@@ -4,9 +4,9 @@ import com.intellij.openapi.extensions.ExtensionPointName
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl
 
 interface Any2JsonExtensionPoint {
-    fun build(event: AnActionEvent, actionType: EType) : Pair<String, Map<String, Any>>?
+    fun build(event: AnActionEvent, actionType: EType) : Pair<String, Any>?
     fun isEnabled(event: AnActionEvent, actionType: EType): Boolean
-    fun presentation(actionType: EType): String
+    fun presentation(actionType: EType, event: AnActionEvent): String
 }
 
 interface Any2JsonDebuggerExtensionPoint {

@@ -7,6 +7,7 @@ import com.intellij.psi.PsiArrayType
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiEnumConstant
 import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiIdentifier
 import com.intellij.psi.PsiModifier
 import com.intellij.psi.PsiPrimitiveType
 import com.intellij.psi.PsiType
@@ -113,12 +114,30 @@ class Java2Json : Any2JsonExtensionPoint {
         }
 
     override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
-        val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return false
-        return psiFile.name.endsWith(".java")
+        val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE)
+            ?: return false
+        if (!psiFile.name.endsWith(".java"))
+            return false
+
+        val editor = event.getData(CommonDataKeys.EDITOR) ?:
+            return false
+
+        val element = psiFile.findElementAt(editor.caretModel.offset)
+            ?: return false
+
+        val type = PsiTreeUtil.getContextOfType(element, PsiClass::class.java)
+        return type!=null
+                && element is PsiIdentifier
+                && element.parent == type
     }
 
-    override fun presentation(actionType: EType)
-            = "from Class" + if (actionType == SECONDARY) " with Data" else ""
+    override fun presentation(actionType: EType, event: AnActionEvent): String {
+        val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE)!!
+        val editor = event.getData(CommonDataKeys.EDITOR)!!
+        val element = psiFile.findElementAt(editor.caretModel.offset)!!
+        val type = PsiTreeUtil.getContextOfType(element, PsiClass::class.java)!!
+        return "from class ${type.name}" + if (actionType == SECONDARY) " with Data" else ""
+    }
 
     companion object {
         val GENERATORS = mapOf(
