@@ -13,4 +13,9 @@ interface Any2JsonDebuggerExtensionPoint {
     fun loadProperty(node: XValueNodeImpl): Pair<Boolean, Any?>
 }
 
+interface Any2JsonPrettifyExtensionPoint {
+    fun isEnabled(event: AnActionEvent): Boolean
+    fun prettify(event: AnActionEvent): Boolean
+}
+
 enum class EType { MAIN, SECONDARY }

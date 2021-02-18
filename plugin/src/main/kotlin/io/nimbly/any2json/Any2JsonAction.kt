@@ -1,6 +1,5 @@
 package io.nimbly.any2json
 
-import com.google.gson.GsonBuilder
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -65,24 +64,19 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
                 throw Any2PojoException("Unable to define context !")
 
             // Convert to Json
-            val json = GsonBuilder()
-                .setPrettyPrinting()
-                .serializeNulls()
-                .disableHtmlEscaping()
-                .create()
-                .toJson(result!!.second)
+            val json = toJson(result!!.second)
 
             // Put to clipboard
             Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(json), StringSelection(json))
 
             // Report notificagton
-            info("${result!!.first} to JSON copied to clipboard !", project)
+            info("${result!!.first} to Json copied to clipboard !", project)
 
         } catch (ex: Any2PojoException) {
             warn(ex.message!!, project)
         } catch (ex: Exception) {
             ex.printStackTrace()
-            error("Any to JSON error !", project)
+            error("Any to Json error !", project)
         }
     }
 
@@ -115,13 +109,6 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
             Properties2Json(actionType).buildMap(element.containingFile.text))
     }
 
-    private fun buildFromDebugger(element: PsiElement): Pair<String, Any>? {
-        if (!element.containingFile.name.toLowerCase().endsWith("properties"))
-            return null
-        return Pair("PROPERTIES",
-            Properties2Json(actionType).buildMap(element.containingFile.text))
-    }
-
     override fun update(event: AnActionEvent) {
 
         val editor = event.getData(CommonDataKeys.EDITOR)
@@ -145,14 +132,14 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
         }
 
         if (any2Json != null) {
-            event.presentation.text = "Generate JSON " + any2Json.presentation()
+            event.presentation.text = "Generate Json " + any2Json.presentation()
             event.presentation.isVisible = any2Json.isVisible()
             event.presentation.isEnabled = true
             return
         }
 
         if (Debugger2Json().isVisible(event, actionType)) {
-            event.presentation.text = "Generate JSON"
+            event.presentation.text = "Generate Json"
             event.presentation.isVisible = true
             event.presentation.isEnabled = true
             return
@@ -170,7 +157,7 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
         }
 
         if (enabledByExtension != null) {
-            event.presentation.text = "Generate JSON $enabledByExtension"
+            event.presentation.text = "Generate Json $enabledByExtension"
             event.presentation.isVisible = true
             event.presentation.isEnabled = true
         }

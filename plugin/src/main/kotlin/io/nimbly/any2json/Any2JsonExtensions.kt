@@ -12,3 +12,8 @@ object DEBUGGER {
     operator fun invoke(): ExtensionPointName<Any2JsonDebuggerExtensionPoint> =
         ExtensionPointName.create("$nameSpace.io.nimbly.json.Any2Json.debugger")
 }
+
+object PRETTIFY {
+    operator fun invoke(): ExtensionPointName<Any2JsonPrettifyExtensionPoint> =
+        ExtensionPointName.create("$nameSpace.io.nimbly.json.Any2Json.prettify")
+}

@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>io.nimbly.json.Any2Json</id>
-    <name>Any to JSON</name>
+    <name>Any to Json</name>
     <vendor email="maxime.hamm@gmail.com"
             url="https://www.linkedin.com/in/maxime-hamm/">Maxime HAMM</vendor>
 
@@ -8,20 +8,28 @@
 
     <description><![CDATA[
 
-       <b>Converting "Anything" to JSON !</b><br/>
+       <b>Converting "Anything" to Json !</b><br/>
 
        <ul>
-        <li>From Java editor: right click near class name</li>
-        <li>From Kotlin editor: right click near class name</li>
-        <li>From TypeScript editor: right click near type name (Ultimate Edition is required)</li>
-        <li>From Debugger Variable: expand variable, then right click on a it</li>
-        <li>From XML editor: right click near tag name in file named *.xml</li>
-        <li>From CSV editor: right click anywhere in file named *.csv</li>
-        <li>From YAML editor: right click anywhere in file named *.yaml or *.yml</li>
-        <li>From Java Properties editor: right click anywhere in file named *.properties</li>
-        <li>From Database view : right click onto table name</li>
-        <li>From Database result view : right click onto any line</li>
+          <li>From Java editor: right click near class name</li>
+          <li>From Kotlin editor: right click near class name</li>
+          <li>From TypeScript editor: right click near type name (Ultimate Edition is required)</li>
+          <li>From Debugger Variable: expand variable, then right click on a it</li>
+          <li>From XML editor: right click near tag name in file named *.xml</li>
+          <li>From CSV editor: right click anywhere in file named *.csv</li>
+          <li>From YAML editor: right click anywhere in file named *.yaml or *.yml</li>
+          <li>From Java Properties editor: right click anywhere in file named *.properties</li>
+          <li>From Database view : right click onto table name</li>
+          <li>From Database result view : right click onto any line</li>
+       </ul>
 
+       <b>NEW</b>Prettify Json in your code :<br/>
+       Select a string literal containing a single line of Json<br/>
+       ...then select "Prettify Json"
+       ...let's see your literal turned to a multilined prettified Json<br/>
+
+       <ul>
+          <li>From Java editor</li>
        </ul>
 
        <br/>
@@ -64,6 +72,10 @@
         <extensionPoint name="io.nimbly.json.Any2Json.debugger" interface="io.nimbly.any2json.Any2JsonDebuggerExtensionPoint"/>
     </extensionPoints>
 
+    <extensionPoints>
+        <extensionPoint name="io.nimbly.json.Any2Json.prettify" interface="io.nimbly.any2json.Any2JsonPrettifyExtensionPoint"/>
+    </extensionPoints>
+
 
     <actions>
 
@@ -73,14 +85,20 @@
 
             <action class="io.nimbly.any2json.Any2JsonDefaultAction"
                     id="io.nimbly.any2json.ANY2JsonDefaultAction"
-                    text="Generate JSON from Class"
-                    description="Convert CLASS to JSON and copy to clipboard">
+                    text="Generate Json from Class"
+                    description="Convert CLASS to Json and copy to clipboard">
             </action>
 
             <action class="io.nimbly.any2json.Any2JsonRandomAction"
                     id="io.nimbly.any2json.ANY2JsonRandomAction"
-                    text="Generate JSON from Class with Values"
-                    description="Convert CLASS to JSON randomly generate some test data and copy to clipboard">
+                    text="Generate Json from Class with Values"
+                    description="Convert CLASS to Json randomly generate some test data and copy to clipboard">
+            </action>
+
+            <action class="io.nimbly.any2json.Any2JsonJavaPrettifyAction"
+                    id="io.nimbly.any2json.Any2JsonJavaPrettifyAction"
+                    text="Prettify Json"
+                    description="Prettify Json on the fly">
             </action>
 
             <add-to-group group-id="CutCopyPasteGroup" anchor="last"/>

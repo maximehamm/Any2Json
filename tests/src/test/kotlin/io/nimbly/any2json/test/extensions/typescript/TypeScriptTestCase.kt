@@ -159,6 +159,8 @@ class TypeScriptTestCase : AbstractTestCase() {
 
 
     fun configure(text: String) {
-        myFixture.configureByText("test.ts", text.trimIndent())
+        var t = text.trimIndent()
+        t = t.substringBefore("interface ") + "interface <caret>" + t.substringAfter("interface ")
+        myFixture.configureByText("test.ts", t )
     }
 }

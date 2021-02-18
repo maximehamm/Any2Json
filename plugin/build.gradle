@@ -42,6 +42,7 @@ patchPluginXml {
     changeNotes """
       Change notes :
       <ul>
+        <li><b>2.4</b> Prettify Json literal inside Java Editor</li>
         <li><b>2.3</b> Supports using from Database table results</li>
         <li><b>2.2</b> Supports using from Database view</li>
         <li><b>2.1</b> Supports using from Debugger with Angular</li>

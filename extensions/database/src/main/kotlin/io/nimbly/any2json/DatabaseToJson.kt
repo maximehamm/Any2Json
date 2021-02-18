@@ -12,7 +12,6 @@ import com.intellij.database.view.DatabaseStructure.FamilyGroup
 import com.intellij.database.view.DatabaseView
 import com.intellij.ide.DataManager
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.DataKey
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.project.Project
 import com.intellij.util.containers.JBIterable
@@ -107,7 +106,12 @@ class DatabaseToJson : Any2JsonExtensionPoint {
         val project = event.project
             ?: return null
 
-        val selectedElements = getSelectedElements(project)
+        val selectedElements = try {
+            getSelectedElements(project)
+        } catch (e: Exception) {
+            return null
+        }
+
         if (selectedElements.isEmpty)
             return null
 
@@ -122,22 +126,18 @@ class DatabaseToJson : Any2JsonExtensionPoint {
         return delegate
     }
 
-    private fun getSelectedElements(project: Project?): JBIterable<DbElement> {
+    private fun getSelectedElements(project: Project): JBIterable<DbElement> {
         val iter: JBIterable<DbElement>
-        if (project == null) {
+        val view = DatabaseView.getDatabaseView(project)
+        if (view == null) {
             iter = JBIterable.empty()
         } else {
-            val view = DatabaseView.getDatabaseView(project)
-            if (view == null) {
-                iter = JBIterable.empty()
-            } else {
-                val dataContext = DataManager.getInstance().getDataContext(view)
-                iter = DatabaseView.getSelectedElements(dataContext,
-                    { o: DatabaseStructure.Group? ->
-                        o is FamilyGroup && DbImplUtil.isDataTable(
-                            o.childrenKind )
-                    }).unique()
-            }
+            val dataContext = DataManager.getInstance().getDataContext(view)
+            iter = DatabaseView.getSelectedElements(dataContext,
+                { o: DatabaseStructure.Group? ->
+                    o is FamilyGroup && DbImplUtil.isDataTable(
+                        o.childrenKind )
+                }).unique()
         }
         return iter
     }

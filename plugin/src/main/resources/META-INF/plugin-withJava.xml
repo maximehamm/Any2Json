@@ -1,3 +1,4 @@
+<!--suppress PluginXmlCapitalization -->
 <idea-plugin>
 
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
@@ -9,5 +10,11 @@
         <io.nimbly.json.Any2Json.debugger implementation="io.nimbly.any2json.JavaDebugger2Json">
         </io.nimbly.json.Any2Json.debugger>
     </extensions>
+
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.prettify implementation="io.nimbly.any2json.Java2JsonPrettify">
+        </io.nimbly.json.Any2Json.prettify>
+    </extensions>
+
 
 </idea-plugin>
