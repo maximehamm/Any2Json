@@ -40,6 +40,7 @@ tasks.runPluginVerifier {
 
 patchPluginXml {
     changeNotes """
+      <b>Please Rate and Review this plugin !</b><br/><br/>
       Change notes :
       <ul>
         <li><b>2.5</b> Prettify Json literal inside Kotlin Editor</li>

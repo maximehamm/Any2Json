@@ -1,7 +1,19 @@
 package io.nimbly.any2json.test
 
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.openapi.editor.ex.util.EditorUtil
+import com.intellij.openapi.module.Module
+import com.intellij.openapi.project.DumbService
+import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiDocumentManager
+import com.intellij.psi.PsiFile
+import com.intellij.testFramework.EditorTestUtil
 import com.intellij.testFramework.PsiTestUtil
+import com.intellij.testFramework.fixtures.IdeaTestExecutionPolicy
 import com.intellij.testFramework.fixtures.JavaCodeInsightFixtureTestCase
+import com.intellij.testFramework.fixtures.impl.CodeInsightTestFixtureImpl
 import com.intellij.testFramework.fixtures.kotlin.KotlinTester
 import io.nimbly.any2json.TEST_BOOL
 import io.nimbly.any2json.TEST_CHAR
@@ -14,6 +26,7 @@ import junit.framework.TestCase
 import org.junit.Ignore
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
+import java.io.File
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -26,6 +39,8 @@ abstract class AbstractTestCase : JavaCodeInsightFixtureTestCase() {
 
     val LIB_JAVA = "/lib/rt-small.jar"
     val LIB_KOTLIN = "/lib/kotlin-stdlib-1.4.30.jar"
+
+    var configuredFile: PsiFile? = null
 
     protected fun setupForJava() {
         PsiTestUtil.addLibrary(myFixture.module, getTestDataPath() + '/' + LIB_JAVA)
@@ -97,8 +112,12 @@ abstract class AbstractTestCase : JavaCodeInsightFixtureTestCase() {
 
         val regex = """(class|interface) *([\w]+)""".toRegex()
         val className = regex.find(text.trimIndent())!!.groupValues.last()
+        configuredFile = myFixture.configureByText("$className.${extension.name}", t)
+    }
 
-        myFixture.configureByText("$className.${extension.name}", t)
+    protected open fun findFileInTempDir(filePath: String): VirtualFile? {
+        val fullPath = myFixture.tempDirPath + "/" + filePath
+        return LocalFileSystem.getInstance().refreshAndFindFileByPath(fullPath.replace(File.separatorChar, '/'))
     }
 
     protected fun toJson(): String {
@@ -110,6 +129,13 @@ abstract class AbstractTestCase : JavaCodeInsightFixtureTestCase() {
         myFixture.performEditorAction("io.nimbly.any2json.ANY2JsonRandomAction")
         return Toolkit.getDefaultToolkit().systemClipboard.getData(DataFlavor.stringFlavor).toString()
     }
+
+    protected fun prettify(): String {
+        myFixture.performEditorAction("io.nimbly.any2json.Any2JsonJavaPrettifyAction")
+        return myFixture.editor.document.text
+            .replace(Regex("""import ([a-z]|[A-Z]|[.])*;\n"""), "")
+    }
+
 
     override fun setUp() {
         super.setUp()
@@ -124,4 +150,5 @@ abstract class AbstractTestCase : JavaCodeInsightFixtureTestCase() {
     override fun getTestDataPath(): String? {
         return "src/test/resources"
     }
+
 }

@@ -89,23 +89,24 @@ class Kotlin2JsonPrettify : Any2JsonPrettifyExtensionPoint {
         }
 
         // Replace literal and indent new content
-        ApplicationManager.getApplication().invokeLater {
-            WriteCommandAction.runWriteCommandAction(project) {
+        WriteCommandAction.runWriteCommandAction(project) {
 
-                // Replace literal
-                val replaced = oldElement.replace(newExp)
+            // Replace literal
+            val replaced = oldElement.replace(newExp)
 
-                // Search lines to indent
-                val endLine = document.getLineNumber(replaced.endOffset)
-                val lineStartOffset = DocumentUtil.getLineStartOffset(replaced.startOffset, document)
-                val margin = DocumentUtil.getFirstNonSpaceCharOffset(document, startLine) - lineStartOffset
+            // commit
+            PsiDocumentManager.getInstance(project).commitDocument(document)
+            PsiDocumentManager.getInstance(project).doPostponedOperationsAndUnblockDocument(document)
 
-                // Do indent
-                if (endLine > startLine && margin > 0) {
+            // Search lines to indent
+            val endLine = document.getLineNumber(replaced.endOffset)
+            val lineStartOffset = DocumentUtil.getLineStartOffset(replaced.startOffset, document)
+            val margin = DocumentUtil.getFirstNonSpaceCharOffset(document, startLine) - lineStartOffset
 
-                    val blockIndent = CodeStyle.getIndentOptions(project, document).INDENT_SIZE
-                    doIndent(endLine, startLine + 1, document, project, editor, margin + blockIndent)
-                }
+            // Do indent
+            if (endLine > startLine && margin > 0) {
+                val blockIndent = CodeStyle.getIndentOptions(project, document).INDENT_SIZE
+                doIndent(endLine, startLine + 1, document, project, editor, margin + blockIndent)
             }
         }
 

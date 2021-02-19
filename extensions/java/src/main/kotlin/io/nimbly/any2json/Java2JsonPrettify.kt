@@ -42,12 +42,12 @@ class Java2JsonPrettify : Any2JsonPrettifyExtensionPoint {
             .replace("\"", "\\\"")
             .replace("\n", "\\n\"+\n\"") + "\""
 
-        ApplicationManager.getApplication().invokeLater {
-            WriteCommandAction.runWriteCommandAction(project) {
-                val factory: PsiElementFactory = JavaPsiFacade.getInstance(project).getElementFactory()
-                val newElement = factory.createExpressionFromText(prettified, null)
-                toReplace.replace(newElement)
-            }
+        WriteCommandAction.runWriteCommandAction(project) {
+            val factory: PsiElementFactory = JavaPsiFacade.getInstance(project).getElementFactory()
+            val newElement = factory.createExpressionFromText(prettified, null)
+            toReplace.replace(newElement)
+
+            newElement.toString()
         }
 
         return true
