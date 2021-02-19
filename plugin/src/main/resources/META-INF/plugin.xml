@@ -23,10 +23,11 @@
           <li>From Database result view : right click onto any line</li>
        </ul>
 
+       <br/>
        <b>NEW</b> Prettify Json in your code :<br/>
        Select a string literal containing a single line of Json<br/>
-       ...then select "Prettify Json"
-       ...let's see your literal turned to a multilined prettified Json<br/>
+        ...then select "Prettify Json"<br/>
+        ...let's see your literal turned to a multilined prettified Json<br/>
 
        <ul>
           <li>From Java editor</li>
