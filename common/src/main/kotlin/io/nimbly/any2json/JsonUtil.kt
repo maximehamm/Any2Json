@@ -12,4 +12,5 @@ fun toJson(any: Any)
         .toJson(any)
 
 fun prettify(json: String)
-    = toJson(JsonParser.parseString(json))
+    = toJson(JsonParser
+        .parseString(json.replace("\\\"", "\"")))

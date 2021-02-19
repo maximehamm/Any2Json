@@ -29,11 +29,28 @@ class Kotlin2JsonPrettify : Any2JsonPrettifyExtensionPoint {
         val literal = getLiteral(event) ?: return false
         val project = event.project ?: return false
         val editor = event.getData(CommonDataKeys.EDITOR) ?: return false
-        var content = literal.text ?: return false
+        val content = literal.text ?: return false
         val document = editor.document
 
-        content = content.substring(3, content.length - 3)
-        val prettified = "\"\"\"" + PsiLiteralUtil.escapeBackSlashesInTextBlock(prettify(content)) + "\"\"\""
+        // Extract json
+        var prettified =
+            if (content.startsWith("\"\"\"")) {
+                val s = content.substring(3, content.length - 3)
+                PsiLiteralUtil.escapeBackSlashesInTextBlock(prettify(s))
+            }
+            else {
+                val s = content.substring(1, content.length - 1)
+                PsiLiteralUtil.escapeBackSlashesInTextBlock(prettify(s))
+            }
+
+        // Pretify
+        val countLines = prettified.count { it == '\n' }
+        prettified = if (countLines>0) {
+            "\"\"\"" + prettified + "\"\"\""
+        }
+        else {
+            "\"" + prettified + "\""
+        }
 
         // Get text after literal
         val startLine = document.getLineNumber(literal.startOffset)
@@ -41,10 +58,11 @@ class Kotlin2JsonPrettify : Any2JsonPrettifyExtensionPoint {
         val lineEnds = document.getText(TextRange(literal.endOffset, endline))
 
         // Instanciate new expression
-        val newExp = if (lineEnds.startsWith(".trimIndent()")) {
-            KtPsiFactory(project).createExpressionIfPossible(prettified)!!
-        } else {
+        val trimIndent = !lineEnds.startsWith(".trimIndent()") && countLines>1
+        val newExp = if (trimIndent) {
             KtPsiFactory(project).createExpressionIfPossible("$prettified.trimIndent()")!!
+        } else {
+            KtPsiFactory(project).createExpressionIfPossible(prettified)!!
         }
 
         // Replace literal and indent new content

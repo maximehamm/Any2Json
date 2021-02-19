@@ -7,17 +7,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 
-fun <T : PsiElement?> findSurrounding(bean: PsiElement, clazz: Class<T>): T? {
-    var b = bean.parent
-    while (b != null && b !is PsiFile) {
-        if (clazz.isAssignableFrom(b.javaClass)) {
-            return b as T
-        }
-        b = b.parent
-    }
-    return null
-}
-
 private val NOTIFICATION_GROUPE =
     NotificationGroupManager.getInstance().getNotificationGroup("io.nimbly.notification.group")
 
