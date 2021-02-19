@@ -23,13 +23,14 @@
           <li>From Database result view : right click onto any line</li>
        </ul>
 
-       <b>NEW</b>Prettify Json in your code :<br/>
+       <b>NEW</b> Prettify Json in your code :<br/>
        Select a string literal containing a single line of Json<br/>
        ...then select "Prettify Json"
        ...let's see your literal turned to a multilined prettified Json<br/>
 
        <ul>
           <li>From Java editor</li>
+          <li>From Kotlin editor</li>
        </ul>
 
        <br/>

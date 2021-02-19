@@ -31,7 +31,7 @@ class Java2JsonPrettify : Any2JsonPrettifyExtensionPoint {
             }
         }
 
-        return false
+        return true
     }
 
 

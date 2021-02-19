@@ -11,7 +11,5 @@ fun toJson(any: Any)
         .create()
         .toJson(any)
 
-fun prettify(json: String): String {
-    val element = JsonParser.parseString(json)
-    return toJson(element)
-}
+fun prettify(json: String)
+    = toJson(JsonParser.parseString(json))
