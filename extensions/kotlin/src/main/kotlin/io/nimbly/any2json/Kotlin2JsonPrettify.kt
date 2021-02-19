@@ -12,9 +12,13 @@ import com.intellij.openapi.editor.actions.EditorActionUtil
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiDocumentManager
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiLiteralUtil
 import com.intellij.util.DocumentUtil
+import org.jetbrains.kotlin.idea.intentions.copyConcatenatedStringToClipboard.ConcatenatedStringGenerator
+import org.jetbrains.kotlin.psi.KtBinaryExpression
+import org.jetbrains.kotlin.psi.KtEscapeStringTemplateEntry
 import org.jetbrains.kotlin.psi.KtLiteralStringTemplateEntry
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.jetbrains.kotlin.psi.KtStringTemplateExpression
@@ -29,19 +33,38 @@ class Kotlin2JsonPrettify : Any2JsonPrettifyExtensionPoint {
         val literal = getLiteral(event) ?: return false
         val project = event.project ?: return false
         val editor = event.getData(CommonDataKeys.EDITOR) ?: return false
-        val content = literal.text ?: return false
         val document = editor.document
+        val literalParent = literal.parent
+
+        //FAIRE IDEM EN JAVA !
+
+        var oldElement: PsiElement
+        val content: String
+        if (literalParent is KtBinaryExpression) {
+            content = ConcatenatedStringGenerator().create(literalParent)
+            oldElement = literalParent
+            while (oldElement.parent is KtBinaryExpression) {
+                oldElement = oldElement.parent
+            }
+        } else {
+            content = (literal.text ?: return false)
+            oldElement = literal
+        }
 
         // Extract json
-        var prettified =
+        val json =
             if (content.startsWith("\"\"\"")) {
-                val s = content.substring(3, content.length - 3)
-                PsiLiteralUtil.escapeBackSlashesInTextBlock(prettify(s))
+                content.substring(3, content.length - 3)
+            }
+            else  if (content.startsWith("\"")) {
+                content.substring(1, content.length - 1)
             }
             else {
-                val s = content.substring(1, content.length - 1)
-                PsiLiteralUtil.escapeBackSlashesInTextBlock(prettify(s))
+                prettify(content)
             }
+
+        var prettified =
+            PsiLiteralUtil.escapeBackSlashesInTextBlock(prettify(json))
 
         // Pretify
         val countLines = prettified.count { it == '\n' }
@@ -53,9 +76,9 @@ class Kotlin2JsonPrettify : Any2JsonPrettifyExtensionPoint {
         }
 
         // Get text after literal
-        val startLine = document.getLineNumber(literal.startOffset)
-        val endline = document.getLineEndOffset(document.getLineNumber(literal.endOffset))
-        val lineEnds = document.getText(TextRange(literal.endOffset, endline))
+        val startLine = document.getLineNumber(oldElement.startOffset)
+        val endline = document.getLineEndOffset(document.getLineNumber(oldElement.endOffset))
+        val lineEnds = document.getText(TextRange(oldElement.endOffset, endline))
 
         // Instanciate new expression
         val trimIndent = !lineEnds.startsWith(".trimIndent()") && countLines>1
@@ -70,7 +93,7 @@ class Kotlin2JsonPrettify : Any2JsonPrettifyExtensionPoint {
             WriteCommandAction.runWriteCommandAction(project) {
 
                 // Replace literal
-                val replaced = literal.replace(newExp)
+                val replaced = oldElement.replace(newExp)
 
                 // Search lines to indent
                 val endLine = document.getLineNumber(replaced.endOffset)
@@ -153,12 +176,13 @@ class Kotlin2JsonPrettify : Any2JsonPrettifyExtensionPoint {
         val editor = event.getData(CommonDataKeys.EDITOR) ?: return null
         val element = psiFile.findElementAt(editor.caretModel.offset) ?: return null
         val parent1 = element.parent ?: return null
-        if (parent1 !is KtLiteralStringTemplateEntry)
-            return null
-        val parent2 = parent1.parent
-        if (parent2 !is KtStringTemplateExpression)
-            return null
-        return parent2
+        if (parent1 is KtLiteralStringTemplateEntry || parent1 is KtEscapeStringTemplateEntry) {
+            val parent2 = parent1.parent
+            if (parent2 !is KtStringTemplateExpression)
+                return null
+            return parent2
+        }
+        return null
     }
 
 }
