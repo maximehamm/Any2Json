@@ -8,8 +8,23 @@
 
     <description><![CDATA[
 
-       <b>Converting "Anything" to Json !</b><br/>
+        <b>Prettify Json in your code :</b><br/>
+        <ul>
+          <li>Select a string literal containing some Json</li>
+          <li>Select "Prettify Json"</li>
+          <li>Let's see your literal turned to a multilined prettified Json !</li>
+        </ul>
 
+       <br/>
+       <b>Converting "Anything" to Json !</b><br/>
+       <ul>
+          <li>Select what to convet to Json</li>
+          <li>Do right click</li>
+          <li>Select "Convet to Json"</li>
+       </ul>
+
+       <br/>
+       <b>Where is Any to Json available ?</b><br/>
        <ul>
           <li>From Java editor: right click near class name</li>
           <li>From Kotlin editor: right click near class name</li>
@@ -24,19 +39,22 @@
        </ul>
 
        <br/>
-       <b>NEW</b> Prettify Json in your code :<br/>
-       Select a string literal containing a single line of Json<br/>
-        ...then select "Prettify Json"<br/>
-        ...let's see your literal turned to a multilined prettified Json<br/>
-
+       <b>Where is Json prettifier available ?</b><br/>
        <ul>
-          <li>From Java editor</li>
-          <li>From Kotlin editor</li>
+          <li>From Kotlin editor. <br/>
+              for example:<br/><i>
+              &nbsp;&nbsp;val json = """{ "id":633,"type":"T1" }"""</i><br/>
+              will be :<br/><i>
+              &nbsp;&nbsp;val json = """{<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;"id": 633,<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;"type": "T1"<br/>
+              &nbsp;&nbsp;}"""</i><br/>
+          </li>
+          <li>From Java editor. For example: <i>String json = "{ \"id\":633, \"type\": \"T1\" }"</i></li>
        </ul>
 
        <br/>
-        Converting XML to Json will come soon !<br/><br/>
-        Any suggestion ? Let me know !<br/>
+       Any suggestion ? Let me know !<br/>
        <br/>
 
        <i>@author Maxime HAMM</i>
@@ -97,6 +115,19 @@
                     description="Convert CLASS to Json randomly generate some test data and copy to clipboard">
             </action>
 
+            <add-to-group group-id="CutCopyPasteGroup" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="EditorToggleColumnMode"/>
+
+            <add-to-group group-id="XDebugger.Watches.Tree.Popup" anchor="last"/>
+            <add-to-group group-id="XDebugger.Watches.Tree.Toolbar" anchor="last"/>
+            <add-to-group group-id="XDebugger.Watches.Inline.Popup" anchor="last"/>
+
+        </group>
+
+        <group id="io.nimbly.any2json.Any2Json.pretty">
+
+            <separator/>
+
             <action class="io.nimbly.any2json.Any2JsonJavaPrettifyAction"
                     id="io.nimbly.any2json.Any2JsonJavaPrettifyAction"
                     text="Prettify Json"
@@ -105,17 +136,6 @@
 
             <add-to-group group-id="CutCopyPasteGroup" anchor="last"/>
             <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="EditorToggleColumnMode"/>
-
-            <add-to-group group-id="XDebugger.Watches.Tree.Popup" anchor="last"/>
-            <add-to-group group-id="XDebugger.Watches.Tree.Toolbar" anchor="last"/>
-            <add-to-group group-id="XDebugger.Watches.Inline.Popup" anchor="last"/>
-
-            <add-to-group group-id="DatabaseViewPopupMenu" anchor="last"/>
-
-            <add-to-group group-id="Console.TableResult.CellEditor.Popup" anchor="last"/>
-            <add-to-group group-id="Console.TableResult.PopupGroup" anchor="last"/>
-
-            <separator/>
 
         </group>
     </actions>

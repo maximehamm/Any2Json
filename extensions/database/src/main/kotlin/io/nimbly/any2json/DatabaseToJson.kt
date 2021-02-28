@@ -76,10 +76,11 @@ class DatabaseToJson : Any2JsonExtensionPoint {
     override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
 
         val result = getTableResult(event)
-        if (result !=null)
+        if (result != null)
             return actionType == EType.MAIN
 
-        return getTable(event) != null
+        return event.place == "DatabaseViewPopup"
+                && getTable(event) != null
     }
 
     override fun presentation(actionType: EType, event: AnActionEvent): String {

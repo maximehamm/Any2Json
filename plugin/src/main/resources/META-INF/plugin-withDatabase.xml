@@ -5,4 +5,26 @@
         </io.nimbly.json.Any2Json.lang>
     </extensions>
 
+    <actions>
+
+        <group id="io.nimbly.any2json.Any2Json.db">
+
+            <separator/>
+
+            <action class="io.nimbly.any2json.Any2JsonDefaultAction"
+                    id="io.nimbly.any2json.ANY2JsonDefaultAction.db"
+                    text="Generate Json from Class"
+                    description="Convert CLASS to Json and copy to clipboard">
+            </action>
+
+            <add-to-group group-id="DatabaseViewPopupMenu" anchor="last"/>
+
+            <add-to-group group-id="Console.TableResult.CellEditor.Popup" anchor="last"/>
+            <add-to-group group-id="Console.TableResult.PopupGroup" anchor="last"/>
+
+            <separator/>
+
+        </group>
+    </actions>
+
 </idea-plugin>
