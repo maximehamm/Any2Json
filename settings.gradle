@@ -8,6 +8,7 @@ include 'extensions:java'
 include 'extensions:kotlin'
 include 'extensions:typescript'
 include 'extensions:database'
+include 'extensions:php'
 
 include 'tests'
 

@@ -1,0 +1,8 @@
+<idea-plugin>
+
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.prettify implementation="io.nimbly.any2json.Php2JsonPrettify">
+        </io.nimbly.json.Any2Json.prettify>
+    </extensions>
+
+</idea-plugin>

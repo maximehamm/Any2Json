@@ -99,7 +99,7 @@ class TypeScriptToJson : Any2JsonExtensionPoint {
     }
 
     override fun presentation(actionType: EType, event: AnActionEvent): String {
-        val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE)!!
+        val psiFile = event.getData(CommonDataKeys.PSI_FILE)!!
         val editor = event.getData(CommonDataKeys.EDITOR)!!
         val element = psiFile.findElementAt(editor.caretModel.offset)!!
         val type = PsiTreeUtil.getContextOfType(element, TypeScriptInterface::class.java)!!

@@ -59,7 +59,7 @@ class Java2JsonPrettify : Any2JsonPrettifyExtensionPoint {
 
 
     private fun getLiteral(event: AnActionEvent): PsiLiteralExpression? {
-        val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return null
+        val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return null
         val editor = event.getData(CommonDataKeys.EDITOR) ?: return null
         val element = psiFile.findElementAt(editor.caretModel.offset) ?: return null
         val parent = element.parent ?: return null

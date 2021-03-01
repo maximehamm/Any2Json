@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.intellij' //version '0.6.5'
+    id 'org.jetbrains.intellij'
     id 'org.jetbrains.kotlin.jvm' version '1.4.30'
 }
 
@@ -12,6 +12,7 @@ dependencies {
     runtimeOnly project(':extensions:java')
     runtimeOnly project(':extensions:kotlin')
     runtimeOnly project(':extensions:typescript')
+    runtimeOnly project(':extensions:php')
     runtimeOnly project(':extensions:database')
 
     // Json
@@ -30,8 +31,19 @@ compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '2020.3'
-    intellij.type = 'IU' // IU, IC, CL, PS...
+    version 'IU-203.7148.57'
+    plugins = ['com.jetbrains.php:203.7148.15',
+               'PsiViewer:203-SNAPSHOT']
+
+    // intellij types :
+    // 'IC' - IntelliJ IDEA Community Edition.
+    // 'IU' - IntelliJ IDEA Ultimate Edition.
+    // 'CL' - CLion.
+    // 'PY' - PyCharm Professional Edition.
+    // 'PC' - PyCharm Community Edition.
+    // 'RD' - Rider.
+    // 'GO' - GoLand.
+    // 'JPS' - JPS-only
 }
 
 tasks.runPluginVerifier {
@@ -43,6 +55,7 @@ patchPluginXml {
       <b>Please Rate and Review this plugin !</b><br/><br/>
       Change notes :
       <ul>
+        <li><b>2.6</b> Prettify Json literal inside PHP Editor</li>
         <li><b>2.5</b> Prettify Json literal inside Kotlin Editor</li>
         <li><b>2.4</b> Prettify Json literal inside Java Editor</li>
         <li><b>2.3</b> Supports using from Database table results</li>

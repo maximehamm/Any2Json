@@ -51,6 +51,7 @@
               &nbsp;&nbsp;}"""</i><br/>
           </li>
           <li>From Java editor. For example: <i>String json = "{ \"id\":633, \"type\": \"T1\" }"</i></li>
+          <li>From PHP editor. For example: <i>&lt;?php $json = '{"a":1,"b":2,"c":3, "x": {"d":4, "e":5} }';</i></li>
        </ul>
 
        <br/>
@@ -73,6 +74,7 @@
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
+    <depends>com.jetbrains.php</depends>
 
     <!-- Optional dependencies
     https://jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html#optional-plugin-dependencies -->
@@ -80,6 +82,7 @@
     <depends optional="true" config-file="plugin-withKotlin.xml">org.jetbrains.kotlin</depends>
     <depends optional="true" config-file="plugin-withTypeScript.xml">JavaScript</depends>
     <depends optional="true" config-file="plugin-withDatabase.xml">com.intellij.modules.database</depends>
+    <depends optional="true" config-file="plugin-withPhp.xml">com.jetbrains.php</depends>
 
     <!-- Extension point
     https://developerlife.com/2020/11/21/idea-plugin-example-intro/#extensions-and-extension-points -->

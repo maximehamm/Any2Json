@@ -114,7 +114,7 @@ class KotlinToJson : Any2JsonExtensionPoint {
     }
 
     override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
-        val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return false
+        val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return false
         if (!psiFile.name.endsWith(".kt"))
             return false
 
@@ -130,7 +130,7 @@ class KotlinToJson : Any2JsonExtensionPoint {
     }
 
     override fun presentation(actionType: EType, event: AnActionEvent): String {
-        val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE)!!
+        val psiFile = event.getData(CommonDataKeys.PSI_FILE)!!
         val editor = event.getData(CommonDataKeys.EDITOR)!!
         val element = psiFile.findElementAt(editor.caretModel.offset)!!
         val type = PsiTreeUtil.getContextOfType(element, KtClass::class.java)!!
