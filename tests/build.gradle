@@ -21,13 +21,8 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version 'IU-203.7148.57'
-    plugins = ['java',
-               'Kotlin',
-               'JavaScriptLanguage',
-               'DatabaseTools',
-               'com.jetbrains.php:203.7148.15',
-               'PsiViewer:203-SNAPSHOT']
+    version = rootProject.ext.any2Json_idea_version
+    plugins = rootProject.ext.any2Json_idea_plugins
 }
 
 sourceCompatibility = JavaVersion.VERSION_11

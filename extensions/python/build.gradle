@@ -6,7 +6,7 @@ plugins {
 group 'io.nimbly.json'
 
 jar {
-    archiveBaseName = 'any2json-php'
+    archiveBaseName = 'any2json-python'
 }
 
 dependencies {
@@ -19,7 +19,7 @@ compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version = rootProject.ext.any2Json_idea_version
-    plugins = ['com.jetbrains.php:203.7148.15']
+    plugins = ['Pythonid:203.7148.72']
 }
 
 tasks.buildSearchableOptions {

@@ -9,6 +9,7 @@ include 'extensions:kotlin'
 include 'extensions:typescript'
 include 'extensions:database'
 include 'extensions:php'
+include 'extensions:python'
 
 include 'tests'
 

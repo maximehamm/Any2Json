@@ -41,7 +41,7 @@
        <br/>
        <b>Where is Json prettifier available ?</b><br/>
        <ul>
-          <li>From Kotlin editor. <br/>
+          <li>Kotlin editor<br/>
               for example:<br/><i>
               &nbsp;&nbsp;val json = """{ "id":633,"type":"T1" }"""</i><br/>
               will be :<br/><i>
@@ -50,8 +50,9 @@
               &nbsp;&nbsp;&nbsp;&nbsp;"type": "T1"<br/>
               &nbsp;&nbsp;}"""</i><br/>
           </li>
-          <li>From Java editor. For example: <i>String json = "{ \"id\":633, \"type\": \"T1\" }"</i></li>
-          <li>From PHP editor. For example: <i>&lt;?php $json = '{"a":1,"b":2,"c":3, "x": {"d":4, "e":5} }';</i></li>
+          <li>Java editor. For example: <i>String json = "{ \"id\":633, \"type\": \"T1\" }"</i></li>
+          <li>PHP editor. For example: <i>&lt;?php $json = '{"a":1,"b":2,"c":3, "x": {"d":4, "e":5} }';</i></li>
+          <li>Python editor. For example: <i>json = """{"a":1,"b":2,"c":3, "x" : {"d":4, "e":5} }"""</i></li>
        </ul>
 
        <br/>
@@ -82,6 +83,7 @@
     <depends optional="true" config-file="plugin-withTypeScript.xml">JavaScript</depends>
     <depends optional="true" config-file="plugin-withDatabase.xml">com.intellij.modules.database</depends>
     <depends optional="true" config-file="plugin-withPhp.xml">com.jetbrains.php</depends>
+    <depends optional="true" config-file="plugin-withPython.xml">com.intellij.modules.python</depends>
 
     <!-- Extension point
     https://developerlife.com/2020/11/21/idea-plugin-example-intro/#extensions-and-extension-points -->

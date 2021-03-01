@@ -18,10 +18,9 @@ compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '2020.3'
+    version = rootProject.ext.any2Json_idea_version
     plugins = ['java',
                'Kotlin']
-    intellij.type = 'IU' // IU, IC
 }
 
 tasks.buildSearchableOptions {

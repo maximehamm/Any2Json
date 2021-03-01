@@ -5,10 +5,21 @@ plugins {
     id 'org.jetbrains.intellij' version '0.7.2'
 }
 
+ext {
+    any2Json_idea_version = 'IU-203.7148.57'
+    any2Json_idea_plugins = ['java',
+                             'Kotlin',
+                             'JavaScriptLanguage',
+                             'DatabaseTools',
+                             'com.jetbrains.php:203.7148.15',
+                             'Pythonid:203.7148.72',
+                             'PsiViewer:203-SNAPSHOT']
+}
+
 allprojects {
 
     group = 'io.nimbly.json'
-    version '2.6.0.SNAPSHOT'
+    version '2.7.0.SNAPSHOT'
 
     repositories {
         mavenCentral()
@@ -31,8 +42,8 @@ dependencies {
     implementation project(':extensions:java')
     implementation project(':extensions:kotlin')
     implementation project(':extensions:typescript')
-    implementation project(':extensions:php')
     implementation project(':extensions:database')
+    implementation project(':extensions:python')
 
     testImplementation project(':tests')
 }
