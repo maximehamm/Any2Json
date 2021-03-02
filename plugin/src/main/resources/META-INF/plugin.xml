@@ -10,19 +10,31 @@
 
         <b>Prettify Json in your code :</b><br/>
         <ul>
-          <li>Select a string literal containing some Json</li>
+          <li>Select a string literal containing some Json,
+              for example <i>json = "{ \"id\":633, \"type\": \"T1\" }"</i></li>
           <li>Select "Prettify Json"</li>
-          <li>Let's see your literal turned to a multilined prettified Json !</li>
+          <li>Let's see your literal turned into a multilined prettified Json !</li>
+        </ul>
+
+        <br/>
+        <b>Copy Json literal to clipboard :</b><br/>
+        <ul>
+          <li>Select a string literal containing some Json</li>
+          <li>Select "Copy Json"</li>
+          <li>Paste Json anywhere !"</li>
         </ul>
 
        <br/>
        <b>Converting "Anything" to Json !</b><br/>
        <ul>
-          <li>Select what to convet to Json</li>
+          <li>Select what to convert to Json,
+              for example a class, a table, an xml or yaml file, a variable in debugger, etc.</li>
           <li>Do right click</li>
-          <li>Select "Convet to Json"</li>
+          <li>Select "Convert to Json"</li>
+          <li>Paste Json anywhere !"</li>
        </ul>
 
+       <br/>
        <br/>
        <b>Where is Any to Json available ?</b><br/>
        <ul>
@@ -53,6 +65,15 @@
           <li>Java editor. For example: <i>String json = "{ \"id\":633, \"type\": \"T1\" }"</i></li>
           <li>PHP editor. For example: <i>&lt;?php $json = '{"a":1,"b":2,"c":3, "x": {"d":4, "e":5} }';</i></li>
           <li>Python editor. For example: <i>json = """{"a":1,"b":2,"c":3, "x" : {"d":4, "e":5} }"""</i></li>
+       </ul>
+
+       <br/>
+       <b>Where is copy prettified Json to clipboard available ?</b><br/>
+       <ul>
+          <li>Java editor</li>
+          <!--<li>Kotlin editor</li>-->
+          <!--<li>PHP editor</li>-->
+          <!--<li>Python editor</li>-->
        </ul>
 
        <br/>
@@ -100,6 +121,10 @@
         <extensionPoint name="io.nimbly.json.Any2Json.prettify" interface="io.nimbly.any2json.Any2JsonPrettifyExtensionPoint"/>
     </extensionPoints>
 
+    <extensionPoints>
+        <extensionPoint name="io.nimbly.json.Any2Json.copy" interface="io.nimbly.any2json.Any2JsonCopyExtensionPoint"/>
+    </extensionPoints>
+
 
     <actions>
 
@@ -132,10 +157,16 @@
 
             <separator/>
 
-            <action class="io.nimbly.any2json.Any2JsonJavaPrettifyAction"
-                    id="io.nimbly.any2json.Any2JsonJavaPrettifyAction"
+            <action class="io.nimbly.any2json.Any2JsonPrettifyAction"
+                    id="io.nimbly.any2json.Any2JsonPrettifyAction"
                     text="Prettify Json"
-                    description="Prettify Json on the fly">
+                    description="Prettify Json and replace literal value with it">
+            </action>
+
+            <action class="io.nimbly.any2json.Any2JsonCopyAction"
+                    id="io.nimbly.any2json.Any2JsonCopyAction"
+                    text="Copy prettified Json"
+                    description="Prettify Json and copy to clipboard">
             </action>
 
             <add-to-group group-id="CutCopyPasteGroup" anchor="last"/>

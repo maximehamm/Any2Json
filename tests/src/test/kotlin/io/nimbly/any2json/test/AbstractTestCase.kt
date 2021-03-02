@@ -131,10 +131,16 @@ abstract class AbstractTestCase : JavaCodeInsightFixtureTestCase() {
     }
 
     protected fun prettify(): String {
-        myFixture.performEditorAction("io.nimbly.any2json.Any2JsonJavaPrettifyAction")
+        myFixture.performEditorAction("io.nimbly.any2json.Any2JsonPrettifyAction")
         return myFixture.editor.document.text
             .replace(Regex("""import ([a-z]|[A-Z]|[.])*;\n"""), "")
     }
+
+    protected fun copy(): String {
+        myFixture.performEditorAction("io.nimbly.any2json.Any2JsonCopyAction")
+        return Toolkit.getDefaultToolkit().systemClipboard.getData(DataFlavor.stringFlavor).toString()
+    }
+
 
 
     override fun setUp() {

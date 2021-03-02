@@ -27,6 +27,14 @@ class JavaPrettifierTests : AbstractJavaTestCase() {
                                 "}";
                     }
                 }""".trimIndent())
+
+        // language=Json
+        assertEquals(copy(), """
+                {
+                  "id": 6,
+                  "type": "Something",
+                  "revision": 100
+                }""".trimIndent())
     }
 
     fun testMultiLined() {
@@ -62,6 +70,19 @@ class JavaPrettifierTests : AbstractJavaTestCase() {
                                 "}";
                     }
                 }""".trimIndent())
+
+        // language=Json
+        assertEquals(copy(), """
+                {
+                  "id": 6,
+                  "type": "Something",
+                  "revision": 100,
+                  "history": [
+                    {
+                      "lenght": 55
+                    }
+                  ]
+                }""".trimIndent())
     }
 
     fun testEmpty() {
@@ -83,5 +104,9 @@ class JavaPrettifierTests : AbstractJavaTestCase() {
                         String before = "{}";
                     }
                 }""".trimIndent())
+
+        // language=Json
+        assertEquals(copy(), """
+                {}""".trimIndent())
     }
 }

@@ -17,3 +17,8 @@ object PRETTIFY {
     operator fun invoke(): ExtensionPointName<Any2JsonPrettifyExtensionPoint> =
         ExtensionPointName.create("$nameSpace.io.nimbly.json.Any2Json.prettify")
 }
+
+object COPY {
+    operator fun invoke(): ExtensionPointName<Any2JsonCopyExtensionPoint> =
+        ExtensionPointName.create("$nameSpace.io.nimbly.json.Any2Json.copy")
+}

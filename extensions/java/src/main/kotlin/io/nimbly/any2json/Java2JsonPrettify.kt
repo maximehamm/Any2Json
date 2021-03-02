@@ -2,22 +2,28 @@ package io.nimbly.any2json
 
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementFactory
 import com.intellij.psi.PsiExpression
-import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.PsiPolyadicExpression
 import com.intellij.psi.PsiWhiteSpace
 import com.intellij.psi.util.PsiLiteralUtil
 import com.intellij.psi.util.PsiTreeUtil
 import com.siyeh.ig.psiutils.ExpressionUtils
+import io.nimbly.any2json.EPrettyAction.COPY
+import io.nimbly.any2json.EPrettyAction.REPLACE
+import java.awt.Toolkit
+import java.awt.datatransfer.StringSelection
 import java.lang.StringBuilder
 
-class Java2JsonPrettify : Any2JsonPrettifyExtensionPoint {
+class Java2JsonPrettify : Java2JsonPrettifyOrCopy(REPLACE), Any2JsonPrettifyExtensionPoint
+
+class Java2JsonCopy : Java2JsonPrettifyOrCopy(COPY), Any2JsonCopyExtensionPoint
+
+open class Java2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
 
     override fun prettify(event: AnActionEvent): Boolean {
 
@@ -38,16 +44,24 @@ class Java2JsonPrettify : Any2JsonPrettifyExtensionPoint {
             content = v
         }
 
-        val prettified = "\"" + PsiLiteralUtil.escapeBackSlashesInTextBlock(prettify(content))
-            .replace("\"", "\\\"")
-            .replace("\n", "\\n\"+\n\"") + "\""
+        val prettify = prettify(content)
 
-        WriteCommandAction.runWriteCommandAction(project) {
-            val factory: PsiElementFactory = JavaPsiFacade.getInstance(project).getElementFactory()
-            val newElement = factory.createExpressionFromText(prettified, null)
-            toReplace.replace(newElement)
+        if (action == REPLACE) {
 
-            newElement.toString()
+            val text = "\"" + PsiLiteralUtil.escapeBackSlashesInTextBlock(prettify)
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n\"+\n\"") + "\""
+
+            WriteCommandAction.runWriteCommandAction(project) {
+                val factory: PsiElementFactory = JavaPsiFacade.getInstance(project).getElementFactory()
+                val newElement = factory.createExpressionFromText(text, null)
+                toReplace.replace(newElement)
+
+                newElement.toString()
+            }
+        }
+        else {
+            Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettify), StringSelection(prettify))
         }
 
         return true

@@ -13,9 +13,15 @@ interface Any2JsonDebuggerExtensionPoint {
     fun loadProperty(node: XValueNodeImpl): Pair<Boolean, Any?>
 }
 
-interface Any2JsonPrettifyExtensionPoint {
+interface Any2JsonPrettifyExtensionPoint : Any2JsonRootExtensionPoint
+
+interface Any2JsonCopyExtensionPoint : Any2JsonRootExtensionPoint
+
+interface Any2JsonRootExtensionPoint {
     fun isEnabled(event: AnActionEvent): Boolean
     fun prettify(event: AnActionEvent): Boolean
 }
+
+enum class EPrettyAction { COPY, REPLACE }
 
 enum class EType { MAIN, SECONDARY }
