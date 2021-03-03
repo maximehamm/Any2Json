@@ -65,6 +65,7 @@ open class Kotlin2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Js
         val prettify = prettify(json)
         if (action == COPY) {
             Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettify), StringSelection(prettify))
+            info("Json prettified and copied to clipboard !", project)
             return true
         }
 

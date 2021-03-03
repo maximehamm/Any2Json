@@ -1,11 +1,9 @@
-package io.nimbly.any2json.util
+package io.nimbly.any2json
 
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.notification.Notifications
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiFile
 
 private val NOTIFICATION_GROUPE =
     NotificationGroupManager.getInstance().getNotificationGroup("io.nimbly.notification.group")
