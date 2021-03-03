@@ -45,23 +45,21 @@ open class Java2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Json
         }
 
         val prettify = prettify(content)
-
-        if (action == REPLACE) {
-
-            val text = "\"" + PsiLiteralUtil.escapeBackSlashesInTextBlock(prettify)
-                .replace("\"", "\\\"")
-                .replace("\n", "\\n\"+\n\"") + "\""
-
-            WriteCommandAction.runWriteCommandAction(project) {
-                val factory: PsiElementFactory = JavaPsiFacade.getInstance(project).getElementFactory()
-                val newElement = factory.createExpressionFromText(text, null)
-                toReplace.replace(newElement)
-
-                newElement.toString()
-            }
-        }
-        else {
+        if (action == COPY) {
             Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettify), StringSelection(prettify))
+            return true
+        }
+
+        val text = "\"" + PsiLiteralUtil.escapeBackSlashesInTextBlock(prettify)
+            .replace("\"", "\\\"")
+            .replace("\n", "\\n\"+\n\"") + "\""
+
+        WriteCommandAction.runWriteCommandAction(project) {
+            val factory: PsiElementFactory = JavaPsiFacade.getInstance(project).getElementFactory()
+            val newElement = factory.createExpressionFromText(text, null)
+            toReplace.replace(newElement)
+
+            newElement.toString()
         }
 
         return true

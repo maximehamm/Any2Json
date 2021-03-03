@@ -27,6 +27,14 @@ class KotlinPrettifierTests : AbstractKotlinTestCase() {
                             }""${'"'}.trimIndent().toString()
                     }
                 }""".trimIndent())
+
+        // language=Json
+        assertEquals(copy(), """
+                {
+                  "id": 6,
+                  "type": "Something",
+                  "revision": 100
+                }""".trimIndent())
     }
 
     fun testMultiLined() {
@@ -63,6 +71,20 @@ class KotlinPrettifierTests : AbstractKotlinTestCase() {
                             }""${'"'}.trimIndent()
                     }
                 }""".trimIndent())
+
+        // language=Json
+        assertEquals(copy(), """
+                {
+                  "id": 6,
+                  "type": "Something",
+                  "revision": 100,
+                  "history": [
+                    {
+                      "lenght": 55,
+                      "depth": 77
+                    }
+                  ]
+                }""".trimIndent())
     }
 
     fun testMultiLinedSimpleQuote() {
@@ -98,6 +120,20 @@ class KotlinPrettifierTests : AbstractKotlinTestCase() {
                               ]
                             }""${'"'}.trimIndent()
                     }
+                }""".trimIndent())
+
+        // language=Json
+        assertEquals(copy(), """
+                {
+                  "id": 6,
+                  "type": "Something",
+                  "revision": 100,
+                  "history": [
+                    {
+                      "lenght": 55,
+                      "depth": 77
+                    }
+                  ]
                 }""".trimIndent())
     }
 

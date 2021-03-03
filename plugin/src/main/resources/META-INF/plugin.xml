@@ -74,9 +74,9 @@
        <b>Where is copy prettified Json to clipboard available ?</b><br/>
        <ul>
           <li>Java editor</li>
-          <!--<li>Kotlin editor</li>-->
-          <!--<li>PHP editor</li>-->
-          <!--<li>Python editor</li>-->
+          <li>Kotlin editor</li>
+          <li>PHP editor</li>
+          <li>Python editor</li>
        </ul>
 
        <br/>
@@ -168,7 +168,7 @@
 
             <action class="io.nimbly.any2json.Any2JsonCopyAction"
                     id="io.nimbly.any2json.Any2JsonCopyAction"
-                    text="Copy prettified Json"
+                    text="Copy as prettified Json"
                     description="Prettify Json and copy to clipboard">
             </action>
 

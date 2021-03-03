@@ -3,7 +3,6 @@ package io.nimbly.any2json
 import com.intellij.application.options.CodeStyle
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
@@ -13,20 +12,22 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiLiteralUtil
 import com.intellij.util.DocumentUtil
+import io.nimbly.any2json.EPrettyAction.COPY
 import org.jetbrains.kotlin.idea.intentions.copyConcatenatedStringToClipboard.ConcatenatedStringGenerator
-import org.jetbrains.kotlin.psi.KtBinaryExpression
-import org.jetbrains.kotlin.psi.KtEscapeStringTemplateEntry
-import org.jetbrains.kotlin.psi.KtLiteralStringTemplateEntry
-import org.jetbrains.kotlin.psi.KtPsiFactory
-import org.jetbrains.kotlin.psi.KtStringTemplateExpression
+import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
-import java.util.ArrayList
+import java.awt.Toolkit
+import java.awt.datatransfer.StringSelection
+import java.util.*
 
-class Kotlin2JsonPrettify : Any2JsonPrettifyExtensionPoint {
+class Kotlin2JsonPrettify : Kotlin2JsonPrettifyOrCopy(EPrettyAction.REPLACE), Any2JsonPrettifyExtensionPoint
+
+class Kotlin2JsonCopy : Kotlin2JsonPrettifyOrCopy(COPY), Any2JsonCopyExtensionPoint
+
+open class Kotlin2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
 
     override fun prettify(event: AnActionEvent): Boolean {
 
@@ -35,8 +36,6 @@ class Kotlin2JsonPrettify : Any2JsonPrettifyExtensionPoint {
         val editor = event.getData(CommonDataKeys.EDITOR) ?: return false
         val document = editor.document
         val literalParent = literal.parent
-
-        //FAIRE IDEM EN JAVA !
 
         var oldElement: PsiElement
         val content: String
@@ -63,8 +62,14 @@ class Kotlin2JsonPrettify : Any2JsonPrettifyExtensionPoint {
                 prettify(content)
             }
 
+        val prettify = prettify(json)
+        if (action == COPY) {
+            Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettify), StringSelection(prettify))
+            return true
+        }
+
         var prettified =
-            PsiLiteralUtil.escapeBackSlashesInTextBlock(prettify(json))
+            PsiLiteralUtil.escapeBackSlashesInTextBlock(prettify)
 
         // Pretify
         val countLines = prettified.count { it == '\n' }

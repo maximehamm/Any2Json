@@ -25,6 +25,16 @@ class PhpPrettifierTests : AbstractTestCase() {
                 }';
                 ?>
                 """.trimIndent())
+
+        // language=Json
+        assertEquals(copy(), """
+                {
+                  "a": 1,
+                  "b": 2,
+                  "c": 3,
+                  "d": 4,
+                  "e": 5
+                }""".trimIndent())
     }
 
     fun testDoubleQuote() {
@@ -48,6 +58,16 @@ class PhpPrettifierTests : AbstractTestCase() {
                 }";
                 ?>
                 """.trimIndent())
+
+        // language=Json
+        assertEquals(copy(), """
+                {
+                  "a": 1,
+                  "b": 2,
+                  "c": 3,
+                  "d": 4,
+                  "e": 5
+                }""".trimIndent())
     }
 
     fun testTag() {
@@ -75,6 +95,16 @@ class PhpPrettifierTests : AbstractTestCase() {
                 TAG;
                 ?>
                 """.trimIndent())
+
+        // language=Json
+        assertEquals(copy(), """
+                {
+                  "a": 1,
+                  "b": 2,
+                  "c": 3,
+                  "d": 4,
+                  "e": 5
+                }""".trimIndent())
     }
 
     private fun configure(text: String) {

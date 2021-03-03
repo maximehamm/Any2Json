@@ -45,6 +45,8 @@ patchPluginXml {
       <b>Please Rate and Review this plugin !</b><br/><br/>
       Change notes :
       <ul>
+        <li><b>2.9</b> Copy Json literal inside Kotlin, Python, and Php Editor</li>
+        <li><b>2.8</b> Copy Json literal inside Java Editor</li>
         <li><b>2.7</b> Prettify Json literal inside Python Editor</li>
         <li><b>2.6</b> Prettify Json literal inside PHP Editor</li>
         <li><b>2.5</b> Prettify Json literal inside Kotlin Editor</li>

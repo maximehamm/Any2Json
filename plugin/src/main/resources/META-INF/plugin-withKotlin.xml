@@ -10,4 +10,9 @@
         </io.nimbly.json.Any2Json.prettify>
     </extensions>
 
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.copy implementation="io.nimbly.any2json.Kotlin2JsonCopy">
+        </io.nimbly.json.Any2Json.copy>
+    </extensions>
+
 </idea-plugin>

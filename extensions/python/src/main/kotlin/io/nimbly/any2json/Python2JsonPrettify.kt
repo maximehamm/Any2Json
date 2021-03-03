@@ -7,8 +7,14 @@ import com.intellij.psi.PsiDocumentManager
 import com.jetbrains.python.psi.PyParenthesizedExpression
 import com.jetbrains.python.psi.StringLiteralExpression
 import com.jetbrains.python.psi.impl.PyStringLiteralExpressionImpl
+import java.awt.Toolkit
+import java.awt.datatransfer.StringSelection
 
-class Python2JsonPrettify : Any2JsonPrettifyExtensionPoint {
+class Python2JsonPrettify : Python2JsonPrettifyOrCopy(EPrettyAction.REPLACE), Any2JsonPrettifyExtensionPoint
+
+class Python2JsonCopy : Python2JsonPrettifyOrCopy(EPrettyAction.COPY), Any2JsonCopyExtensionPoint
+
+open class Python2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
 
     override fun prettify(event: AnActionEvent): Boolean {
 
@@ -21,6 +27,10 @@ class Python2JsonPrettify : Any2JsonPrettifyExtensionPoint {
 
         // Extract json
         val prettified = prettify(json)
+        if (action == EPrettyAction.COPY) {
+            Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettified), StringSelection(prettified))
+            return true
+        }
 
         // Replace literal and indent new content
         WriteCommandAction.runWriteCommandAction(project) {

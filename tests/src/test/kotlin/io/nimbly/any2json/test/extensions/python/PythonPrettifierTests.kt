@@ -44,6 +44,18 @@ class PythonPrettifierTests : AbstractTestCase() {
                   }
                 }""${'"'}
                 """.trimIndent())
+
+        // language=Json
+        assertEquals(copy(), """
+                {
+                  "a": 1,
+                  "b": 2,
+                  "c": 3,
+                  "x": {
+                    "d": 4,
+                    "e": 5
+                  }
+                }""".trimIndent())
     }
 
     fun testMultilinesWithinParenthesis() {
@@ -73,6 +85,18 @@ class PythonPrettifierTests : AbstractTestCase() {
                   }
                 }""${'"'}
                 """.trimIndent())
+
+        // language=Json
+        assertEquals(copy(), """
+                {
+                  "a": 1,
+                  "b": 2,
+                  "c": 3,
+                  "x": {
+                    "d": 4,
+                    "e": 5
+                  }
+                }""".trimIndent())
     }
 
     private fun configure(text: String) {
