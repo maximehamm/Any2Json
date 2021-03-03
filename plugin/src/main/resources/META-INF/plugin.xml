@@ -137,14 +137,14 @@
 
             <action class="io.nimbly.any2json.Any2JsonDefaultAction"
                     id="io.nimbly.any2json.ANY2JsonDefaultAction"
-                    text="Generate Json from Class"
-                    description="Convert CLASS to Json and copy to clipboard">
+                    text="Generate Json"
+                    description="Convert to Json and copy to clipboard">
             </action>
 
             <action class="io.nimbly.any2json.Any2JsonRandomAction"
                     id="io.nimbly.any2json.ANY2JsonRandomAction"
-                    text="Generate Json from Class with Values"
-                    description="Convert CLASS to Json randomly generate some test data and copy to clipboard">
+                    text="Generate Json with Values"
+                    description="Convert to Json randomly, generate test data and copy to clipboard">
             </action>
 
             <add-to-group group-id="CutCopyPasteGroup" anchor="last"/>
