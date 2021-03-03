@@ -72,7 +72,7 @@ class KotlinPrettifierConversionTests : AbstractKotlinTestCase() {
                 package io.nimbly;
                 class Test {
                     fun test() {
-                       val xml = ""${'"'}<caret>
+                       val csv = ""${'"'}<caret>
                            Identifier;Access code;Recovery code;First name;Last name;Department;Location;Description
                            5079;09ja61;js5079;Jamie;Smith;Engineering;;"Quit good; let's see !"
                            4081;;;;;;;The description !
@@ -85,7 +85,7 @@ class KotlinPrettifierConversionTests : AbstractKotlinTestCase() {
                 package io.nimbly;
                 class Test {
                     fun test() {
-                       val xml = ""${'"'}[
+                       val csv = ""${'"'}[
                              {
                                "Identifier": "5079",
                                "Access code": "09ja61",
@@ -143,7 +143,7 @@ class KotlinPrettifierConversionTests : AbstractKotlinTestCase() {
                 package io.nimbly;
                 class Test {
                     fun test() {
-                       val xml = ""${'"'}<caret>
+                       val yaml = ""${'"'}<caret>
                             ---
                             - hosts: webservers
                             
@@ -173,7 +173,7 @@ class KotlinPrettifierConversionTests : AbstractKotlinTestCase() {
                 package io.nimbly;
                 class Test {
                     fun test() {
-                       val xml = ""${'"'}[
+                       val yaml = ""${'"'}[
                              {
                                "hosts": "webservers",
                                "vars": {
@@ -234,6 +234,81 @@ class KotlinPrettifierConversionTests : AbstractKotlinTestCase() {
                 ]
               }
             ]""".trimIndent())
+    }
+
+    fun testFromProperties() {
+
+        // language=Kt
+        configure("""
+                package io.nimbly;
+                class Test {
+                    fun test() {
+                       val properties = ""${'"'}<caret>
+                            spring.rabbitmq.dynamic=true
+                            spring.rabbitmq.port=5672
+                            spring.rabbitmq.username=guest
+                            spring.rabbitmq.password=guest
+                            spring.rabbitmq.host=localhost
+                            git.user.default.login=default#User
+                            git.user.default.email=defaultUser@akwatype.io
+                            git.user.default=Maxime""${'"'}.trimIndent()
+                    }
+                }""")
+
+        // language=Kt
+        assertEquals(prettify(), """
+            package io.nimbly;
+            class Test {
+                fun test() {
+                   val properties = ""${'"'}{
+                         "git": {
+                           "user": {
+                             "default": [
+                               "Maxime",
+                               {
+                                 "email": "defaultUser@akwatype.io",
+                                 "login": "default#User"
+                               }
+                             ]
+                           }
+                         },
+                         "spring": {
+                           "rabbitmq": {
+                             "dynamic": "true",
+                             "host": "localhost",
+                             "password": "guest",
+                             "port": "5672",
+                             "username": "guest"
+                           }
+                         }
+                       }""${'"'}.trimIndent()
+                }
+            }""".trimIndent())
+
+        // language=Json
+        assertEquals(copy(), """
+            {
+              "git": {
+                "user": {
+                  "default": [
+                    "Maxime",
+                    {
+                      "email": "defaultUser@akwatype.io",
+                      "login": "default#User"
+                    }
+                  ]
+                }
+              },
+              "spring": {
+                "rabbitmq": {
+                  "dynamic": "true",
+                  "host": "localhost",
+                  "password": "guest",
+                  "port": "5672",
+                  "username": "guest"
+                }
+              }
+            }""".trimIndent())
     }
 
     fun testFromUnknown() {

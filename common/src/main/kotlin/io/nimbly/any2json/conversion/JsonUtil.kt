@@ -2,8 +2,11 @@ package io.nimbly.any2json
 
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
+import io.nimbly.any2json.EType.SECONDARY
+import io.nimbly.any2json.conversion.looksLikeProperties
+import io.nimbly.any2json.conversion.propertiesToMap
 
-val NO_CONVERSION_FOUND = "Not a valid Json, Xml, Csv or Yaml !"
+const val NO_CONVERSION_FOUND = "Not a valid Json, Xml, Csv, Yaml or Properties !"
 
 fun toJson(any: Any)
     = GsonBuilder()
@@ -13,7 +16,9 @@ fun toJson(any: Any)
         .create()
         .toJson(any)
 
-fun convertToJson(any: String): String {
+fun convertToJson(content: String): String {
+
+    val any = content.trimIndent()
 
     try {
         // json to json
@@ -27,7 +32,7 @@ fun convertToJson(any: String): String {
 
     try {
         // yaml to json
-        return toJson(yamlToJson(any.trimIndent()))
+        return toJson(yamlToJson(any))
     } catch (ignored: Exception) { }
 
     try {
@@ -36,6 +41,11 @@ fun convertToJson(any: String): String {
             return toJson(csvToMap(any))
     } catch (ignored: Exception) { }
 
+    try {
+        // properties to json
+        if (looksLikeProperties(any))
+            return toJson(propertiesToMap(any, SECONDARY))
+    } catch (ignored: Exception) { }
 
     throw Any2JsonConversionException(NO_CONVERSION_FOUND)
 }

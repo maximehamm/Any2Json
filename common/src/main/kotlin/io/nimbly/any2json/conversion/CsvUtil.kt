@@ -25,6 +25,10 @@ fun looksLikeCsv(csv: String): Boolean {
     if (yamlStart)
         throw Any2PojoException("Looks like YAML not CSV !")
 
+    val propertiesSep = csv.count { it == '=' }
+    if (separorCounts < propertiesSep)
+        throw Any2PojoException("Looks like PROPERTIES not CSV !")
+
     return true
 }
 
