@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.PsiDocumentManager
 import com.jetbrains.python.psi.PyParenthesizedExpression
-import com.jetbrains.python.psi.StringLiteralExpression
 import com.jetbrains.python.psi.impl.PyStringLiteralExpressionImpl
 import io.nimbly.any2json.EPrettyAction.COPY
 import java.awt.Toolkit
@@ -27,7 +26,7 @@ open class Python2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Js
         val parent = literal.parent
 
         // Extract json
-        val prettified = prettify(json)
+        val prettified = convertToPrettifiedJson(json)
         if (action == COPY) {
             Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettified), StringSelection(prettified))
             info("Json prettified and copied to clipboard !", project)

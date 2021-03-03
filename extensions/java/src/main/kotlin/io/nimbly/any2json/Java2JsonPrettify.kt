@@ -33,7 +33,7 @@ open class Java2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Json
         val (content, toReplace) = parse(l)
         if (content == null) return false
 
-        val prettify = prettify(content)
+        val prettify = convertToPrettifiedJson(content)
         if (action == COPY) {
             Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettify), StringSelection(prettify))
             info("Json prettified and copied to clipboard !", project)

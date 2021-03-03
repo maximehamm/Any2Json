@@ -162,7 +162,7 @@
 
             <action class="io.nimbly.any2json.Any2JsonPrettifyAction"
                     id="io.nimbly.any2json.Any2JsonPrettifyAction"
-                    text="Prettify Json"
+                    text="Convert to prettified Json"
                     description="Prettify Json and replace literal value with it">
             </action>
 

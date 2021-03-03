@@ -20,6 +20,10 @@ targetCompatibility = JavaVersion.VERSION_11
 compileKotlin { kotlinOptions.jvmTarget = "11" }
 compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 
+dependencies {
+    implementation 'org.json:json:20180813'
+}
+
 tasks.buildSearchableOptions {
     enabled = false
 }

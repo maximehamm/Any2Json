@@ -7,11 +7,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.testFramework.PsiTestUtil
 import com.intellij.testFramework.fixtures.JavaCodeInsightFixtureTestCase
 import com.intellij.testFramework.fixtures.kotlin.KotlinTester
-import io.nimbly.any2json.TEST_BOOL
-import io.nimbly.any2json.TEST_CHAR
-import io.nimbly.any2json.TEST_DOUBLE
-import io.nimbly.any2json.TEST_INT
-import io.nimbly.any2json.TEST_NOW
+import io.nimbly.any2json.*
 import io.nimbly.any2json.test.AbstractTestCase.EXT.java
 import io.nimbly.any2json.test.AbstractTestCase.EXT.kt
 import junit.framework.TestCase
@@ -123,6 +119,8 @@ abstract class AbstractTestCase : JavaCodeInsightFixtureTestCase() {
 
     private fun innerToJson(actionId: String): String {
 
+        resetLastNotification()
+
         val action = ActionManagerEx.getInstanceEx().getAction(actionId)
         val presentation = myFixture.testAction(action)
 
@@ -136,6 +134,8 @@ abstract class AbstractTestCase : JavaCodeInsightFixtureTestCase() {
     }
 
     protected fun prettify(): String {
+
+        resetLastNotification()
 
         val action = ActionManagerEx.getInstanceEx().getAction("io.nimbly.any2json.Any2JsonPrettifyAction")
         val presentation = myFixture.testAction(action)

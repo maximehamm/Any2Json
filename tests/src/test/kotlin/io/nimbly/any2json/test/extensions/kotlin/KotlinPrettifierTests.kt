@@ -175,4 +175,38 @@ class KotlinPrettifierTests : AbstractKotlinTestCase() {
         // language=t
         assertEquals(copy(), "Not enabled")
     }
+
+    fun testCaretNearQuotes() {
+
+        // language=Kt
+        configure("""
+                package io.nimbly;
+                class Test {
+                    fun test() {
+                        val before = ""${'"'}{ "id":6, "type": "Something", "revision": 100 }<caret>""${'"'}.toString()
+                    }
+                }""")
+
+        // language=Kt
+        assertEquals(prettify(), """
+                package io.nimbly;
+                class Test {
+                    fun test() {
+                        val before = ""${'"'}{
+                              "id": 6,
+                              "type": "Something",
+                              "revision": 100
+                            }""${'"'}.trimIndent().toString()
+                    }
+                }""".trimIndent())
+
+        // language=Json
+        assertEquals(copy(), """
+                {
+                  "id": 6,
+                  "type": "Something",
+                  "revision": 100
+                }""".trimIndent())
+    }
+
 }

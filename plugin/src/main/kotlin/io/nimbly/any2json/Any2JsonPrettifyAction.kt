@@ -25,6 +25,9 @@ open class Any2JsonRootAction<T:Any2JsonRootExtensionPoint>(
         catch (e: JsonSyntaxException) {
             warn("Malformed Json !", event.project!!)
         }
+        catch (e: Any2JsonConversionException) {
+            warn(e.message!!, event.project!!)
+        }
         catch (e: Exception) {
             warn("Json prettifier error : ${e.message}", event.project!!)
         }
