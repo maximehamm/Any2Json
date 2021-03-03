@@ -18,6 +18,7 @@ interface Any2JsonPrettifyExtensionPoint : Any2JsonRootExtensionPoint
 interface Any2JsonCopyExtensionPoint : Any2JsonRootExtensionPoint
 
 interface Any2JsonRootExtensionPoint {
+    fun isVisible(event: AnActionEvent): Boolean
     fun isEnabled(event: AnActionEvent): Boolean
     fun prettify(event: AnActionEvent): Boolean
 }

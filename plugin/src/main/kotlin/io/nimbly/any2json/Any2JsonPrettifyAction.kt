@@ -32,11 +32,12 @@ open class Any2JsonRootAction<T:Any2JsonRootExtensionPoint>(
     }
 
     override fun update(event: AnActionEvent) {
-        val enabled =
-            EXT.extensionList.find {
-                it.isEnabled(event)
-            } != null
-        event.presentation.isVisible = enabled
-        event.presentation.isEnabled = enabled
+
+        val ext = EXT.extensionList.find {
+            it.isVisible(event)
+        }
+
+        event.presentation.isVisible = ext != null
+        event.presentation.isEnabled = ext != null && ext.isEnabled(event)
     }
 }

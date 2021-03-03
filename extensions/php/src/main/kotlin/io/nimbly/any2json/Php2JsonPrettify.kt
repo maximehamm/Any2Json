@@ -50,8 +50,11 @@ open class Php2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonR
         return true
     }
 
-    override fun isEnabled(event: AnActionEvent)
+    override fun isVisible(event: AnActionEvent)
         = getLiteral(event) != null
+
+    override fun isEnabled(event: AnActionEvent)
+            = isVisible(event) // TODO DO AS JAVA
 
     private fun getLiteral(event: AnActionEvent): StringLiteralExpression? {
         val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return null

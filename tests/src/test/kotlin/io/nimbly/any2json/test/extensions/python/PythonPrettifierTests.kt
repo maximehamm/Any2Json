@@ -99,6 +99,20 @@ class PythonPrettifierTests : AbstractTestCase() {
                 }""".trimIndent())
     }
 
+    fun testNotEnabled() {
+
+        // language=t
+        configure("""
+                num = 999<caret>
+                """)
+
+        // language=t
+        assertEquals(prettify(), "Not enabled")
+
+        // language=t
+        assertEquals(copy(), "Not enabled")
+    }
+
     private fun configure(text: String) {
         myFixture.configureByText("test.py", text.trimIndent())
     }

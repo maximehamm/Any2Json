@@ -30,19 +30,8 @@ open class Java2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Json
         val l = getLiteral(event) ?:return false
         val project = event.project ?: return false
 
-        val content: String
-        val toReplace: PsiElement
-        val type = PsiTreeUtil.getContextOfType(l, PsiPolyadicExpression::class.java)
-        if (type !=null) {
-           content = buildConcatenationText(type)
-           toReplace = type
-        }
-        else {
-            val v = l.value ?: return false
-            if (v !is String) return false
-            toReplace = l
-            content = v
-        }
+        val (content, toReplace) = parse(l)
+        if (content == null) return false
 
         val prettify = prettify(content)
         if (action == COPY) {
@@ -50,6 +39,7 @@ open class Java2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Json
             return true
         }
 
+        if (toReplace == null) return false
         val text = "\"" + PsiLiteralUtil.escapeBackSlashesInTextBlock(prettify)
             .replace("\"", "\\\"")
             .replace("\n", "\\n\"+\n\"") + "\""
@@ -65,10 +55,35 @@ open class Java2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Json
         return true
     }
 
+    override fun isVisible(event: AnActionEvent): Boolean {
+        val literal = getLiteral(event) ?: return false
+        val (content, element) = parse(literal)
+        return content!=null && element!=null
+    }
 
-    override fun isEnabled(event: AnActionEvent)
-        = getLiteral(event) != null
+    override fun isEnabled(event: AnActionEvent): Boolean {
+        val literal = getLiteral(event) ?: return false
+        val (content, _) = parse(literal)
+        return content!=null
+    }
 
+    private fun parse(literal: PsiLiteralExpression): Pair<String?, PsiElement?> {
+
+        val content: String
+        val toReplace: PsiElement
+        val type = PsiTreeUtil.getContextOfType(literal, PsiPolyadicExpression::class.java)
+        if (type !=null) {
+            content = buildConcatenationText(type)
+            toReplace = type
+        }
+        else {
+            val v = literal.value ?: return null to null
+            if (v !is String) return null to null
+            toReplace = literal
+            content = v
+        }
+        return content to toReplace
+    }
 
     private fun getLiteral(event: AnActionEvent): PsiLiteralExpression? {
         val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return null

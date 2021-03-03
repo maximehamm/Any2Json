@@ -173,9 +173,11 @@ open class Kotlin2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Js
     }
 
 
-    override fun isEnabled(event: AnActionEvent)
+    override fun isVisible(event: AnActionEvent)
         = getLiteral(event) != null
 
+    override fun isEnabled(event: AnActionEvent)
+        = isVisible(event) // TODO DO AS JAVA
 
     private fun getLiteral(event: AnActionEvent): KtStringTemplateExpression? {
         val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return null

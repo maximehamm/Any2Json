@@ -109,4 +109,22 @@ class JavaPrettifierTests : AbstractJavaTestCase() {
         assertEquals(copy(), """
                 {}""".trimIndent())
     }
+
+    fun testNotEnabled() {
+
+        // language=Java
+        configure("""
+                package io.nimbly;
+                public class Test {
+                    public void test() {
+                        String before = 999<caret>;
+                    }
+                }""")
+
+        // language=t
+        assertEquals(prettify(), "Not enabled")
+
+        // language=t
+        assertEquals(copy(), "Not enabled")
+    }
 }

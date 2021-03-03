@@ -157,4 +157,22 @@ class KotlinPrettifierTests : AbstractKotlinTestCase() {
                     }
                 }""".trimIndent())
     }
+
+    fun testNotEnabled() {
+
+        // language=Kt
+        configure("""
+                package io.nimbly;
+                class Test {
+                    fun test() {
+                        val before = 999<caret>
+                    }
+                }""")
+
+        // language=t
+        assertEquals(prettify(), "Not enabled")
+
+        // language=t
+        assertEquals(copy(), "Not enabled")
+    }
 }

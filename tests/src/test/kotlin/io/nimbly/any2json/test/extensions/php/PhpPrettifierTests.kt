@@ -107,6 +107,22 @@ class PhpPrettifierTests : AbstractTestCase() {
                 }""".trimIndent())
     }
 
+    fun testNotEnabled() {
+
+        // language=t
+        configure("""
+                <?php
+                x = 999<caret>;
+                ?>
+                """)
+
+        // language=t
+        assertEquals(prettify(), "Not enabled")
+
+        // language=t
+        assertEquals(copy(), "Not enabled")
+    }
+
     private fun configure(text: String) {
         myFixture.configureByText("test.php", text.trimIndent())
     }
