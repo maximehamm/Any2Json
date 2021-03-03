@@ -178,7 +178,7 @@ open class Kotlin2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Js
         = getLiteral(event) != null
 
     override fun isEnabled(event: AnActionEvent)
-        = isVisible(event) // TODO DO AS JAVA
+        = isVisible(event)
 
     private fun getLiteral(event: AnActionEvent): KtStringTemplateExpression? {
         val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return null
@@ -190,6 +190,9 @@ open class Kotlin2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Js
             if (parent2 !is KtStringTemplateExpression)
                 return null
             return parent2
+        }
+        else if (parent1 is KtStringTemplateExpression) {
+            return parent1
         }
         return null
     }

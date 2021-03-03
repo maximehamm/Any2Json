@@ -187,6 +187,14 @@ class KotlinPrettifierTests : AbstractKotlinTestCase() {
                     }
                 }""")
 
+        // language=Json
+        assertEquals(copy(), """
+                {
+                  "id": 6,
+                  "type": "Something",
+                  "revision": 100
+                }""".trimIndent())
+
         // language=Kt
         assertEquals(prettify(), """
                 package io.nimbly;
@@ -198,14 +206,6 @@ class KotlinPrettifierTests : AbstractKotlinTestCase() {
                               "revision": 100
                             }""${'"'}.trimIndent().toString()
                     }
-                }""".trimIndent())
-
-        // language=Json
-        assertEquals(copy(), """
-                {
-                  "id": 6,
-                  "type": "Something",
-                  "revision": 100
                 }""".trimIndent())
     }
 
