@@ -10,15 +10,13 @@
 
         <b>Prettify Json in your code :</b><br/>
         <ul>
-          <li>Select a string literal containing some Json,
-              for example <i>json = "{ \"id\":633, \"type\": \"T1\" }"</i></li>
+          <li>Select a string literal containing some Json</i></li>
           <li>Select "Prettify Json"</li>
-          <li>Let's see your literal turned into a multilined prettified Json !</li>
+          <li>Let's see your literal turned into a multilined prettified Json !
+              <p><img src="https://plugins.jetbrains.com/files/16055/screenshot_838e390e-dcc2-4903-82fa-a1a7da16d257"
+                  alt="Any to Json" width="419" height="233"></p>
+          </li>
         </ul>
-
-        <p><img src="https://plugins.jetbrains.com/files/16055/screenshot_f11569bc-e9d7-4818-aac8-63a083fbc958"
-            alt="Any to Json" width="625" height="209"></p>
-
         <br/>
         <b>Copy Json literal to clipboard :</b><br/>
         <ul>
