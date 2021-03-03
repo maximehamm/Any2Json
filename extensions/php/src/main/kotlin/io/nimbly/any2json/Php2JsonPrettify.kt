@@ -24,7 +24,7 @@ open class Php2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonR
         val json = literal.contents;
 
         // Extract json
-        val prettified = convertToPrettifiedJson(json)
+        val prettified = convertToJson(json)
         if (action == COPY) {
             Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettified), StringSelection(prettified))
             info("Json prettified and copied to clipboard !", project)

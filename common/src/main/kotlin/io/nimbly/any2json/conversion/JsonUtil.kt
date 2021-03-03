@@ -2,9 +2,8 @@ package io.nimbly.any2json
 
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
-import org.json.JSONException
-import org.json.JSONObject
-import org.json.XML
+
+val NO_CONVERSION_FOUND = "Not a valid Json, Xml, Csv or Yaml !"
 
 fun toJson(any: Any)
     = GsonBuilder()
@@ -14,14 +13,7 @@ fun toJson(any: Any)
         .create()
         .toJson(any)
 
-fun xmlToJson(xml: String): JSONObject {
-    val json = XML.toJSONObject(xml)
-    if (json.toMap().isEmpty() && xml.isNotEmpty())
-        throw JSONException("Xml to Json fails")
-    return json
-}
-
-fun convertToPrettifiedJson(any: String): String {
+fun convertToJson(any: String): String {
 
     try {
         // json to json
@@ -30,8 +22,20 @@ fun convertToPrettifiedJson(any: String): String {
 
     try {
         // xml to json
-        return  toJson(xmlToJson(any).toMap())
+        return toJson(xmlToJson(any).toMap())
     } catch (ignored: Exception) { }
 
-    throw Any2JsonConversionException("Not a valid Json or Xml !")
+    try {
+        // yaml to json
+        return toJson(yamlToJson(any.trimIndent()))
+    } catch (ignored: Exception) { }
+
+    try {
+        // csv to json
+        if (looksLikeCsv(any))
+            return toJson(csvToMap(any))
+    } catch (ignored: Exception) { }
+
+
+    throw Any2JsonConversionException(NO_CONVERSION_FOUND)
 }

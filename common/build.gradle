@@ -21,7 +21,14 @@ compileKotlin { kotlinOptions.jvmTarget = "11" }
 compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 
 dependencies {
+
+    // XML supports
     implementation 'org.json:json:20180813'
+
+    // CSV supports
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.11.2'
+
 }
 
 tasks.buildSearchableOptions {

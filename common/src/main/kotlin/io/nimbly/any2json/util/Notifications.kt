@@ -30,7 +30,7 @@ fun notify(message: String, type: NotificationType, project: Project) {
 }
 
 fun lastNotification()
-    = LAST_NOTIFICATION?.content
+    = LAST_NOTIFICATION?.content ?: ""
 
 fun resetLastNotification() {
     LAST_NOTIFICATION = null

@@ -59,10 +59,10 @@ open class Kotlin2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Js
                 content.substring(1, content.length - 1)
             }
             else {
-                convertToPrettifiedJson(content)
+                convertToJson(content)
             }
 
-        val prettify = convertToPrettifiedJson(json)
+        val prettify = convertToJson(json)
         if (action == COPY) {
             Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettify), StringSelection(prettify))
             info("Json prettified and copied to clipboard !", project)

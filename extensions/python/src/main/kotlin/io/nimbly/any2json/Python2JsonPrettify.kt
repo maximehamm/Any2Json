@@ -26,7 +26,7 @@ open class Python2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Js
         val parent = literal.parent
 
         // Extract json
-        val prettified = convertToPrettifiedJson(json)
+        val prettified = convertToJson(json)
         if (action == COPY) {
             Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettified), StringSelection(prettified))
             info("Json prettified and copied to clipboard !", project)
