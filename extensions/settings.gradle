@@ -1,3 +1,4 @@
+include 'community'
 include 'java'
 include 'kotlin'
 include 'typescript'

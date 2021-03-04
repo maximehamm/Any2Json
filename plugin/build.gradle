@@ -9,22 +9,13 @@ dependencies {
 
     implementation project(':common')
 
+    runtimeOnly project(':extensions:community')
     runtimeOnly project(':extensions:java')
     runtimeOnly project(':extensions:kotlin')
     runtimeOnly project(':extensions:typescript')
     runtimeOnly project(':extensions:database')
     runtimeOnly project(':extensions:php')
     runtimeOnly project(':extensions:python')
-
-    // Json
-    implementation 'org.json:json:20180813'
-
-    // CSV supports
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.11.2'
-
-    // YAML supports
-    implementation 'org.yaml:snakeyaml:1.27'
 }
 
 compileKotlin { kotlinOptions.jvmTarget = "11" }

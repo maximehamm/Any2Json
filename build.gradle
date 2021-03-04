@@ -39,6 +39,7 @@ dependencies {
 
     implementation project(':plugin')
     implementation project(':common')
+    implementation project(':extensions:community')
     implementation project(':extensions:java')
     implementation project(':extensions:kotlin')
     implementation project(':extensions:typescript')

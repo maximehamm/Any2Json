@@ -1,0 +1,37 @@
+plugins {
+    id 'org.jetbrains.intellij'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.30'
+}
+
+group 'io.nimbly.json'
+
+jar {
+    archiveBaseName = 'any2json-community'
+}
+
+dependencies {
+    implementation project(':common')
+
+    // Json
+    implementation 'org.json:json:20180813'
+
+    // CSV supports
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.11.2'
+
+    // YAML supports
+    implementation 'org.yaml:snakeyaml:1.27'
+}
+
+compileKotlin { kotlinOptions.jvmTarget = "11" }
+compileTestKotlin { kotlinOptions.jvmTarget = "11" }
+
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+intellij {
+    version = rootProject.ext.any2Json_idea_version
+}
+
+tasks.buildSearchableOptions {
+    enabled = false
+}
+

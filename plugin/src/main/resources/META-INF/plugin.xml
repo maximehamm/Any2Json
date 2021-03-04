@@ -113,19 +113,33 @@
     <extensionPoints>
         <extensionPoint name="io.nimbly.json.Any2Json.lang" interface="io.nimbly.any2json.Any2JsonExtensionPoint"/>
     </extensionPoints>
-
     <extensionPoints>
         <extensionPoint name="io.nimbly.json.Any2Json.debugger" interface="io.nimbly.any2json.Any2JsonDebuggerExtensionPoint"/>
     </extensionPoints>
-
     <extensionPoints>
         <extensionPoint name="io.nimbly.json.Any2Json.prettify" interface="io.nimbly.any2json.Any2JsonPrettifyExtensionPoint"/>
     </extensionPoints>
-
     <extensionPoints>
         <extensionPoint name="io.nimbly.json.Any2Json.copy" interface="io.nimbly.any2json.Any2JsonCopyExtensionPoint"/>
     </extensionPoints>
 
+
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.XmlToJson">
+        </io.nimbly.json.Any2Json.lang>
+    </extensions>
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.CsvToJson">
+        </io.nimbly.json.Any2Json.lang>
+    </extensions>
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.PropertiesToJson">
+        </io.nimbly.json.Any2Json.lang>
+    </extensions>
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.YamlToJson">
+        </io.nimbly.json.Any2Json.lang>
+    </extensions>
 
     <actions>
 
