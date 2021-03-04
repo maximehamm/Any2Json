@@ -21,7 +21,7 @@ class CsvToJson : Any2JsonExtensionPoint {
             return false
 
         val psiFile : PsiFile = event.getData(PSI_FILE) ?: return false
-        if (! psiFile.name.endsWith(".csv"))
+        if (! psiFile.name.toLowerCase().endsWith(".csv"))
             return false
 
         return true

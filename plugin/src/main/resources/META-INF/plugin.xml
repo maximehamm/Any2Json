@@ -145,6 +145,15 @@
         </io.nimbly.json.Any2Json.lang>
     </extensions>
 
+<!--    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">-->
+<!--        <io.nimbly.json.Any2Json.prettify implementation="io.nimbly.any2json.JsonPrettify">-->
+<!--        </io.nimbly.json.Any2Json.prettify>-->
+<!--    </extensions>-->
+<!--    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">-->
+<!--        <io.nimbly.json.Any2Json.copy implementation="io.nimbly.any2json.JsonCopy">-->
+<!--        </io.nimbly.json.Any2Json.copy>-->
+<!--    </extensions>-->
+
     <actions>
 
         <group id="io.nimbly.any2json.Any2Json">

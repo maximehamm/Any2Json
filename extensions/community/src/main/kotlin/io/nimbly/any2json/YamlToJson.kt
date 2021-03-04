@@ -21,7 +21,7 @@ class YamlToJson : Any2JsonExtensionPoint {
             return false
 
         val psiFile : PsiFile = event.getData(PSI_FILE) ?: return false
-        if (!psiFile.name.endsWith(".yaml") && !psiFile.name.endsWith(".yml"))
+        if (!psiFile.name.toLowerCase().endsWith(".yaml") && !psiFile.name.toLowerCase().endsWith(".yml"))
             return false
 
         return true

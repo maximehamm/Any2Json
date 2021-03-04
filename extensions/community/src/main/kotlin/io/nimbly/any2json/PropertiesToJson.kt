@@ -19,7 +19,7 @@ class PropertiesToJson : Any2JsonExtensionPoint {
 
     override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
         val psiFile : PsiFile = event.getData(PSI_FILE) ?: return false
-        if (! psiFile.name.endsWith(".properties"))
+        if (! psiFile.name.toLowerCase().endsWith(".properties"))
             return false
         return true
     }

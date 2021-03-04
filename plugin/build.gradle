@@ -61,6 +61,7 @@ patchPluginXml {
       <br/>
       Road map :
       <ul>
+        <li>Prettify content of .json file</li>
         <li>Export only selected XML Tag not the full file</li>
         <li>Export only selected Propertoes not the full file</li>
         <li>Export only selected CSV lines not the full file</li>

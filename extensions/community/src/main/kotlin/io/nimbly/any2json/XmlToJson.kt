@@ -21,7 +21,7 @@ class XmlToJson : Any2JsonExtensionPoint {
             return false
 
         val psiFile : PsiFile = event.getData(PSI_FILE) ?: return false
-        if (! psiFile.name.endsWith(".xml"))
+        if (! psiFile.name.toLowerCase().endsWith(".xml"))
             return false
 
         return true

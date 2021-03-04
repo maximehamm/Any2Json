@@ -1,0 +1,61 @@
+package io.nimbly.any2json
+
+import com.google.gson.JsonParser
+import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.psi.PsiDocumentManager
+import com.intellij.psi.PsiFile
+import io.nimbly.any2json.EPrettyAction.COPY
+import java.awt.Toolkit
+import java.awt.datatransfer.StringSelection
+
+class JsonPrettify : JsonPrettifyOrCopy(EPrettyAction.REPLACE), Any2JsonPrettifyExtensionPoint
+
+class JsonCopy : JsonPrettifyOrCopy(COPY), Any2JsonCopyExtensionPoint
+
+open class JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
+
+    override fun prettify(event: AnActionEvent): Boolean {
+
+        val project = event.project ?: return false
+        val editor = event.getData(CommonDataKeys.EDITOR) ?: return false
+        val document = editor.document
+        val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return false
+
+        val json = psiFile.text;
+
+        // Extract json
+        val prettified = toJson(JsonParser.parseString(json))
+
+        if (action == COPY) {
+            Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettified), StringSelection(prettified))
+            info("Json prettified and copied to clipboard !", project)
+            return true
+        }
+
+        // Replace literal and indent new content
+        WriteCommandAction.runWriteCommandAction(project) {
+
+            // Replace literal
+            document.setText(prettified)
+
+            // commit
+            PsiDocumentManager.getInstance(project).commitDocument(document)
+            PsiDocumentManager.getInstance(project).doPostponedOperationsAndUnblockDocument(document)
+        }
+
+        return true
+    }
+
+    override fun isVisible(event: AnActionEvent): Boolean {
+        val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return false
+        if (! psiFile.name.toLowerCase().endsWith(".json"))
+            return false
+        return true
+    }
+
+    override fun isEnabled(event: AnActionEvent)
+            = isVisible(event)
+
+}
