@@ -1,10 +1,11 @@
 package io.nimbly.any2json.test.properties
 
+import com.intellij.openapi.util.TextRange
 import io.nimbly.any2json.test.AbstractTestCase
 
 class PropertiesTestCase : AbstractTestCase() {
 
-    fun testProperties() {
+    fun testPropertiesNoSelection() {
 
         // language=Properties
         configure("""
@@ -70,9 +71,52 @@ class PropertiesTestCase : AbstractTestCase() {
         """.trimIndent())
     }
 
+    fun testPropertiesWithSelection() {
 
+        // language=Properties
+        configure("""
+            spring.rabbitmq.dynamic=true
+            spring.rabbitmq.port=5672
+            spring.rabbitmq.username=guest
+            spring.rabbitmq.password=guest
+            spring.rabbitmq.host=localhost
+            `from`git.user.default.login=default#User
+            git.user.default.email=defaultUser@akwatype.io
+            git.user.default=Maxime`to`
+            git.user.default.gitUser=
+            git.user.default.gitPassword=1234a*=12
+            git.user.default.gitFolder=/tmp/git
+            """)
 
-    fun configure(text: String) {
-        myFixture.configureByText("test.properties", text.trimIndent())
+        // language=Json
+        assertEquals(toJson(), """
+            {
+              "git.user.default": "Maxime",
+              "git.user.default.login": "default#User",
+              "git.user.default.email": "defaultUser@akwatype.io"
+            }
+        """.trimIndent())
+
+        // language=Json
+        assertEquals(toJson2(), """
+            {
+              "git": {
+                "user": {
+                  "default": [
+                    "Maxime",
+                    {
+                      "email": "defaultUser@akwatype.io",
+                      "login": "default#User"
+                    }
+                  ]
+                }
+              }
+            }
+        """.trimIndent())
     }
+
+
+
+    fun configure(text: String)
+        = configure(text, "properties")
 }

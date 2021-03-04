@@ -4,7 +4,7 @@ import io.nimbly.any2json.test.AbstractTestCase
 
 class XmlTestCase : AbstractTestCase() {
 
-    fun testXml() {
+    fun testXmlNoSelection() {
 
         // language=Xml
         configure("""
@@ -35,10 +35,40 @@ class XmlTestCase : AbstractTestCase() {
         """.trimIndent())
     }
 
+    fun testXmlSelection() {
+
+        // language=Xml
+        configure("""
+            <planes_for_sale>
+               <ad>
+                  <year> 1977 </year>
+                  <model> Skyhawk </model>
+                  <color> Light blue and white </color>
+                  <description> New paint, nearly new interior, 685 hours SMOH, full IFR King avionics </description>
+                  <price> 23,495 </price>
+                  <seller phone = "555-222-3333"> Skyway Aircraft </seller>
+                  <location>`caret`
+                     <city> Rapid City, </city>
+                     <state> South Dakota </state>
+                  </location>
+               </ad>
+            </planes_for_sale>
+            """)
+
+        // language=Json
+        assertEquals(toJson(), """
+            {
+              "location": {
+                "city": "Rapid City,",
+                "state": "South Dakota"
+              }
+            }
+        """.trimIndent())
+    }
 
 
     fun configure(text: String) {
-        val trimed = text.trimIndent()
+        val trimed = text.trimIndent().replace("`caret`", "<caret>")
         myFixture.configureByText("test.xml", StringBuilder(trimed).insert(
             trimed.indexOf('>')+1, "<caret>").toString()
         )

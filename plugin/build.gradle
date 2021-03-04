@@ -36,6 +36,7 @@ patchPluginXml {
       <b>Please Rate and Review this plugin !</b><br/><br/>
       Change notes :
       <ul>
+        <li><b>2.12</b> Copy only selection not all file content for Xml, Csv and Properties </li>
         <li><b>2.11</b> Prettify content of .json file</li>
         <li><b>2.10</b> Convert literal from Xml, Csv, Yaml... to Json</li>
         <li><b>2.9</b> Copy Json literal inside Kotlin, Python, and Php Editor</li>
@@ -62,9 +63,6 @@ patchPluginXml {
       <br/>
       Road map :
       <ul
-        <li>Export only selected XML Tag not the full file</li>
-        <li>Export only selected Propertoes not the full file</li>
-        <li>Export only selected CSV lines not the full file</li>
         <li>Supports of other languages !</li>
       </ul>
       """

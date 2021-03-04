@@ -1,8 +1,11 @@
 package io.nimbly.any2json
 
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.CommonDataKeys.PSI_FILE
 import com.intellij.psi.PsiFile
+import io.nimbly.any2json.util.line
+import io.nimbly.any2json.util.selectedLines
 
 class CsvToJson : Any2JsonExtensionPoint {
 
@@ -13,7 +16,17 @@ class CsvToJson : Any2JsonExtensionPoint {
             return null
 
         val psiFile = event.getData(PSI_FILE) ?: return null
-        return psiFile.name to csvToMap(psiFile.text)
+        val editor = event.getData(CommonDataKeys.EDITOR)
+        val selection = editor?.let { editor.selectedLines() }
+
+        val content =
+            if (selection != null) {
+                editor.line(0) + '\n' + selection
+            } else {
+                psiFile.text
+            }
+
+        return psiFile.name to csvToMap(content)
     }
 
     override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {

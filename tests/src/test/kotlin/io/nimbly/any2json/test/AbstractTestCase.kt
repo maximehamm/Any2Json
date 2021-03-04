@@ -1,6 +1,7 @@
 package io.nimbly.any2json.test
 
 import com.intellij.openapi.actionSystem.ex.ActionManagerEx
+import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
@@ -150,6 +151,26 @@ abstract class AbstractTestCase : JavaCodeInsightFixtureTestCase() {
             .replace(Regex("""import ([a-z]|[A-Z]|[.])*;\n"""), "")
     }
 
+    fun configure(text: String, extension: String) {
+
+        val trimmed = text.trimIndent()
+
+        if (trimmed.contains("`from`")) {
+            val i = trimmed.indexOf("`from`")
+            val j = trimmed.indexOf("`to`")
+
+            val t = trimmed.substring(0, i) + trimmed.substring(i+6, j) + trimmed.substring(j+4)
+            myFixture.configureByText("test.$extension", t)
+            myFixture.editor.selectionModel.setSelection(i, j-6)
+
+            val selection = myFixture.editor.document.getText(
+                TextRange(myFixture.editor.selectionModel.selectionStart, myFixture.editor.selectionModel.selectionEnd)
+            )
+        }
+        else {
+            myFixture.configureByText("test.$extension", trimmed.trimIndent())
+        }
+    }
 
     override fun setUp() {
         super.setUp()

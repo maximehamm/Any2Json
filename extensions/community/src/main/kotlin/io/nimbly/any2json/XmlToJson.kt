@@ -1,8 +1,11 @@
 package io.nimbly.any2json
 
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.CommonDataKeys.PSI_FILE
 import com.intellij.psi.PsiFile
+import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.xml.XmlTag
 
 class XmlToJson : Any2JsonExtensionPoint {
 
@@ -13,7 +16,15 @@ class XmlToJson : Any2JsonExtensionPoint {
             return null
 
         val psiFile = event.getData(PSI_FILE) ?: return null
-        return psiFile.name to xmlToJson(psiFile.text).toMap()
+        val editor = event.getData(CommonDataKeys.EDITOR)
+        val element = editor?.let { psiFile.findElementAt(editor.caretModel.offset) }
+        val xmlTag = PsiTreeUtil.getContextOfType(element, XmlTag::class.java)
+
+        val content =
+            if (xmlTag !=null) xmlTag.text
+            else psiFile.text
+
+        return psiFile.name to xmlToJson(content).toMap()
     }
 
     override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
