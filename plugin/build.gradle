@@ -59,9 +59,12 @@ patchPluginXml {
         <li><b>1.0</b> Initial version</li>
       </ul>
       <br/>
-      Road map 
+      Road map :
       <ul>
-        <li><b>1.X</b> Supports of other languages !</li>
+        <li>Export only selected XML Tag not the full file</li>
+        <li>Export only selected Propertoes not the full file</li>
+        <li>Export only selected CSV lines not the full file</li>
+        <li>Supports of other languages !</li>
       </ul>
       """
 }
