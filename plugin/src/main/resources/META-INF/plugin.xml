@@ -140,6 +140,10 @@
         <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.YamlToJson">
         </io.nimbly.json.Any2Json.lang>
     </extensions>
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.DebuggerToJson">
+        </io.nimbly.json.Any2Json.lang>
+    </extensions>
 
     <actions>
 

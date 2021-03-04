@@ -1,16 +1,14 @@
-package io.nimbly.any2json.debugger
+package io.nimbly.any2json
 
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.xdebugger.impl.ui.tree.XDebuggerTree
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl
-import io.nimbly.any2json.DEBUGGER
-import io.nimbly.any2json.EType
 import org.jetbrains.debugger.VariableView
 
-open class Debugger2Json {
+class DebuggerToJson : Any2JsonExtensionPoint {
 
     @Suppress("UNCHECKED_CAST")
-    fun build(event: AnActionEvent) : Pair<String, Map<String, Any>>? {
+    override fun build(event: AnActionEvent, actionType: EType) : Pair<String, Map<String, Any>>? {
 
         var xnode = findXNode(event) ?: return null
         val xname = xnode.name ?: return null
@@ -22,6 +20,14 @@ open class Debugger2Json {
             .map { it.name to parse(it) }
             .filter { it.second != null }
             .toMap() as Map<String, Any>
+    }
+
+    override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
+        return actionType == EType.MAIN && findXNode(event) !=null
+    }
+
+    override fun presentation(actionType: EType, event: AnActionEvent): String {
+        return "from variable"
     }
 
     private fun parse(node: XValueNodeImpl, level: Int = 0): Any? {
@@ -91,8 +97,4 @@ open class Debugger2Json {
             return null
         return xpath
     }
-
-    fun isVisible(event: AnActionEvent, actionType: EType)
-        = actionType == EType.MAIN && findXNode(event) !=null
-
 }

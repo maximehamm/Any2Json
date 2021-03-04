@@ -4,7 +4,6 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import io.nimbly.any2json.EType.MAIN
 import io.nimbly.any2json.EType.SECONDARY
-import io.nimbly.any2json.debugger.Debugger2Json
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 
@@ -27,12 +26,6 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
                 result != null
             }
 
-            // Try debugger
-            if (result == null) {
-                result = Debugger2Json().build(event)
-            }
-
-            // Oups !?
             if (result == null)
                 throw Any2PojoException("Unable to define context !")
 
@@ -54,13 +47,6 @@ abstract class Any2JsonAction(private val actionType: EType): AnAction() { //Deb
     }
 
     override fun update(event: AnActionEvent) {
-
-        if (Debugger2Json().isVisible(event, actionType)) {
-            event.presentation.text = "Generate Json"
-            event.presentation.isVisible = true
-            event.presentation.isEnabled = true
-            return
-        }
 
         var enabledByExtension: String? = null
         ANY2JSON().extensionList.find { ext ->
