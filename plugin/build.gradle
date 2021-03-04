@@ -36,6 +36,7 @@ patchPluginXml {
       <b>Please Rate and Review this plugin !</b><br/><br/>
       Change notes :
       <ul>
+        <li><b>2.11</b> Prettify content of .json file</li>
         <li><b>2.10</b> Convert literal from Xml, Csv, Yaml... to Json</li>
         <li><b>2.9</b> Copy Json literal inside Kotlin, Python, and Php Editor</li>
         <li><b>2.8</b> Copy Json literal inside Java Editor</li>
@@ -60,8 +61,7 @@ patchPluginXml {
       </ul>
       <br/>
       Road map :
-      <ul>
-        <li>Prettify content of .json file</li>
+      <ul
         <li>Export only selected XML Tag not the full file</li>
         <li>Export only selected Propertoes not the full file</li>
         <li>Export only selected CSV lines not the full file</li>

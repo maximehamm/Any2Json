@@ -18,6 +18,9 @@ open class JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootE
 
     override fun prettify(event: AnActionEvent): Boolean {
 
+        if (!isVisible(event))
+            return false
+
         val project = event.project ?: return false
         val editor = event.getData(CommonDataKeys.EDITOR) ?: return false
         val document = editor.document

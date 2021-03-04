@@ -28,8 +28,49 @@ class JsonTestCase : AbstractTestCase() {
         """)
 
         // language=Json
-        assertEquals(toJson(), """
-         xxxx
+        assertEquals(copy(), """
+        [
+          {
+            "hosts": "webservers",
+            "vars": {
+              "http_port": 80,
+              "max_clients": 200
+            },
+            "remote_user": "root",
+            "tasks": [
+              {
+                "name": "ensure apache is at the latest version",
+                "yum": {
+                  "name": "httpd",
+                  "state": "latest"
+                }
+              }
+            ]
+          }
+        ]
+        """.trimIndent())
+
+        // language=Json
+        assertEquals(prettify(), """
+        [
+          {
+            "hosts": "webservers",
+            "vars": {
+              "http_port": 80,
+              "max_clients": 200
+            },
+            "remote_user": "root",
+            "tasks": [
+              {
+                "name": "ensure apache is at the latest version",
+                "yum": {
+                  "name": "httpd",
+                  "state": "latest"
+                }
+              }
+            ]
+          }
+        ]
         """.trimIndent())
     }
 
