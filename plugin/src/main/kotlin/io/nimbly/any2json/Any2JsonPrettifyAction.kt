@@ -10,6 +10,8 @@ class Any2JsonPrettifyAction : Any2JsonRootAction<Any2JsonPrettifyExtensionPoint
 
 class Any2JsonCopyAction : Any2JsonRootAction<Any2JsonCopyExtensionPoint>(COPY())
 
+class Any2JsonPreviewAction : Any2JsonRootAction<Any2JsonPreviewExtensionPoint>(PREVIEW())
+
 open class Any2JsonRootAction<T:Any2JsonRootExtensionPoint>(
     private val EXT: ExtensionPointName<T>) : AnAction() {
 

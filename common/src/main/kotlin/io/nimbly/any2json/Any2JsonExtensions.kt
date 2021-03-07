@@ -22,3 +22,8 @@ object COPY {
     operator fun invoke(): ExtensionPointName<Any2JsonCopyExtensionPoint> =
         ExtensionPointName.create("$nameSpace.io.nimbly.json.Any2Json.copy")
 }
+
+object PREVIEW {
+    operator fun invoke(): ExtensionPointName<Any2JsonPreviewExtensionPoint> =
+        ExtensionPointName.create("$nameSpace.io.nimbly.json.Any2Json.preview")
+}

@@ -21,5 +21,10 @@
         </io.nimbly.json.Any2Json.copy>
     </extensions>
 
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.preview implementation="io.nimbly.any2json.Java2JsonPreview">
+        </io.nimbly.json.Any2Json.preview>
+    </extensions>
+
 
 </idea-plugin>

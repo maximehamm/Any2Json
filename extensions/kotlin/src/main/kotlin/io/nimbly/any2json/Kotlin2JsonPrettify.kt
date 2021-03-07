@@ -1,6 +1,7 @@
 package io.nimbly.any2json
 
 import com.intellij.application.options.CodeStyle
+import com.intellij.json.JsonLanguage
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
@@ -12,9 +13,11 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.util.PsiLiteralUtil
 import com.intellij.util.DocumentUtil
 import io.nimbly.any2json.EPrettyAction.COPY
+import io.nimbly.any2json.util.openInSplittedTab
 import org.jetbrains.kotlin.idea.intentions.copyConcatenatedStringToClipboard.ConcatenatedStringGenerator
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
@@ -26,6 +29,8 @@ import java.util.*
 class Kotlin2JsonPrettify : Kotlin2JsonPrettifyOrCopy(EPrettyAction.REPLACE), Any2JsonPrettifyExtensionPoint
 
 class Kotlin2JsonCopy : Kotlin2JsonPrettifyOrCopy(COPY), Any2JsonCopyExtensionPoint
+
+class Kotlin2JsonPreview : Kotlin2JsonPrettifyOrCopy(EPrettyAction.PREVIEW), Any2JsonPreviewExtensionPoint
 
 open class Kotlin2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
 
@@ -66,6 +71,13 @@ open class Kotlin2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Js
         if (action == COPY) {
             Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettify), StringSelection(prettify))
             info("Json prettified and copied to clipboard !", project)
+            return true
+        }
+
+        if (action == EPrettyAction.PREVIEW) {
+            val file = PsiFileFactory.getInstance(project).createFileFromText(
+                "Preview.json", JsonLanguage.INSTANCE, prettify)
+            openInSplittedTab(file, event.dataContext)
             return true
         }
 

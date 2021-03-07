@@ -1,17 +1,22 @@
 package io.nimbly.any2json
 
+import com.intellij.json.JsonLanguage
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.PsiDocumentManager
+import com.intellij.psi.PsiFileFactory
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import io.nimbly.any2json.EPrettyAction.COPY
+import io.nimbly.any2json.util.openInSplittedTab
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 
 class Php2JsonPrettify : Php2JsonPrettifyOrCopy(EPrettyAction.REPLACE), Any2JsonPrettifyExtensionPoint
 
 class Php2JsonCopy : Php2JsonPrettifyOrCopy(COPY), Any2JsonCopyExtensionPoint
+
+class Php2JsonPreview : Php2JsonPrettifyOrCopy(EPrettyAction.PREVIEW), Any2JsonPreviewExtensionPoint
 
 open class Php2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
 
@@ -28,6 +33,13 @@ open class Php2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonR
         if (action == COPY) {
             Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettified), StringSelection(prettified))
             info("Json prettified and copied to clipboard !", project)
+            return true
+        }
+
+        if (action == EPrettyAction.PREVIEW) {
+            val file = PsiFileFactory.getInstance(project).createFileFromText(
+                "Preview.json", JsonLanguage.INSTANCE, prettified)
+            openInSplittedTab(file, event.dataContext)
             return true
         }
 
@@ -56,7 +68,7 @@ open class Php2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonR
         = getLiteral(event) != null
 
     override fun isEnabled(event: AnActionEvent)
-            = isVisible(event) // TODO DO AS JAVA
+            = isVisible(event)
 
     private fun getLiteral(event: AnActionEvent): StringLiteralExpression? {
         val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return null

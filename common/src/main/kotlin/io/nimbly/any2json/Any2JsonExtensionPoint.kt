@@ -17,12 +17,14 @@ interface Any2JsonPrettifyExtensionPoint : Any2JsonRootExtensionPoint
 
 interface Any2JsonCopyExtensionPoint : Any2JsonRootExtensionPoint
 
+interface Any2JsonPreviewExtensionPoint : Any2JsonRootExtensionPoint
+
 interface Any2JsonRootExtensionPoint {
     fun isVisible(event: AnActionEvent): Boolean
     fun isEnabled(event: AnActionEvent): Boolean
     fun prettify(event: AnActionEvent): Boolean
 }
 
-enum class EPrettyAction { COPY, REPLACE }
+enum class EPrettyAction { COPY, REPLACE, PREVIEW }
 
 enum class EType { MAIN, SECONDARY }

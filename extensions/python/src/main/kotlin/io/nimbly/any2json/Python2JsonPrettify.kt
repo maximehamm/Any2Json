@@ -1,18 +1,23 @@
 package io.nimbly.any2json
 
+import com.intellij.json.JsonLanguage
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.PsiDocumentManager
+import com.intellij.psi.PsiFileFactory
 import com.jetbrains.python.psi.PyParenthesizedExpression
 import com.jetbrains.python.psi.impl.PyStringLiteralExpressionImpl
 import io.nimbly.any2json.EPrettyAction.COPY
+import io.nimbly.any2json.util.openInSplittedTab
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 
 class Python2JsonPrettify : Python2JsonPrettifyOrCopy(EPrettyAction.REPLACE), Any2JsonPrettifyExtensionPoint
 
 class Python2JsonCopy : Python2JsonPrettifyOrCopy(COPY), Any2JsonCopyExtensionPoint
+
+class Python2JsonPreview : Python2JsonPrettifyOrCopy(EPrettyAction.PREVIEW), Any2JsonPreviewExtensionPoint
 
 open class Python2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
 
@@ -30,6 +35,13 @@ open class Python2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Js
         if (action == COPY) {
             Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettified), StringSelection(prettified))
             info("Json prettified and copied to clipboard !", project)
+            return true
+        }
+
+        if (action == EPrettyAction.PREVIEW) {
+            val file = PsiFileFactory.getInstance(project).createFileFromText(
+                "Preview.json", JsonLanguage.INSTANCE, prettified)
+            openInSplittedTab(file, event.dataContext)
             return true
         }
 

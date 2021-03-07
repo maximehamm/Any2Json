@@ -1,27 +1,25 @@
 package io.nimbly.any2json
 
+import com.intellij.json.JsonLanguage
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
-import com.intellij.psi.JavaPsiFacade
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiElementFactory
-import com.intellij.psi.PsiExpression
-import com.intellij.psi.PsiLiteralExpression
-import com.intellij.psi.PsiPolyadicExpression
-import com.intellij.psi.PsiWhiteSpace
+import com.intellij.psi.*
 import com.intellij.psi.util.PsiLiteralUtil
 import com.intellij.psi.util.PsiTreeUtil
 import com.siyeh.ig.psiutils.ExpressionUtils
+import io.nimbly.any2json.EPrettyAction.*
 import io.nimbly.any2json.EPrettyAction.COPY
-import io.nimbly.any2json.EPrettyAction.REPLACE
+import io.nimbly.any2json.EPrettyAction.PREVIEW
+import io.nimbly.any2json.util.openInSplittedTab
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
-import java.lang.StringBuilder
 
 class Java2JsonPrettify : Java2JsonPrettifyOrCopy(REPLACE), Any2JsonPrettifyExtensionPoint
 
 class Java2JsonCopy : Java2JsonPrettifyOrCopy(COPY), Any2JsonCopyExtensionPoint
+
+class Java2JsonPreview : Java2JsonPrettifyOrCopy(PREVIEW), Any2JsonPreviewExtensionPoint
 
 open class Java2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
 
@@ -37,6 +35,13 @@ open class Java2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Json
         if (action == COPY) {
             Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettify), StringSelection(prettify))
             info("Json prettified and copied to clipboard !", project)
+            return true
+        }
+
+        if (action == PREVIEW) {
+            val file = PsiFileFactory.getInstance(project).createFileFromText(
+                "Preview.json", JsonLanguage.INSTANCE, prettify)
+            openInSplittedTab(file, event.dataContext)
             return true
         }
 

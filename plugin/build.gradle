@@ -36,6 +36,7 @@ patchPluginXml {
       <b>Please Rate and Review this plugin !</b><br/><br/>
       Change notes :
       <ul>
+        <li><b>2.13</b> Preview prettified Json as new editor tab </li>
         <li><b>2.12</b> Copy only selection not all file content for Xml, Csv and Properties </li>
         <li><b>2.11</b> Prettify content of .json file</li>
         <li><b>2.10</b> Convert literal from Xml, Csv, Yaml... to Json</li>
