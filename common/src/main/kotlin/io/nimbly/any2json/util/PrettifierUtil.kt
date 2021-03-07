@@ -9,7 +9,7 @@ import io.nimbly.any2json.info
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 
-fun processPrettierAction(
+fun processPrettifierAction(
     action: EPrettyAction,
     json: String,
     project: Project,

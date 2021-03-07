@@ -87,10 +87,6 @@
     </extensionPoints>
 
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
-        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.PropertiesToJson">
-        </io.nimbly.json.Any2Json.lang>
-    </extensions>
-    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
         <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.DebuggerToJson">
         </io.nimbly.json.Any2Json.lang>
     </extensions>
@@ -128,6 +124,15 @@
     </extensions>
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
         <io.nimbly.json.Any2Json.preview implementation="io.nimbly.any2json.YamlToJsonPreview">
+        </io.nimbly.json.Any2Json.preview>
+    </extensions>
+
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.copy implementation="io.nimbly.any2json.PropertiesToJsonCopy">
+        </io.nimbly.json.Any2Json.copy>
+    </extensions>
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.preview implementation="io.nimbly.any2json.PropertiesToJsonPreview">
         </io.nimbly.json.Any2Json.preview>
     </extensions>
 

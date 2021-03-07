@@ -1,18 +1,11 @@
 package io.nimbly.any2json
 
-import com.intellij.json.JsonLanguage
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.psi.PsiFile
-import com.intellij.psi.PsiFileFactory
-import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.psi.xml.XmlTag
 import io.nimbly.any2json.EPrettyAction.COPY
 import io.nimbly.any2json.EPrettyAction.PREVIEW
-import io.nimbly.any2json.util.openInSplittedTab
-import io.nimbly.any2json.util.processPrettierAction
-import java.awt.Toolkit
-import java.awt.datatransfer.StringSelection
+import io.nimbly.any2json.util.processPrettifierAction
 
 class YamlToJsonCopy : YamlToJsonPrettifyOrCopy(COPY), Any2JsonCopyExtensionPoint
 
@@ -32,7 +25,7 @@ open class YamlToJsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Jso
         val prettified = toJson(yamlToJson(psiFile.text))
 
         // Proceed
-        return processPrettierAction(action, prettified, project, event.dataContext)
+        return processPrettifierAction(action, prettified, project, event.dataContext)
     }
 
     override fun isVisible(event: AnActionEvent): Boolean {

@@ -7,7 +7,7 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
 import io.nimbly.any2json.EPrettyAction.COPY
-import io.nimbly.any2json.util.processPrettierAction
+import io.nimbly.any2json.util.processPrettifierAction
 
 class JsonPrettify : JsonPrettifyOrCopy(EPrettyAction.REPLACE), Any2JsonPrettifyExtensionPoint
 
@@ -31,7 +31,7 @@ open class JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootE
         val prettified = toJson(JsonParser.parseString(json))
 
         // Proceed
-        val done = processPrettierAction(action, prettified, project, event.dataContext)
+        val done = processPrettifierAction(action, prettified, project, event.dataContext)
         if (done)
             return true
 

@@ -2,36 +2,45 @@ package io.nimbly.any2json
 
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.openapi.actionSystem.CommonDataKeys.PSI_FILE
 import com.intellij.psi.PsiFile
+import io.nimbly.any2json.EPrettyAction.COPY
+import io.nimbly.any2json.EPrettyAction.PREVIEW
 import io.nimbly.any2json.conversion.propertiesToMap
+import io.nimbly.any2json.util.processPrettifierAction
 import io.nimbly.any2json.util.selectedLines
 
-class PropertiesToJson : Any2JsonExtensionPoint {
+class PropertiesToJsonCopy : PropertiesToJsonPrettifyOrCopy(COPY), Any2JsonCopyExtensionPoint
 
-    @Suppress("UNCHECKED_CAST")
-    override fun build(event: AnActionEvent, actionType: EType) : Pair<String, Any>? {
+class PropertiesToJsonPreview : PropertiesToJsonPrettifyOrCopy(PREVIEW), Any2JsonPreviewExtensionPoint
 
-        if (!isEnabled(event, actionType))
-            return null
+open class PropertiesToJsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
 
-        val psiFile = event.getData(PSI_FILE) ?: return null
+    override fun prettify(event: AnActionEvent): Boolean {
+
+        if (!isVisible(event))
+            return false
+
+        val project = event.project ?: return false
+        val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return false
         val editor = event.getData(CommonDataKeys.EDITOR)
         val selection = editor?.let { editor.selectedLines() }
 
         val content = selection ?: psiFile.text
 
-        return psiFile.name to propertiesToMap(content, actionType)
+        // Extract json
+        val prettified = toJson(propertiesToMap(content, EType.SECONDARY))
+
+        // Proceed
+        return processPrettifierAction(action, prettified, project, event.dataContext)
     }
 
-    override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
-        val psiFile : PsiFile = event.getData(PSI_FILE) ?: return false
+    override fun isVisible(event: AnActionEvent): Boolean {
+        val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return false
         if (! psiFile.name.toLowerCase().endsWith(".properties"))
             return false
         return true
     }
 
-    override fun presentation(actionType: EType, event: AnActionEvent): String {
-        return "from PROPERTIES" + if (actionType == EType.MAIN) " (flat)" else " (hierarchical)"
-    }
+    override fun isEnabled(event: AnActionEvent)
+        = isVisible(event)
 }

@@ -7,7 +7,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlTag
 import io.nimbly.any2json.EPrettyAction.COPY
 import io.nimbly.any2json.EPrettyAction.PREVIEW
-import io.nimbly.any2json.util.processPrettierAction
+import io.nimbly.any2json.util.processPrettifierAction
 
 class XmlToJsonCopy : XmlToJsonPrettifyOrCopy(COPY), Any2JsonCopyExtensionPoint
 
@@ -34,7 +34,7 @@ open class XmlToJsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Json
         val prettified = toJson(xmlToJson(content).toMap())
 
         // Proceed
-        return processPrettierAction(action, prettified, project, event.dataContext)
+        return processPrettifierAction(action, prettified, project, event.dataContext)
     }
 
     override fun isVisible(event: AnActionEvent): Boolean {
