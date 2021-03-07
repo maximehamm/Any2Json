@@ -87,19 +87,7 @@
     </extensionPoints>
 
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
-        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.XmlToJson">
-        </io.nimbly.json.Any2Json.lang>
-    </extensions>
-    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
-        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.CsvToJson">
-        </io.nimbly.json.Any2Json.lang>
-    </extensions>
-    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
         <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.PropertiesToJson">
-        </io.nimbly.json.Any2Json.lang>
-    </extensions>
-    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
-        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.YamlToJson">
         </io.nimbly.json.Any2Json.lang>
     </extensions>
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
@@ -116,19 +104,44 @@
         </io.nimbly.json.Any2Json.copy>
     </extensions>
 
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.copy implementation="io.nimbly.any2json.XmlToJsonCopy">
+        </io.nimbly.json.Any2Json.copy>
+    </extensions>
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.preview implementation="io.nimbly.any2json.XmlToJsonPreview">
+        </io.nimbly.json.Any2Json.preview>
+    </extensions>
+
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.copy implementation="io.nimbly.any2json.CsvToJsonCopy">
+        </io.nimbly.json.Any2Json.copy>
+    </extensions>
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.preview implementation="io.nimbly.any2json.CsvToJsonPreview">
+        </io.nimbly.json.Any2Json.preview>
+    </extensions>
+
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.copy implementation="io.nimbly.any2json.YamlToJsonCopy">
+        </io.nimbly.json.Any2Json.copy>
+    </extensions>
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.preview implementation="io.nimbly.any2json.YamlToJsonPreview">
+        </io.nimbly.json.Any2Json.preview>
+    </extensions>
+
     <actions>
 
         <group id="io.nimbly.any2json.Any2Json">
             <separator/>
             <action class="io.nimbly.any2json.Any2JsonDefaultAction"
                     id="io.nimbly.any2json.ANY2JsonDefaultAction"
-                    text="Generate Json"
-                    description="Convert to Json and copy to clipboard">
+                    text="Generate Json">
             </action>
             <action class="io.nimbly.any2json.Any2JsonRandomAction"
                     id="io.nimbly.any2json.ANY2JsonRandomAction"
-                    text="Generate Json with Values"
-                    description="Convert to Json randomly, generate test data and copy to clipboard">
+                    text="Generate Json with Values">
             </action>
             <add-to-group group-id="CutCopyPasteGroup" anchor="last"/>
             <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="EditorToggleColumnMode"/>
@@ -141,18 +154,15 @@
             <separator/>
             <action class="io.nimbly.any2json.Any2JsonPrettifyAction"
                     id="io.nimbly.any2json.Any2JsonPrettifyAction"
-                    text="Convert to prettified Json"
-                    description="Prettify Json and replace literal value with it">
+                    text="Convert to prettified Json">
             </action>
             <action class="io.nimbly.any2json.Any2JsonCopyAction"
                     id="io.nimbly.any2json.Any2JsonCopyAction"
-                    text="Copy as prettified Json"
-                    description="Prettify Json and copy to clipboard">
+                    text="Copy as prettified Json">
             </action>
             <action class="io.nimbly.any2json.Any2JsonPreviewAction"
                     id="io.nimbly.any2json.Any2JsonPreviewAction"
-                    text="Preview as prettified Json"
-                    description="Prettify Json and open preview file">
+                    text="Preview as prettified Json">
             </action>
             <add-to-group group-id="CutCopyPasteGroup" anchor="last"/>
             <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="EditorToggleColumnMode"/>

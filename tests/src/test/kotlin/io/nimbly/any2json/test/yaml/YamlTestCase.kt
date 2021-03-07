@@ -43,7 +43,7 @@ class YamlTestCase : AbstractTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJson(), """
+        assertEquals(copy(), """
             [
               {
                 "hosts": "webservers",

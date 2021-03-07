@@ -1,22 +1,34 @@
 package io.nimbly.any2json
 
+import com.intellij.json.JsonLanguage
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.openapi.actionSystem.CommonDataKeys.PSI_FILE
 import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiFileFactory
+import io.nimbly.any2json.EPrettyAction.COPY
+import io.nimbly.any2json.EPrettyAction.PREVIEW
 import io.nimbly.any2json.util.line
+import io.nimbly.any2json.util.openInSplittedTab
+import io.nimbly.any2json.util.processPrettierAction
 import io.nimbly.any2json.util.selectedLines
+import java.awt.Toolkit
+import java.awt.datatransfer.StringSelection
 
-class CsvToJson : Any2JsonExtensionPoint {
+class CsvToJsonCopy : CsvToJsonPrettifyOrCopy(COPY), Any2JsonCopyExtensionPoint
 
-    @Suppress("UNCHECKED_CAST")
-    override fun build(event: AnActionEvent, actionType: EType) : Pair<String, List<Map<String, Any>>>? {
+class CsvToJsonPreview : CsvToJsonPrettifyOrCopy(PREVIEW), Any2JsonPreviewExtensionPoint
 
-        if (!isEnabled(event, actionType))
-            return null
+open class CsvToJsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
 
-        val psiFile = event.getData(PSI_FILE) ?: return null
+    override fun prettify(event: AnActionEvent): Boolean {
+
+        if (!isVisible(event))
+            return false
+
+        val project = event.project ?: return false
+        val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return false
         val editor = event.getData(CommonDataKeys.EDITOR)
+
         val selection = editor?.let { editor.selectedLines() }
 
         val content =
@@ -26,21 +38,20 @@ class CsvToJson : Any2JsonExtensionPoint {
                 psiFile.text
             }
 
-        return psiFile.name to csvToMap(content)
+        // Extract json
+        val prettified = toJson(csvToMap(content))
+
+        // Proceed
+        return processPrettierAction(action, prettified, project, event.dataContext)
     }
 
-    override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
-        if (actionType != EType.MAIN)
-            return false
-
-        val psiFile : PsiFile = event.getData(PSI_FILE) ?: return false
+    override fun isVisible(event: AnActionEvent): Boolean {
+        val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return false
         if (! psiFile.name.toLowerCase().endsWith(".csv"))
             return false
-
         return true
     }
 
-    override fun presentation(actionType: EType, event: AnActionEvent): String {
-        return "from CSV"
-    }
+    override fun isEnabled(event: AnActionEvent)
+        = isVisible(event)
 }

@@ -7,8 +7,7 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
 import io.nimbly.any2json.EPrettyAction.COPY
-import java.awt.Toolkit
-import java.awt.datatransfer.StringSelection
+import io.nimbly.any2json.util.processPrettierAction
 
 class JsonPrettify : JsonPrettifyOrCopy(EPrettyAction.REPLACE), Any2JsonPrettifyExtensionPoint
 
@@ -31,11 +30,10 @@ open class JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootE
         // Extract json
         val prettified = toJson(JsonParser.parseString(json))
 
-        if (action == COPY) {
-            Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettified), StringSelection(prettified))
-            info("Json prettified and copied to clipboard !", project)
+        // Proceed
+        val done = processPrettierAction(action, prettified, project, event.dataContext)
+        if (done)
             return true
-        }
 
         // Replace literal and indent new content
         WriteCommandAction.runWriteCommandAction(project) {

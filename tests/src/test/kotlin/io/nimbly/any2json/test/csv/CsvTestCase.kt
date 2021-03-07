@@ -17,7 +17,7 @@ class CsvTestCase : AbstractTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJson(), """
+        assertEquals(copy(), """
             [
               {
                 "Identifier": "9012",
@@ -86,7 +86,7 @@ class CsvTestCase : AbstractTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJson(), """
+        assertEquals(copy(), """
             [
               {
                 "Identifier": "5079",

@@ -20,7 +20,7 @@ class XmlTestCase : AbstractTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJson(), """
+        assertEquals(copy(), """
             {
               "book": {
                 "author": "Gambardella, Matthew",
@@ -56,7 +56,7 @@ class XmlTestCase : AbstractTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJson(), """
+        assertEquals(copy(), """
             {
               "location": {
                 "city": "Rapid City,",
