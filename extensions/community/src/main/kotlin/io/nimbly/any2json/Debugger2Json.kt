@@ -3,31 +3,45 @@ package io.nimbly.any2json
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.xdebugger.impl.ui.tree.XDebuggerTree
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl
+import io.nimbly.any2json.EAction.COPY
+import io.nimbly.any2json.EAction.PREVIEW
+import io.nimbly.any2json.util.processAction
 import org.jetbrains.debugger.VariableView
 
-class DebuggerToJson : Any2JsonExtensionPoint {
+class Debugger2JsonGeneratePreview : AbstractDebugger2JsonGenerate(PREVIEW), Any2JsonPreviewExtensionPoint
 
-    @Suppress("UNCHECKED_CAST")
-    override fun build(event: AnActionEvent, actionType: EType) : Pair<String, Map<String, Any>>? {
+class Debugger2JsonGenerateCopy : AbstractDebugger2JsonGenerate(COPY), Any2JsonCopyExtensionPoint
 
-        var xnode = findXNode(event) ?: return null
-        val xname = xnode.name ?: return null
+abstract class AbstractDebugger2JsonGenerate(private val action: EAction) : Any2JsonRootExtensionPoint {
 
-        xnode = findXNode(event) ?: return null
+    override fun process(event: AnActionEvent): Boolean {
 
-        return xname to xnode.children().toList()
+        val project = event.project ?: return false
+        val xnode = findXNode(event) ?: return false
+        val map = xnode.children().toList()
             .filterIsInstance<XValueNodeImpl>()
             .map { it.name to parse(it) }
             .filter { it.second != null }
-            .toMap() as Map<String, Any>
+            .toMap()
+
+        val json = toJson(map)
+
+        return processAction(action, json, project, event.dataContext)
     }
 
-    override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
-        return actionType == EType.MAIN && findXNode(event) !=null
+    override fun isEnabled(event: AnActionEvent): Boolean {
+        return findXNode(event) !=null
     }
 
-    override fun presentation(actionType: EType, event: AnActionEvent): String {
-        return "from variable"
+    override fun isVisible(event: AnActionEvent)
+        = isEnabled(event)
+
+    override fun presentation(event: AnActionEvent): String? {
+        val variable = findXNode(event)?.name ?: return null
+        return if (COPY == action)
+                "Copy Json sample from variable '$variable'"
+            else
+                "Preview Json sample from variable '$variable'"
     }
 
     private fun parse(node: XValueNodeImpl, level: Int = 0): Any? {
@@ -98,3 +112,4 @@ class DebuggerToJson : Any2JsonExtensionPoint {
         return xpath
     }
 }
+

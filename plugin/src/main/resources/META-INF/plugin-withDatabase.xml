@@ -17,11 +17,11 @@
             <separator/>
 
             <action class="io.nimbly.any2json.Any2JsonCopyAction"
-                    id="io.nimbly.any2json.Any2JsonCopyAction"
+                    id="io.nimbly.any2json.db.Any2JsonCopyAction"
                     text="Copy as prettified Json">
             </action>
             <action class="io.nimbly.any2json.Any2JsonPreviewAction"
-                    id="io.nimbly.any2json.Any2JsonPreviewAction"
+                    id="io.nimbly.any2json.db.Any2JsonPreviewAction"
                     text="Preview as prettified Json">
             </action>
 

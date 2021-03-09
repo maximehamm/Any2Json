@@ -87,8 +87,12 @@
     </extensionPoints>
 
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
-        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.DebuggerToJson">
-        </io.nimbly.json.Any2Json.lang>
+        <io.nimbly.json.Any2Json.copy implementation="io.nimbly.any2json.Debugger2JsonGenerateCopy">
+        </io.nimbly.json.Any2Json.copy>
+    </extensions>
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.preview implementation="io.nimbly.any2json.Debugger2JsonGeneratePreview">
+        </io.nimbly.json.Any2Json.preview>
     </extensions>
 
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
@@ -138,23 +142,6 @@
 
     <actions>
 
-        <group id="io.nimbly.any2json.Any2Json">
-            <separator/>
-            <action class="io.nimbly.any2json.Any2JsonDefaultAction"
-                    id="io.nimbly.any2json.ANY2JsonDefaultAction"
-                    text="Generate Json">
-            </action>
-            <action class="io.nimbly.any2json.Any2JsonRandomAction"
-                    id="io.nimbly.any2json.ANY2JsonRandomAction"
-                    text="Generate Json with Values">
-            </action>
-            <add-to-group group-id="CutCopyPasteGroup" anchor="last"/>
-            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="EditorToggleColumnMode"/>
-            <add-to-group group-id="XDebugger.Watches.Tree.Popup" anchor="last"/>
-            <add-to-group group-id="XDebugger.Watches.Tree.Toolbar" anchor="last"/>
-            <add-to-group group-id="XDebugger.Watches.Inline.Popup" anchor="last"/>
-        </group>
-
         <group id="io.nimbly.any2json.Any2Json.pretty">
             <separator/>
             <action class="io.nimbly.any2json.Any2JsonPrettifyAction"
@@ -171,7 +158,9 @@
             </action>
             <add-to-group group-id="CutCopyPasteGroup" anchor="last"/>
             <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="EditorToggleColumnMode"/>
-
+            <add-to-group group-id="XDebugger.Watches.Tree.Popup" anchor="last"/>
+            <add-to-group group-id="XDebugger.Watches.Tree.Toolbar" anchor="last"/>
+            <add-to-group group-id="XDebugger.Watches.Inline.Popup" anchor="last"/>
         </group>
     </actions>
 
