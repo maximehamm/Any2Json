@@ -15,7 +15,7 @@ class CsvToJsonPreview : CsvToJsonPrettifyOrCopy(PREVIEW), Any2JsonPreviewExtens
 
 open class CsvToJsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
 
-    override fun prettify(event: AnActionEvent): Boolean {
+    override fun process(event: AnActionEvent): Boolean {
 
         if (!isVisible(event))
             return false

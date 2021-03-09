@@ -23,7 +23,7 @@ class Java2JsonPreview : Java2JsonPrettifyOrCopy(PREVIEW), Any2JsonPreviewExtens
 
 open class Java2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
 
-    override fun prettify(event: AnActionEvent): Boolean {
+    override fun process(event: AnActionEvent): Boolean {
 
         val l = getLiteral(event) ?:return false
         val project = event.project ?: return false

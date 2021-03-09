@@ -40,7 +40,13 @@ fun openInSplittedTab(file: PsiFile, dataContext: DataContext) {
 
     // if we got a valid symbol we will open it in a splitted tab, else we call the GotoDeclarationAction
     val fileEditorManager = FileEditorManagerEx.getInstanceEx(file.project)!!
-    val nextWindowPane = splitPane(file.project, fileEditorManager, dataContext) ?: return
+    val nextWindowPane = splitPane(file.project, fileEditorManager, dataContext)
+
+    if (nextWindowPane == null) {
+        file.navigate(true)
+        return
+    }
+
     fileEditorManager.currentWindow = nextWindowPane
 
     val fileToClose = fileEditorManager.currentFile!!

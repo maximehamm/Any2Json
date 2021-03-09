@@ -18,7 +18,7 @@ open class Any2JsonRootAction<T:Any2JsonRootExtensionPoint>(
     override fun actionPerformed(event: AnActionEvent) {
         try {
             EXT.extensionList.find {
-                it.prettify(event)
+                it.process(event)
             }
         }
         catch (e: MalformedJsonException) {

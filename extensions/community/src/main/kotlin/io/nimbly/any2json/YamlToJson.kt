@@ -13,7 +13,7 @@ class YamlToJsonPreview : YamlToJsonPrettifyOrCopy(PREVIEW), Any2JsonPreviewExte
 
 open class YamlToJsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
 
-    override fun prettify(event: AnActionEvent): Boolean {
+    override fun process(event: AnActionEvent): Boolean {
 
         if (!isVisible(event))
             return false

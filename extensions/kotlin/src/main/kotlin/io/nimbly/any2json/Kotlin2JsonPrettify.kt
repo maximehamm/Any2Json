@@ -34,7 +34,7 @@ class Kotlin2JsonPreview : Kotlin2JsonPrettifyOrCopy(EPrettyAction.PREVIEW), Any
 
 open class Kotlin2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
 
-    override fun prettify(event: AnActionEvent): Boolean {
+    override fun process(event: AnActionEvent): Boolean {
 
         val literal = getLiteral(event) ?: return false
         val project = event.project ?: return false

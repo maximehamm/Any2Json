@@ -32,9 +32,9 @@
        <b>And generate Json from various places:</b><br/>
        <ul>
             <li>Generate Json sample from <b><u>JAVA</u></b>, <b><u>KOTLIN</u></b>, <b><u>PYTHON</u></b>, <b><u>PHP</u></b> or <b><u>TypeScript</u></b> class</li>
-            <li>Generate Json sample from <b>Database table</b>: right click on table from IntelliJ IDEA database view</li>
-            <li>Generate Json from <b>Query result</b>: execute a query and right click on any raw of result view</li>
-            <li>Generate Json from <b>Debugger variable</b>: stop at breakpoint, select a variable and right clic on it</li>
+            <li>Generate Json sample from <b>Database table</b>: right-click on table from IntelliJ IDEA database view</li>
+            <li>Generate Json from <b>Query result</b>: execute a query and right-click on any raw of result view</li>
+            <li>Generate Json from <b>Debugger variable</b>: stop at breakpoint, select a variable and right-click on it</li>
        </ul>
 
        <br/>

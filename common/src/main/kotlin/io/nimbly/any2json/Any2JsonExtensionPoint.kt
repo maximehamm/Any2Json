@@ -22,7 +22,7 @@ interface Any2JsonPreviewExtensionPoint : Any2JsonRootExtensionPoint
 interface Any2JsonRootExtensionPoint {
     fun isVisible(event: AnActionEvent): Boolean
     fun isEnabled(event: AnActionEvent): Boolean
-    fun prettify(event: AnActionEvent): Boolean
+    fun process(event: AnActionEvent): Boolean
 }
 
 enum class EPrettyAction { COPY, REPLACE, PREVIEW }

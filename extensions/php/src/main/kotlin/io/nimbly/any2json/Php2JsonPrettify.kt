@@ -20,7 +20,7 @@ class Php2JsonPreview : Php2JsonPrettifyOrCopy(EPrettyAction.PREVIEW), Any2JsonP
 
 open class Php2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
 
-    override fun prettify(event: AnActionEvent): Boolean {
+    override fun process(event: AnActionEvent): Boolean {
 
         val literal = getLiteral(event) ?: return false
         val project = event.project ?: return false
