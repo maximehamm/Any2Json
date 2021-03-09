@@ -21,28 +21,28 @@ class JavaArraysTests : AbstractJavaTestCase() {
                 }""")
 
         // language=Json
-        assertEquals(toJson(), """
+        assertEquals(copy(), """
             {
               "zeIntegers": [
-                0
+                100
               ],
               "zeBooleans": [
-                false
+                true
               ],
               "zeCharacters": [
-                "a"
+                "w"
               ],
               "zeStrings": [
-                ""
+                "Something"
               ],
               "zeNumbers": [
-                0
+                100
               ]
             }
         """.trimIndent())
 
         // language=Json
-        assertEquals(toJson2(), """
+        assertEquals(copy(), """
             {
               "zeIntegers": [
                 100
@@ -73,7 +73,7 @@ class JavaArraysTests : AbstractJavaTestCase() {
                 }""")
 
         // language=Json
-        assertEquals(toJson(), """
+        assertEquals(copy(), """
             {
               "zeThings": []
             }

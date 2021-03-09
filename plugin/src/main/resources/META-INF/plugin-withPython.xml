@@ -1,15 +1,14 @@
 <idea-plugin>
 
+    <!-- LITERAL TO JSON -->
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
         <io.nimbly.json.Any2Json.prettify implementation="io.nimbly.any2json.Python2JsonPrettify">
         </io.nimbly.json.Any2Json.prettify>
     </extensions>
-
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
         <io.nimbly.json.Any2Json.copy implementation="io.nimbly.any2json.Python2JsonCopy">
         </io.nimbly.json.Any2Json.copy>
     </extensions>
-
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
         <io.nimbly.json.Any2Json.preview implementation="io.nimbly.any2json.Python2JsonPreview">
         </io.nimbly.json.Any2Json.preview>

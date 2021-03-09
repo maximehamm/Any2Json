@@ -6,14 +6,14 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
-import io.nimbly.any2json.EPrettyAction.COPY
-import io.nimbly.any2json.util.processPrettifierAction
+import io.nimbly.any2json.EAction.COPY
+import io.nimbly.any2json.util.processAction
 
-class JsonPrettify : JsonPrettifyOrCopy(EPrettyAction.REPLACE), Any2JsonPrettifyExtensionPoint
+class JsonPrettify : JsonPrettifyOrCopy(EAction.REPLACE), Any2JsonPrettifyExtensionPoint
 
 class JsonCopy : JsonPrettifyOrCopy(COPY), Any2JsonCopyExtensionPoint
 
-open class JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
+open class JsonPrettifyOrCopy(private val action: EAction) : Any2JsonRootExtensionPoint {
 
     override fun process(event: AnActionEvent): Boolean {
 
@@ -31,7 +31,7 @@ open class JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootE
         val prettified = toJson(JsonParser.parseString(json))
 
         // Proceed
-        val done = processPrettifierAction(action, prettified, project, event.dataContext)
+        val done = processAction(action, prettified, project, event.dataContext)
         if (done)
             return true
 

@@ -2,10 +2,10 @@ package io.nimbly.any2json
 
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiFile
-import com.intellij.psi.PsiIdentifier
 import com.intellij.psi.util.PsiTreeUtil
+import io.nimbly.any2json.EAction.COPY
+import io.nimbly.any2json.EAction.PREVIEW
+import io.nimbly.any2json.util.processAction
 import org.jetbrains.kotlin.incremental.components.LookupLocation
 import org.jetbrains.kotlin.js.descriptorUtils.nameIfStandardType
 import org.jetbrains.kotlin.name.Name
@@ -19,29 +19,32 @@ import org.jetbrains.kotlin.types.SimpleType
 import org.jetbrains.kotlin.types.typeUtil.isEnum
 import org.jetbrains.kotlin.types.typeUtil.supertypes
 
-class KotlinToJson : Any2JsonExtensionPoint {
+class Kotlin2JsonGeneratePreview : AbstractKotlin2JsonGenerate(PREVIEW), Any2JsonPreviewExtensionPoint
 
-    @Suppress("UNCHECKED_CAST")
-    override fun build(event: AnActionEvent, actionType: EType) : Pair<String, Map<String, Any>>? {
+class Kotlin2JsonGenerateCopy : AbstractKotlin2JsonGenerate(COPY), Any2JsonCopyExtensionPoint
 
-        if (!isEnabled(event, actionType))
-            return null
+abstract class AbstractKotlin2JsonGenerate(private val action: EAction) : Any2JsonRootExtensionPoint {
 
-        val editor = event.getData(CommonDataKeys.EDITOR) ?: return null
-        val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return null
+    override fun process(event: AnActionEvent): Boolean {
+
+        val editor = event.getData(CommonDataKeys.EDITOR) ?: return false
+        val project = event.project ?: return false
+        val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return false
         val element = psiFile.findElementAt(editor.caretModel.offset)
 
         val type = PsiTreeUtil.getContextOfType(element, KtClass::class.java)
-            ?: return null
+            ?: return false
 
-        return type.name!! to type.getProperties()
+        val map = type.getProperties()
             .map { it.name to parse(
                 it.type(),
                 it.initializer?.text,
-                type.createLookupLocation()!!,
-                actionType)}
+                type.createLookupLocation()!!)}
             .filter { it.second != null }
-            .toMap() as Map<String, Any>
+            .toMap()
+
+        val json = toJson(map)
+        return processAction(action, json, project, event.dataContext)
     }
 
     @Suppress("NAME_SHADOWING")
@@ -49,7 +52,7 @@ class KotlinToJson : Any2JsonExtensionPoint {
         type: KotlinType?,
         initializer: String?,
         lookupLocation: LookupLocation,
-        actionType: EType,
+        actionType: EType = EType.SECONDARY,
         done: MutableSet<KotlinType> = mutableSetOf()
     ): Any? {
 
@@ -89,10 +92,10 @@ class KotlinToJson : Any2JsonExtensionPoint {
             .map { it.nameIfStandardType?.identifier ?: it.toString() }
             .map { it.substringAfterLast(".")}
         if (names.find { it.startsWith("Collection")
-                    || it.startsWith("Array")
-                    || it.startsWith("Iterable")
-                    || it.startsWith("Iterator")
-                    || it.startsWith("List") } != null) {
+                || it.startsWith("Array")
+                || it.startsWith("Iterable")
+                || it.startsWith("Iterator")
+                || it.startsWith("List") } != null) {
             val parameterType = type.arguments.first().type
             if (parameterType.toString().substringBeforeLast("?") == "Any")
                 return listOf<Int>()
@@ -113,7 +116,7 @@ class KotlinToJson : Any2JsonExtensionPoint {
         }.toMap()
     }
 
-    override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
+    override fun isEnabled(event: AnActionEvent): Boolean {
         val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return false
         if (!psiFile.name.endsWith(".kt"))
             return false
@@ -126,15 +129,21 @@ class KotlinToJson : Any2JsonExtensionPoint {
 
         val type = PsiTreeUtil.getContextOfType(element, KtClass::class.java)
         return type!=null
-                && element.parent == type
+            && element.parent == type
     }
 
-    override fun presentation(actionType: EType, event: AnActionEvent): String {
+    override fun isVisible(event: AnActionEvent)
+        = isEnabled(event)
+
+    override fun presentation(event: AnActionEvent): String {
         val psiFile = event.getData(CommonDataKeys.PSI_FILE)!!
         val editor = event.getData(CommonDataKeys.EDITOR)!!
         val element = psiFile.findElementAt(editor.caretModel.offset)!!
         val type = PsiTreeUtil.getContextOfType(element, KtClass::class.java)!!
-        return "from class ${type.name}" + if (actionType == EType.SECONDARY) " with Data" else ""
+        return if (COPY == action)
+                "Copy Json sample from ${type.name}"
+            else
+                "Preview Json sample from ${type.name}"
     }
 
     companion object {
@@ -151,3 +160,4 @@ class KotlinToJson : Any2JsonExtensionPoint {
         )
     }
 }
+

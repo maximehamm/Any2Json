@@ -16,7 +16,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.util.PsiLiteralUtil
 import com.intellij.util.DocumentUtil
-import io.nimbly.any2json.EPrettyAction.COPY
+import io.nimbly.any2json.EAction.COPY
 import io.nimbly.any2json.util.openInSplittedTab
 import org.jetbrains.kotlin.idea.intentions.copyConcatenatedStringToClipboard.ConcatenatedStringGenerator
 import org.jetbrains.kotlin.psi.*
@@ -26,13 +26,13 @@ import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 import java.util.*
 
-class Kotlin2JsonPrettify : Kotlin2JsonPrettifyOrCopy(EPrettyAction.REPLACE), Any2JsonPrettifyExtensionPoint
+class Kotlin2JsonPrettify : Kotlin2JsonPrettifyOrCopy(EAction.REPLACE), Any2JsonPrettifyExtensionPoint
 
 class Kotlin2JsonCopy : Kotlin2JsonPrettifyOrCopy(COPY), Any2JsonCopyExtensionPoint
 
-class Kotlin2JsonPreview : Kotlin2JsonPrettifyOrCopy(EPrettyAction.PREVIEW), Any2JsonPreviewExtensionPoint
+class Kotlin2JsonPreview : Kotlin2JsonPrettifyOrCopy(EAction.PREVIEW), Any2JsonPreviewExtensionPoint
 
-open class Kotlin2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
+open class Kotlin2JsonPrettifyOrCopy(private val action: EAction) : Any2JsonRootExtensionPoint {
 
     override fun process(event: AnActionEvent): Boolean {
 
@@ -74,7 +74,7 @@ open class Kotlin2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Js
             return true
         }
 
-        if (action == EPrettyAction.PREVIEW) {
+        if (action == EAction.PREVIEW) {
             val file = PsiFileFactory.getInstance(project).createFileFromText(
                 "Preview.json", JsonLanguage.INSTANCE, prettify)
             openInSplittedTab(file, event.dataContext)

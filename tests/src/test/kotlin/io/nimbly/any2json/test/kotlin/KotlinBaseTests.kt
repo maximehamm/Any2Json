@@ -19,7 +19,7 @@ class KotlinBaseTests : AbstractKotlinTestCase() {
             }""")
 
         // language=Json
-        assertEquals(toJson(), """
+        assertEquals(copy(), """
             {
               "zeBoolean": false,
               "zeInt": 66,
@@ -46,7 +46,7 @@ class KotlinBaseTests : AbstractKotlinTestCase() {
             }""")
 
         // language=Json
-        assertEquals(toJson(), """
+        assertEquals(copy(), """
             {
               "zeBoolean": false,
               "zeInt": 66,
@@ -73,19 +73,7 @@ class KotlinBaseTests : AbstractKotlinTestCase() {
             }""")
 
         // language=Json
-        assertEquals(toJson(), """
-            {
-              "zeBoolean": false,
-              "zeInt": 0,
-              "zeLong": 0,
-              "zeDouble": 0.0,
-              "zeFloat": 0.000000,
-              "zeChar": "a"
-            }
-        """.trimIndent())
-
-        // language=Json
-        assertEquals(toJson2(), """
+        assertEquals(copy(), """
             {
               "zeBoolean": true,
               "zeInt": 100,
@@ -109,9 +97,9 @@ class KotlinBaseTests : AbstractKotlinTestCase() {
                 }""")
 
         // language=Json
-        assertEquals(toJson(), """
+        assertEquals(copy(), """
             {
-              "zeBigDecimal": 0E-12
+              "zeBigDecimal": 9999900000.000000000000
             }
         """.trimIndent())
     }
@@ -133,7 +121,7 @@ class KotlinBaseTests : AbstractKotlinTestCase() {
                 }""")
 
         // language=Json
-        assertEquals(toJson(), """
+        assertEquals(copy(), """
             {
               "zeDate": "2020-03-23 00:00:00",
               "zeLocalDateTime": "2020-03-23 00:00:00",
@@ -156,7 +144,7 @@ class KotlinBaseTests : AbstractKotlinTestCase() {
             }""")
 
         // language=Json
-        assertEquals(toJson(), """
+        assertEquals(copy(), """
             {
               "name": 0
             }""".trimIndent())
@@ -174,7 +162,7 @@ class KotlinBaseTests : AbstractKotlinTestCase() {
             }""")
 
         // language=Json
-        assertEquals(toJson2(), """
+        assertEquals(copy(), """
             {}
         """.trimIndent())
     }

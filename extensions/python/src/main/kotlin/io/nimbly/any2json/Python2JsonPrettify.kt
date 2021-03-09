@@ -8,18 +8,18 @@ import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFileFactory
 import com.jetbrains.python.psi.PyParenthesizedExpression
 import com.jetbrains.python.psi.impl.PyStringLiteralExpressionImpl
-import io.nimbly.any2json.EPrettyAction.COPY
+import io.nimbly.any2json.EAction.COPY
 import io.nimbly.any2json.util.openInSplittedTab
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 
-class Python2JsonPrettify : Python2JsonPrettifyOrCopy(EPrettyAction.REPLACE), Any2JsonPrettifyExtensionPoint
+class Python2JsonPrettify : Python2JsonPrettifyOrCopy(EAction.REPLACE), Any2JsonPrettifyExtensionPoint
 
 class Python2JsonCopy : Python2JsonPrettifyOrCopy(COPY), Any2JsonCopyExtensionPoint
 
-class Python2JsonPreview : Python2JsonPrettifyOrCopy(EPrettyAction.PREVIEW), Any2JsonPreviewExtensionPoint
+class Python2JsonPreview : Python2JsonPrettifyOrCopy(EAction.PREVIEW), Any2JsonPreviewExtensionPoint
 
-open class Python2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2JsonRootExtensionPoint {
+open class Python2JsonPrettifyOrCopy(private val action: EAction) : Any2JsonRootExtensionPoint {
 
     override fun process(event: AnActionEvent): Boolean {
 
@@ -38,7 +38,7 @@ open class Python2JsonPrettifyOrCopy(private val action: EPrettyAction) : Any2Js
             return true
         }
 
-        if (action == EPrettyAction.PREVIEW) {
+        if (action == EAction.PREVIEW) {
             val file = PsiFileFactory.getInstance(project).createFileFromText(
                 "Preview.json", JsonLanguage.INSTANCE, prettified)
             openInSplittedTab(file, event.dataContext)

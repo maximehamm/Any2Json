@@ -19,28 +19,7 @@ class KotlinArraysTests : AbstractKotlinTestCase() {
                 }""")
 
         // language=Json
-        assertEquals(toJson(), """
-            {
-              "zeIntegers": [
-                0
-              ],
-              "zeBooleans": [
-                false
-              ],
-              "zeCharacters": [
-                "a"
-              ],
-              "zeStrings": [
-                ""
-              ],
-              "zeNumbers": [
-                0
-              ]
-            }
-        """.trimIndent())
-
-        // language=Json
-        assertEquals(toJson2(), """
+        assertEquals(copy(), """
             {
               "zeIntegers": [
                 100
@@ -71,7 +50,7 @@ class KotlinArraysTests : AbstractKotlinTestCase() {
             }""")
 
         // language=Json
-        assertEquals(toJson(), """
+        assertEquals(copy(), """
             {
               "zeThings": []
             }

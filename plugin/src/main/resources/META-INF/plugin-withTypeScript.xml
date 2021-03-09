@@ -1,8 +1,13 @@
 <idea-plugin>
 
+    <!-- CLASS TO JSON -->
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
-        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.TypeScriptToJson">
-        </io.nimbly.json.Any2Json.lang>
+        <io.nimbly.json.Any2Json.copy implementation="io.nimbly.any2json.TypeScript2JsonGenerateCopy">
+        </io.nimbly.json.Any2Json.copy>
+    </extensions>
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.preview implementation="io.nimbly.any2json.TypeScript2JsonGeneratePreview">
+        </io.nimbly.json.Any2Json.preview>
     </extensions>
 
 </idea-plugin>

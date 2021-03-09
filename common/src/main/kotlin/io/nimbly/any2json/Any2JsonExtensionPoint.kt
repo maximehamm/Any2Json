@@ -23,8 +23,9 @@ interface Any2JsonRootExtensionPoint {
     fun isVisible(event: AnActionEvent): Boolean
     fun isEnabled(event: AnActionEvent): Boolean
     fun process(event: AnActionEvent): Boolean
+    fun presentation(event: AnActionEvent): String? = null
 }
 
-enum class EPrettyAction { COPY, REPLACE, PREVIEW }
+enum class EAction { COPY, REPLACE, PREVIEW }
 
 enum class EType { MAIN, SECONDARY }

@@ -72,7 +72,7 @@ class JavaToKotlinTests : AbstractJavaKotlinTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJson2(), """
+        assertEquals(copy(), """
             {
               "school": {
                 "schoolName": "Something",
@@ -180,7 +180,7 @@ class JavaToKotlinTests : AbstractJavaKotlinTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJson2(), """
+        assertEquals(copy(), """
             {
               "school": {
                 "schoolName": "Something",

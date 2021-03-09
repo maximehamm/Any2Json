@@ -18,7 +18,7 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJson2(), """
+        assertEquals(copy(), """
             {
               "name": "Something",
               "age": 100,
@@ -51,7 +51,7 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJson2(), """
+        assertEquals(copy(), """
             {
               "schoolName": "Something",
               "students": [
@@ -106,7 +106,7 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
         )
 
         // language=Json
-        assertEquals(toJson2(), """
+        assertEquals(copy(), """
             {
               "schoolName": "Something",
               "students": [
@@ -205,7 +205,7 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJson2(), """
+        assertEquals(copy(), """
             {
               "schoolName": "Something",
               "students": [
@@ -266,7 +266,7 @@ class KotlinAdvancedTests : AbstractKotlinTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJson2(), """
+        assertEquals(copy(), """
             {
               "schoolName": "Something",
               "schoolNameShort": "Something"

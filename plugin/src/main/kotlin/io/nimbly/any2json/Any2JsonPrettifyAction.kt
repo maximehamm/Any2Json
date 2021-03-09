@@ -41,6 +41,7 @@ open class Any2JsonRootAction<T:Any2JsonRootExtensionPoint>(
             it.isVisible(event)
         }
 
+        ext?.presentation(event).let { if (it!=null) event.presentation.text = it }
         event.presentation.isVisible = ext != null
         event.presentation.isEnabled = ext != null && ext.isEnabled(event)
     }

@@ -83,75 +83,75 @@ class TypeScriptTestCase : AbstractTestCase() {
             """)
 
         // language=Json
-        assertEquals(toJson(), """
+        assertEquals(copy(), """
             {
-              "name": "",
+              "name": "Something",
               "domains": [
                 {}
               ],
               "company": {
                 "logo": {},
-                "name": "",
-                "id": "",
+                "name": "Something",
+                "id": "Something",
                 "subscription": {
-                  "saveViews": false,
-                  "versioning": false,
-                  "serviceFocusGraph": false,
-                  "messageFocusGraph": false,
-                  "id": "",
-                  "hierarchicalGraph": false,
-                  "transportedDataGraph": false,
-                  "enterprise": false,
-                  "nbrFieldsLimit": 0,
-                  "nbrServicesLimit": 0,
-                  "nbrTypesLimit": 0,
-                  "routeSequenceGraph": false,
+                  "saveViews": true,
+                  "versioning": true,
+                  "serviceFocusGraph": true,
+                  "messageFocusGraph": true,
+                  "id": "Something",
+                  "hierarchicalGraph": true,
+                  "transportedDataGraph": true,
+                  "enterprise": true,
+                  "nbrFieldsLimit": 100,
+                  "nbrServicesLimit": 100,
+                  "nbrTypesLimit": 100,
+                  "routeSequenceGraph": true,
                   "offer": {
-                    "saveViews": false,
-                    "versioning": false,
-                    "serviceFocusGraph": false,
-                    "messageFocusGraph": false,
-                    "hierarchicalGraph": false,
-                    "transportedDataGraph": false,
-                    "nbrTypesLimit": 0,
-                    "nbrFieldsLimit": 0,
-                    "enterprise": false,
-                    "stripeYearlyPriceId": "",
-                    "nbrServicesLimit": 0,
-                    "routeSequenceGraph": false,
-                    "stripeMonthlyPriceId": "",
-                    "nbrRoutesAndMessagesLimit": 0,
-                    "domains": false,
-                    "nbrFacadesLimit": 0,
-                    "tags": false,
+                    "saveViews": true,
+                    "versioning": true,
+                    "serviceFocusGraph": true,
+                    "messageFocusGraph": true,
+                    "hierarchicalGraph": true,
+                    "transportedDataGraph": true,
+                    "nbrTypesLimit": 100,
+                    "nbrFieldsLimit": 100,
+                    "enterprise": true,
+                    "stripeYearlyPriceId": "Something",
+                    "nbrServicesLimit": 100,
+                    "routeSequenceGraph": true,
+                    "stripeMonthlyPriceId": "Something",
+                    "nbrRoutesAndMessagesLimit": 100,
+                    "domains": true,
+                    "nbrFacadesLimit": 100,
+                    "tags": true,
                     "type": "ENTERPRISE",
-                    "serviceSequenceGraph": false,
-                    "informations": false
+                    "serviceSequenceGraph": true,
+                    "informations": true
                   },
-                  "nbrRoutesAndMessagesLimit": 0,
-                  "domains": false,
-                  "nbrFacadesLimit": 0,
-                  "tags": false,
-                  "serviceSequenceGraph": false,
-                  "informations": false
+                  "nbrRoutesAndMessagesLimit": 100,
+                  "domains": true,
+                  "nbrFacadesLimit": 100,
+                  "tags": true,
+                  "serviceSequenceGraph": true,
+                  "informations": true
                 },
-                "url": "",
-                "description": "",
-                "age": 0
+                "url": "Something",
+                "description": "Something",
+                "age": 100
               },
               "userProject": {
                 "description": {},
-                "parent": "",
-                "type": "",
-                "name": "",
-                "commit": ""
+                "parent": "Something",
+                "type": "Something",
+                "name": "Something",
+                "commit": "Something"
               },
               "teamProject": {
-                "description": "",
-                "parent": "",
-                "type": "",
-                "name": "",
-                "commit": ""
+                "description": "Something",
+                "parent": "Something",
+                "type": "Something",
+                "name": "Something",
+                "commit": "Something"
               }
             }
         """.trimIndent())

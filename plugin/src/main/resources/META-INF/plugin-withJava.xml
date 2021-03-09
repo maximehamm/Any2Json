@@ -1,29 +1,33 @@
-<!--suppress PluginXmlCapitalization -->
 <idea-plugin>
 
+    <!-- LITERAL TO JSON -->
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
-        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.Java2Json">
-        </io.nimbly.json.Any2Json.lang>
-    </extensions>
-
-    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
-        <io.nimbly.json.Any2Json.debugger implementation="io.nimbly.any2json.JavaDebugger2Json">
-        </io.nimbly.json.Any2Json.debugger>
-    </extensions>
-
-    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
-        <io.nimbly.json.Any2Json.prettify implementation="io.nimbly.any2json.Java2JsonPrettify">
+        <io.nimbly.json.Any2Json.prettify implementation="io.nimbly.any2json.Java2JsonReplace">
         </io.nimbly.json.Any2Json.prettify>
     </extensions>
-
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
         <io.nimbly.json.Any2Json.copy implementation="io.nimbly.any2json.Java2JsonCopy">
         </io.nimbly.json.Any2Json.copy>
     </extensions>
-
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
         <io.nimbly.json.Any2Json.preview implementation="io.nimbly.any2json.Java2JsonPreview">
         </io.nimbly.json.Any2Json.preview>
+    </extensions>
+
+    <!-- CLASS TO JSON -->
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.copy implementation="io.nimbly.any2json.Java2JsonGenerateCopy">
+        </io.nimbly.json.Any2Json.copy>
+    </extensions>
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.preview implementation="io.nimbly.any2json.Java2JsonGeneratePreview">
+        </io.nimbly.json.Any2Json.preview>
+    </extensions>
+
+    <!-- DEBUGGER TO JSON -->
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.debugger implementation="io.nimbly.any2json.JavaDebugger2Json">
+        </io.nimbly.json.Any2Json.debugger>
     </extensions>
 
 

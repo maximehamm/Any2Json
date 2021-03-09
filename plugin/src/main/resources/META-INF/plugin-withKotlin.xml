@@ -1,22 +1,26 @@
 <idea-plugin>
 
-    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
-        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.KotlinToJson">
-        </io.nimbly.json.Any2Json.lang>
-    </extensions>
-
+    <!-- LITERAL TO JSON -->
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
         <io.nimbly.json.Any2Json.prettify implementation="io.nimbly.any2json.Kotlin2JsonPrettify">
         </io.nimbly.json.Any2Json.prettify>
     </extensions>
-
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
         <io.nimbly.json.Any2Json.copy implementation="io.nimbly.any2json.Kotlin2JsonCopy">
         </io.nimbly.json.Any2Json.copy>
     </extensions>
-
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
         <io.nimbly.json.Any2Json.preview implementation="io.nimbly.any2json.Kotlin2JsonPreview">
+        </io.nimbly.json.Any2Json.preview>
+    </extensions>
+
+    <!-- CLASS TO JSON -->
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.copy implementation="io.nimbly.any2json.Kotlin2JsonGenerateCopy">
+        </io.nimbly.json.Any2Json.copy>
+    </extensions>
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.preview implementation="io.nimbly.any2json.Kotlin2JsonGeneratePreview">
         </io.nimbly.json.Any2Json.preview>
     </extensions>
 

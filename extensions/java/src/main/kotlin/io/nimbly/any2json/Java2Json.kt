@@ -1,155 +1,120 @@
 package io.nimbly.any2json
 
+import com.intellij.json.JsonLanguage
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.psi.CommonClassNames
-import com.intellij.psi.PsiArrayType
-import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiEnumConstant
-import com.intellij.psi.PsiFile
-import com.intellij.psi.PsiIdentifier
-import com.intellij.psi.PsiModifier
-import com.intellij.psi.PsiPrimitiveType
-import com.intellij.psi.PsiType
-import com.intellij.psi.impl.source.PsiClassReferenceType
+import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.psi.*
+import com.intellij.psi.util.PsiLiteralUtil
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.psi.util.PsiUtil
-import io.nimbly.any2json.EType.SECONDARY
+import com.siyeh.ig.psiutils.ExpressionUtils
+import io.nimbly.any2json.EAction.*
+import io.nimbly.any2json.EAction.COPY
+import io.nimbly.any2json.EAction.PREVIEW
+import io.nimbly.any2json.util.openInSplittedTab
+import java.awt.Toolkit
+import java.awt.datatransfer.StringSelection
 
-class Java2Json : Any2JsonExtensionPoint {
+class Java2JsonReplace : AsbtractJava2JsonAction(REPLACE), Any2JsonPrettifyExtensionPoint
 
-    @Suppress("UNCHECKED_CAST")
-    override fun build(event: AnActionEvent, actionType: EType) : Pair<String, Map<String, Any>>? {
+class Java2JsonCopy : AsbtractJava2JsonAction(COPY), Any2JsonCopyExtensionPoint
 
-        if (!isEnabled(event, actionType))
-            return null
+class Java2JsonPreview : AsbtractJava2JsonAction(PREVIEW), Any2JsonPreviewExtensionPoint
 
-        val editor = event.getData(CommonDataKeys.EDITOR) ?: return null
+abstract class AsbtractJava2JsonAction(private val action: EAction) : Any2JsonRootExtensionPoint {
+
+    override fun process(event: AnActionEvent): Boolean {
+
+        val l = getLiteral(event) ?:return false
+        val project = event.project ?: return false
+
+        val (content, toReplace) = parse(l)
+        if (content == null) return false
+
+        val prettify = convertToJson(content)
+        if (action == COPY) {
+            Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(prettify), StringSelection(prettify))
+            info("Json prettified and copied to clipboard !", project)
+            return true
+        }
+
+        if (action == PREVIEW) {
+            val file = PsiFileFactory.getInstance(project).createFileFromText(
+                "Preview.json", JsonLanguage.INSTANCE, prettify)
+            openInSplittedTab(file, event.dataContext)
+            return true
+        }
+
+        if (toReplace == null) return false
+        val text = "\"" + PsiLiteralUtil.escapeBackSlashesInTextBlock(prettify)
+            .replace("\"", "\\\"")
+            .replace("\n", "\\n\"+\n\"") + "\""
+
+        WriteCommandAction.runWriteCommandAction(project) {
+            val factory: PsiElementFactory = JavaPsiFacade.getInstance(project).getElementFactory()
+            val newElement = factory.createExpressionFromText(text, null)
+            toReplace.replace(newElement)
+
+            newElement.toString()
+        }
+
+        return true
+    }
+
+    override fun isVisible(event: AnActionEvent): Boolean {
+        val literal = getLiteral(event) ?: return false
+        val (content, element) = parse(literal)
+        return content!=null && element!=null
+    }
+
+    override fun isEnabled(event: AnActionEvent): Boolean {
+        val literal = getLiteral(event) ?: return false
+        val (content, _) = parse(literal)
+        return content!=null
+    }
+
+    private fun parse(literal: PsiLiteralExpression): Pair<String?, PsiElement?> {
+
+        val content: String
+        val toReplace: PsiElement
+        val type = PsiTreeUtil.getContextOfType(literal, PsiPolyadicExpression::class.java)
+        if (type !=null) {
+            content = buildConcatenationText(type)
+            toReplace = type
+        }
+        else {
+            val v = literal.value ?: return null to null
+            if (v !is String) return null to null
+            toReplace = literal
+            content = v
+        }
+        return content to toReplace
+    }
+
+    private fun getLiteral(event: AnActionEvent): PsiLiteralExpression? {
         val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return null
-        val element = psiFile.findElementAt(editor.caretModel.offset)
-
-        val type = PsiTreeUtil.getContextOfType(element, PsiClass::class.java)
-            ?: return null
-
-        return type.name!! to type.allFields
-            .filter { it.modifierList?.hasModifierProperty(PsiModifier.STATIC) == false || type.isInterface }
-            .map { it.name to parse(it.type, it.initializer?.text, actionType) }
-            .filter { it.second != null }
-            .toMap() as Map<String, Any>
-    }
-
-    private fun parse(
-        type: PsiType,
-        initializer: String?,
-        actionType: EType,
-        done: MutableSet<PsiType> = mutableSetOf()
-    ): Any? {
-
-        // Primitives
-        if (type is PsiPrimitiveType)
-            return getValue(type, actionType == SECONDARY, initializer)
-
-        // Primitive array
-        if (type is PsiArrayType)
-            return listOfNotNull(parse(type.getDeepComponentType(), initializer, actionType, done = done))
-
-        // Resolve Psi class
-        val psiClass = PsiUtil.resolveClassInClassTypeOnly(type)
-            ?: (if (type is PsiClassReferenceType)
-                type.resolve() else null)
-            ?: return mapOf<String, Any?>()
-
-        // Enum
-        if (psiClass.isEnum)
-            return psiClass.fields.find { it is PsiEnumConstant }?.name ?: ""
-
-        // Known object with generator
-        val names = mutableListOf<String>()
-        names += type.presentableText
-        names += type.superTypes.map { it.presentableText }
-        names.find { GENERATORS[it] != null }?.let {
-            return getValue(it, actionType == SECONDARY, initializer)
-        }
-
-        // Collections, iterables, arrays, etc.
-        if (names.find { it.startsWith("Collection")
-                    || it.startsWith("Array")
-                    || it.startsWith("Iterable")
-                    || it.startsWith("Iterator")
-                    || it.startsWith("List") } != null) {
-            val parameterType = PsiUtil.extractIterableTypeParameter(type, false)
-                ?: PsiUtil.substituteTypeParameter(type, CommonClassNames.JAVA_UTIL_ITERATOR, 0, true)
-                ?: PsiUtil.substituteTypeParameter(type, CommonClassNames.JAVA_UTIL_LIST, 0, true)
-                ?: return null
-            if (parameterType.presentableText == "Object")
-                return listOf<Int>()
-            return listOfNotNull(parse(parameterType, null, actionType, done = done))
-        }
-
-        // Prevent stack overflow
-        if (done.contains(type))
+        val editor = event.getData(CommonDataKeys.EDITOR) ?: return null
+        val element = psiFile.findElementAt(editor.caretModel.offset) ?: return null
+        val parent = element.parent ?: return null
+        if (parent !is PsiLiteralExpression)
             return null
-        done.add(type)
-
-        // Recurse
-        return psiClass.allFields.map {
-            it.name to parse(
-                it.type,
-                it.initializer?.text,
-                actionType,
-                done = done) }.toMap()
+        return parent
     }
 
-    private fun getValue(type: String, generateValues: Boolean, initializer: String?)
-        = GENERATORS[type]!!.generate(generateValues, initializer)
-
-    private fun getValue(type: PsiType, generateValues: Boolean, initializer: String?)
-        = when (type.canonicalText) {
-            "boolean" -> getValue("Boolean", generateValues, initializer)
-            "int", "long", "byte", "short" -> getValue("Number", generateValues, initializer)
-            "float" -> getValue("Float", generateValues, initializer)
-            "double" -> getValue("Double", generateValues, initializer)
-            "char" -> getValue("Character", generateValues, initializer)
-            else -> throw Any2PojoException("Not supported primitive '$type.canonicalText'")
+    private fun buildConcatenationText(polyadicExpression: PsiPolyadicExpression): String {
+        val out = StringBuilder()
+        var element = polyadicExpression.firstChild
+        while (element != null) {
+            if (element is PsiExpression) {
+                val value = ExpressionUtils.computeConstantExpression(element)
+                out.append(value?.toString() ?: "?")
+            }
+            else if (element is PsiWhiteSpace && element.getText().contains("\n") &&
+                    (out.isEmpty() || out[out.length - 1] != '\n')) {
+                out.append('\n')
+            }
+            element = element.nextSibling
         }
-
-    override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
-        val psiFile = event.getData(CommonDataKeys.PSI_FILE)
-            ?: return false
-        if (!psiFile.name.endsWith(".java"))
-            return false
-
-        val editor = event.getData(CommonDataKeys.EDITOR) ?:
-            return false
-
-        val element = psiFile.findElementAt(editor.caretModel.offset)
-            ?: return false
-
-        val type = PsiTreeUtil.getContextOfType(element, PsiClass::class.java)
-        return type!=null
-                && element is PsiIdentifier
-                && element.parent == type
-    }
-
-    override fun presentation(actionType: EType, event: AnActionEvent): String {
-        val psiFile = event.getData(CommonDataKeys.PSI_FILE)!!
-        val editor = event.getData(CommonDataKeys.EDITOR)!!
-        val element = psiFile.findElementAt(editor.caretModel.offset)!!
-        val type = PsiTreeUtil.getContextOfType(element, PsiClass::class.java)!!
-        return "from class ${type.name}" + if (actionType == SECONDARY) " with Data" else ""
-    }
-
-    companion object {
-        val GENERATORS = mapOf(
-            "Boolean" to GBoolean(),
-            "Character" to GChar(),
-            "CharSequence" to GString(),
-            "Long" to GLong(),
-            "Number" to GLong(),
-            "Double" to GDecimal(1), "Float" to GDecimal(6), "BigDecimal" to GDecimal(12),
-            "Date" to GDateTime(), "LocalDateTime" to GDateTime(),
-            "LocalDate" to GDate(),
-            "LocalTime" to GTime()
-        )
+        return out.toString()
     }
 }
