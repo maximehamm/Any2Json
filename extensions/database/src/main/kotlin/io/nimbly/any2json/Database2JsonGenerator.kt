@@ -33,9 +33,15 @@ abstract class AbstractDatabase2JsonGenerate(private val action: EAction) : Any2
 
         val json =  when {
             result != null -> {
+                var selected = result.selectedRows
+                if (selected.isEmpty()
+                    || selected.size == 1 && result.selectedColumnCount==1)
+                    selected =  (0 until result.model.rowCount).toList().toIntArray()
+
                 val list = mutableListOf<Map<String, Any?>>()
                 val headers = result.columnModel.columns.toList().map { it.headerValue.toString() }
-                for (row in 0 until result.model.rowCount) {
+                for (row in selected) {
+
                     val map = mutableMapOf<String, Any?>()
                     for (column in 0 until headers.count()) {
                         map[headers[column]] = result.model.getValueAt(row, column)
