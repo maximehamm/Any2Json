@@ -5,17 +5,15 @@ import com.intellij.database.model.DasTable
 import com.intellij.database.model.ObjectKind
 import com.intellij.database.psi.DbElement
 import com.intellij.database.psi.DbTable
+import com.intellij.database.run.ui.table.TableResultRowHeader
 import com.intellij.database.run.ui.table.TableResultView
 import com.intellij.database.util.DbImplUtil
 import com.intellij.database.view.DatabaseStructure
 import com.intellij.database.view.DatabaseView
 import com.intellij.ide.DataManager
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.project.Project
-import com.intellij.psi.*
-import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.containers.JBIterable
 import io.nimbly.any2json.EAction.COPY
 import io.nimbly.any2json.EAction.PREVIEW
@@ -33,31 +31,29 @@ abstract class AbstractDatabase2JsonGenerate(private val action: EAction) : Any2
         val result = getTableResult(event)
         val project = event.project ?: return false
 
-        val json: String
-        if (result != null) {
-
-            val list = mutableListOf<Map<String, Any?>>()
-            val headers = result.columnModel.columns.toList().map { it.headerValue.toString() }
-
-            for (row in 0 until result.model.rowCount) {
-                val map = mutableMapOf<String, Any?>()
-                for (column in 0 until headers.count()) {
-                    map[headers[column]] = result.model.getValueAt(row, column)
+        val json =  when {
+            result != null -> {
+                val list = mutableListOf<Map<String, Any?>>()
+                val headers = result.columnModel.columns.toList().map { it.headerValue.toString() }
+                for (row in 0 until result.model.rowCount) {
+                    val map = mutableMapOf<String, Any?>()
+                    for (column in 0 until headers.count()) {
+                        map[headers[column]] = result.model.getValueAt(row, column)
+                    }
+                    list.add(map)
                 }
-                list.add(map)
+                toJson(list)
             }
-
-            json = toJson(list)
-        }
-        else if (table != null) {
-            val columns = table.getDasChildren(ObjectKind.COLUMN).toList().map { it as PgLocalTableColumn }
-            val map = columns
-                .map { it.name to parse(it) }
-                .toMap()
-            json = toJson(map)
-        }
-        else {
-            return false
+            table != null -> {
+                val columns = table.getDasChildren(ObjectKind.COLUMN).toList().map { it as PgLocalTableColumn }
+                val map = columns
+                    .map { it.name to parse(it) }
+                    .toMap()
+                toJson(map)
+            }
+            else -> {
+                return false
+            }
         }
 
         return processAction(action, json, project, event.dataContext)
@@ -91,17 +87,19 @@ abstract class AbstractDatabase2JsonGenerate(private val action: EAction) : Any2
     override fun presentation(event: AnActionEvent): String {
         val from = if (getTableResult(event) != null) "results" else "table"
         return if (COPY == action)
-                "Copy Json sample from ${from}"
+                "Copy Json sample from $from"
             else
-                "Preview Json sample from ${from}"
+                "Preview Json sample from $from"
     }
 
     private fun getTableResult(event: AnActionEvent): TableResultView? {
         val data = event.getData(PlatformDataKeys.CONTEXT_COMPONENT)
             ?: return null
-        if (data !is TableResultView)
-            return null
-        return data
+        if (data is TableResultView)
+            return data
+        if (data is TableResultRowHeader && data.table is TableResultView)
+            return data.table as TableResultView
+        return null
     }
 
     companion object {
