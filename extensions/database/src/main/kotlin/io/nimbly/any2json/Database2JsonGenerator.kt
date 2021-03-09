@@ -8,22 +8,32 @@ import com.intellij.database.psi.DbTable
 import com.intellij.database.run.ui.table.TableResultView
 import com.intellij.database.util.DbImplUtil
 import com.intellij.database.view.DatabaseStructure
-import com.intellij.database.view.DatabaseStructure.FamilyGroup
 import com.intellij.database.view.DatabaseView
 import com.intellij.ide.DataManager
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.project.Project
+import com.intellij.psi.*
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.containers.JBIterable
+import io.nimbly.any2json.EAction.COPY
+import io.nimbly.any2json.EAction.PREVIEW
+import io.nimbly.any2json.util.processAction
 
-class DatabaseToJson : Any2JsonExtensionPoint {
+class Database2JsonGeneratePreview : AbstractDatabase2JsonGenerate(PREVIEW), Any2JsonPreviewExtensionPoint
 
-    @Suppress("UNCHECKED_CAST")
-    override fun build(event: AnActionEvent, actionType: EType) : Pair<String, Any>? {
+class Database2JsonGenerateCopy : AbstractDatabase2JsonGenerate(COPY), Any2JsonCopyExtensionPoint
+
+abstract class AbstractDatabase2JsonGenerate(private val action: EAction) : Any2JsonRootExtensionPoint {
+
+    override fun process(event: AnActionEvent): Boolean {
 
         val table = getTable(event)
         val result = getTableResult(event)
+        val project = event.project ?: return false
 
+        val json: String
         if (result != null) {
 
             val list = mutableListOf<Map<String, Any?>>()
@@ -37,32 +47,26 @@ class DatabaseToJson : Any2JsonExtensionPoint {
                 list.add(map)
             }
 
-            return "result" to list
+            json = toJson(list)
         }
         else if (table != null) {
             val columns = table.getDasChildren(ObjectKind.COLUMN).toList().map { it as PgLocalTableColumn }
-            return table.name to columns
-                .map { it.name to parse(it, actionType) }
+            val map = columns
+                .map { it.name to parse(it) }
                 .toMap()
+            json = toJson(map)
+        }
+        else {
+            return false
         }
 
-        return null
-    }
-
-    private fun getTableResult(event: AnActionEvent): TableResultView? {
-        val data = event.getData(PlatformDataKeys.CONTEXT_COMPONENT)
-            ?: return null
-
-        if (data !is TableResultView)
-            return null
-
-        return data
+        return processAction(action, json, project, event.dataContext)
     }
 
     @Suppress("NAME_SHADOWING")
     private fun parse(
         column: PgLocalTableColumn,
-        actionType: EType
+        actionType: EType = EType.SECONDARY
     ): Any {
 
         val typeName = column.dataType.typeName
@@ -73,21 +77,31 @@ class DatabaseToJson : Any2JsonExtensionPoint {
         return GString().generate(actionType == EType.SECONDARY, null)
     }
 
-    override fun isEnabled(event: AnActionEvent, actionType: EType): Boolean {
-
+    override fun isEnabled(event: AnActionEvent): Boolean {
         val result = getTableResult(event)
         if (result != null)
-            return actionType == EType.MAIN
-
+            return true
         return event.place == "DatabaseViewPopup"
-                && getTable(event) != null
+            && getTable(event) != null
     }
 
-    override fun presentation(actionType: EType, event: AnActionEvent): String {
-        val result = getTableResult(event)
-        if (result !=null)
-            return "from Results"
-        return "from Table" + if (actionType == EType.SECONDARY) " with Data" else ""
+    override fun isVisible(event: AnActionEvent)
+        = isEnabled(event)
+
+    override fun presentation(event: AnActionEvent): String {
+        val from = if (getTableResult(event) != null) "results" else "table"
+        return if (COPY == action)
+                "Copy Json sample from ${from}"
+            else
+                "Preview Json sample from ${from}"
+    }
+
+    private fun getTableResult(event: AnActionEvent): TableResultView? {
+        val data = event.getData(PlatformDataKeys.CONTEXT_COMPONENT)
+            ?: return null
+        if (data !is TableResultView)
+            return null
+        return data
     }
 
     companion object {
@@ -136,10 +150,12 @@ class DatabaseToJson : Any2JsonExtensionPoint {
             val dataContext = DataManager.getInstance().getDataContext(view)
             iter = DatabaseView.getSelectedElements(dataContext,
                 { o: DatabaseStructure.Group? ->
-                    o is FamilyGroup && DbImplUtil.isDataTable(
+                    o is DatabaseStructure.FamilyGroup && DbImplUtil.isDataTable(
                         o.childrenKind )
                 }).unique()
         }
         return iter
     }
+
 }
+

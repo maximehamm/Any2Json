@@ -1,9 +1,13 @@
 <idea-plugin>
 
-
+    <!-- CLASS TO JSON -->
     <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
-        <io.nimbly.json.Any2Json.lang implementation="io.nimbly.any2json.DatabaseToJson">
-        </io.nimbly.json.Any2Json.lang>
+        <io.nimbly.json.Any2Json.copy implementation="io.nimbly.any2json.Database2JsonGenerateCopy">
+        </io.nimbly.json.Any2Json.copy>
+    </extensions>
+    <extensions defaultExtensionNs="io.nimbly.json.Any2Json">
+        <io.nimbly.json.Any2Json.preview implementation="io.nimbly.any2json.Database2JsonGeneratePreview">
+        </io.nimbly.json.Any2Json.preview>
     </extensions>
 
     <actions>
@@ -12,10 +16,13 @@
 
             <separator/>
 
-            <action class="io.nimbly.any2json.Any2JsonDefaultAction"
-                    id="io.nimbly.any2json.ANY2JsonDefaultAction.db"
-                    text="Generate Json from Class"
-                    description="Convert CLASS to Json and copy to clipboard">
+            <action class="io.nimbly.any2json.Any2JsonCopyAction"
+                    id="io.nimbly.any2json.Any2JsonCopyAction"
+                    text="Copy as prettified Json">
+            </action>
+            <action class="io.nimbly.any2json.Any2JsonPreviewAction"
+                    id="io.nimbly.any2json.Any2JsonPreviewAction"
+                    text="Preview as prettified Json">
             </action>
 
             <add-to-group group-id="DatabaseViewPopupMenu" anchor="last"/>
