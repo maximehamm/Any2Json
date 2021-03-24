@@ -8,6 +8,7 @@ import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFileFactory
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import io.nimbly.any2json.EAction.COPY
+import io.nimbly.any2json.util.info
 import io.nimbly.any2json.util.openInSplittedTab
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection

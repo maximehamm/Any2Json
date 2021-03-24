@@ -5,6 +5,7 @@ import com.google.gson.stream.MalformedJsonException
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.extensions.ExtensionPointName
+import io.nimbly.any2json.util.warn
 
 class Any2JsonPrettifyAction : Any2JsonRootAction<Any2JsonPrettifyExtensionPoint>(PRETTIFY())
 

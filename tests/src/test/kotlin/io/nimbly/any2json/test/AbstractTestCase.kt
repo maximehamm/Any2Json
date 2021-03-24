@@ -11,6 +11,7 @@ import com.intellij.testFramework.fixtures.kotlin.KotlinTester
 import io.nimbly.any2json.*
 import io.nimbly.any2json.test.AbstractTestCase.EXT.java
 import io.nimbly.any2json.test.AbstractTestCase.EXT.kt
+import io.nimbly.any2json.util.resetLastNotification
 import junit.framework.TestCase
 import org.junit.Ignore
 import java.awt.Toolkit

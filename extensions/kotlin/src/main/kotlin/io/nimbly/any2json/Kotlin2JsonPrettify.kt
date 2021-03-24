@@ -17,6 +17,7 @@ import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.util.PsiLiteralUtil
 import com.intellij.util.DocumentUtil
 import io.nimbly.any2json.EAction.COPY
+import io.nimbly.any2json.util.info
 import io.nimbly.any2json.util.openInSplittedTab
 import org.jetbrains.kotlin.idea.intentions.copyConcatenatedStringToClipboard.ConcatenatedStringGenerator
 import org.jetbrains.kotlin.psi.*

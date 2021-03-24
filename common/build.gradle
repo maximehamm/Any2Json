@@ -22,7 +22,7 @@ compileTestKotlin { kotlinOptions.jvmTarget = "11" }
 
 dependencies {
 
-    // XML supports
+    // Json supports
     implementation 'org.json:json:20180813'
 
     // CSV supports

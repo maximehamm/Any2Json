@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFileFactory
 import io.nimbly.any2json.EAction
-import io.nimbly.any2json.info
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 

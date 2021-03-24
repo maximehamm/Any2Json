@@ -1,4 +1,4 @@
-package io.nimbly.any2json
+package io.nimbly.any2json.util
 
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationGroupManager
