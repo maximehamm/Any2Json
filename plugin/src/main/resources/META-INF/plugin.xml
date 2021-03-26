@@ -8,7 +8,7 @@
 
     <description><![CDATA[
 
-       <b>Convert Json in your code:</b><br/>
+       <b>Convert Json in your code</b><br/>
        <ul>
          <li>Select a string literal content or a file containing some <b><u>RAW JSON</u></b>, <b><u>XML</u></b>, <b><u>YAML</u></b>, <b><u>CSV</u></b>, <b><u>PROPERTIES</u></b></b></li>
          <li>Select "Convert to prettified Json"</li>
