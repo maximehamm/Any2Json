@@ -1,16 +1,24 @@
+/*
+ * ANY2JSON
+ * Copyright (C) 2021  Maxime HAMM - NIMBLY CONSULTING - maxime.hamm.pro@gmail.com
+ *
+ * This document is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This work is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
 package io.nimbly.any2json
 
 import com.intellij.debugger.engine.JavaValuePresentation
 import com.intellij.debugger.ui.impl.watch.FieldDescriptorImpl
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl
-import com.sun.jdi.BooleanValue
-import com.sun.jdi.ClassType
-import com.sun.jdi.DoubleValue
-import com.sun.jdi.FloatValue
-import com.sun.jdi.IntegerValue
-import com.sun.jdi.LongValue
-import com.sun.jdi.ObjectReference
-import com.sun.jdi.StringReference
+import com.sun.jdi.*
 
 class JavaDebugger2Json : Any2JsonDebuggerExtensionPoint {
 
