@@ -32,6 +32,8 @@ tasks.runPluginVerifier {
 }
 
 patchPluginXml {
+    sinceBuild '203'
+    untilBuild '211.*'
     changeNotes """
       <b>Please Rate and Review this plugin !</b><br/><br/>
       Change notes :
