@@ -15,7 +15,7 @@
 
 package io.nimbly.any2json.test.kotlin
 
-import io.nimbly.any2json.NO_CONVERSION_FOUND
+import io.nimbly.any2json.conversion.NO_CONVERSION_FOUND
 import io.nimbly.any2json.test.AbstractKotlinTestCase
 import io.nimbly.any2json.util.lastNotification
 

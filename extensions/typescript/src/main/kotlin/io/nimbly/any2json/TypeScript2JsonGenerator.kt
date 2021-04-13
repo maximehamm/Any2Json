@@ -26,6 +26,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
 import io.nimbly.any2json.EAction.COPY
 import io.nimbly.any2json.EAction.PREVIEW
+import io.nimbly.any2json.conversion.toJson
 import io.nimbly.any2json.util.processAction
 
 class TypeScript2JsonGeneratePreview : AbstractTypeScript2JsonGenerate(PREVIEW), Any2JsonPreviewExtensionPoint

@@ -22,6 +22,7 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
 import io.nimbly.any2json.EAction.COPY
+import io.nimbly.any2json.conversion.toJson
 import io.nimbly.any2json.util.processAction
 
 class JsonPrettify : JsonPrettifyOrCopy(EAction.REPLACE), Any2JsonPrettifyExtensionPoint

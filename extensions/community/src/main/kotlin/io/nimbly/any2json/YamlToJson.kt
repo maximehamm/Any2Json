@@ -20,6 +20,8 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.psi.PsiFile
 import io.nimbly.any2json.EAction.COPY
 import io.nimbly.any2json.EAction.PREVIEW
+import io.nimbly.any2json.conversion.toJson
+import io.nimbly.any2json.conversion.yamlToJson
 import io.nimbly.any2json.util.processAction
 
 class YamlToJsonCopy : YamlToJsonPrettifyOrCopy(COPY), Any2JsonCopyExtensionPoint

@@ -32,6 +32,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.util.containers.JBIterable
 import io.nimbly.any2json.EAction.COPY
 import io.nimbly.any2json.EAction.PREVIEW
+import io.nimbly.any2json.conversion.toJson
 import io.nimbly.any2json.util.processAction
 
 class Database2JsonGeneratePreview : AbstractDatabase2JsonGenerate(PREVIEW), Any2JsonPreviewExtensionPoint

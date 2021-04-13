@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  */
 
-package io.nimbly.any2json
+package io.nimbly.any2json.conversion
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvParser.Feature.*
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import io.nimbly.any2json.Any2PojoException
 
 fun looksLikeCsv(csv: String): Boolean {
 

@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  */
 
-package io.nimbly.any2json
+package io.nimbly.any2json.conversion
 
 import org.json.JSONException
 import org.json.JSONObject

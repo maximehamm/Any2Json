@@ -26,6 +26,7 @@ import com.siyeh.ig.psiutils.ExpressionUtils
 import io.nimbly.any2json.EAction.*
 import io.nimbly.any2json.EAction.COPY
 import io.nimbly.any2json.EAction.PREVIEW
+import io.nimbly.any2json.conversion.convertToJson
 import io.nimbly.any2json.util.info
 import io.nimbly.any2json.util.openInSplittedTab
 import java.awt.Toolkit

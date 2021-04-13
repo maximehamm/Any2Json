@@ -20,6 +20,7 @@ import com.intellij.xdebugger.impl.ui.tree.XDebuggerTree
 import com.intellij.xdebugger.impl.ui.tree.nodes.XValueNodeImpl
 import io.nimbly.any2json.EAction.COPY
 import io.nimbly.any2json.EAction.PREVIEW
+import io.nimbly.any2json.conversion.toJson
 import io.nimbly.any2json.util.processAction
 import org.jetbrains.debugger.VariableView
 

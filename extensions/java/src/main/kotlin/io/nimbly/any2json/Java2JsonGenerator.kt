@@ -23,6 +23,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.PsiUtil
 import io.nimbly.any2json.EAction.COPY
 import io.nimbly.any2json.EAction.PREVIEW
+import io.nimbly.any2json.conversion.toJson
 import io.nimbly.any2json.util.processAction
 
 class Java2JsonGeneratePreview : AbstractJava2JsonGenerate(PREVIEW), Any2JsonPreviewExtensionPoint

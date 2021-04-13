@@ -13,17 +13,20 @@
  * GNU General Public License for more details.
  */
 
-package io.nimbly.any2json
+package io.nimbly.any2json.conversion
 
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
+import io.nimbly.any2json.Any2JsonConversionException
 import io.nimbly.any2json.EType.SECONDARY
-import io.nimbly.any2json.conversion.looksLikeProperties
-import io.nimbly.any2json.conversion.propertiesToMap
+import io.nimbly.any2json.util.getLoggerInstance
+
 
 const val NO_CONVERSION_FOUND = "Not a valid Json, Xml, Csv, Yaml or Properties !"
 
-fun toJson(any: Any)
+var LOG = getLoggerInstance()
+
+fun toJson(any: Any): String
     = GsonBuilder()
         .setPrettyPrinting()
         .serializeNulls()
@@ -38,29 +41,44 @@ fun convertToJson(content: String): String {
     try {
         // json to json
         return toJson(JsonParser.parseString(any.replace("\\\"", "\"")) )
-    } catch (ignored: Exception) { }
+    } catch (e: Exception) {
+        LOG.trace("Json to Json not possible")
+        LOG.trace(e)
+    }
 
     try {
         // xml to json
         return toJson(xmlToJson(any).toMap())
-    } catch (ignored: Exception) { }
+    } catch (e: Exception) {
+        LOG.trace("Xml to Json not possible")
+        LOG.trace(e)
+    }
 
     try {
         // yaml to json
         return toJson(yamlToJson(any))
-    } catch (ignored: Exception) { }
+    } catch (e: Exception) {
+        LOG.trace("Yaml to Json not possible")
+        LOG.trace(e)
+    }
 
     try {
         // csv to json
         if (looksLikeCsv(any))
             return toJson(csvToMap(any))
-    } catch (ignored: Exception) { }
+    } catch (e: Exception) {
+        LOG.trace("CSV to Json not possible")
+        LOG.trace(e)
+    }
 
     try {
         // properties to json
         if (looksLikeProperties(any))
             return toJson(propertiesToMap(any, SECONDARY))
-    } catch (ignored: Exception) { }
+    } catch (e: Exception) {
+        LOG.trace("Properties to Json not possible")
+        LOG.trace(e)
+    }
 
     throw Any2JsonConversionException(NO_CONVERSION_FOUND)
 }

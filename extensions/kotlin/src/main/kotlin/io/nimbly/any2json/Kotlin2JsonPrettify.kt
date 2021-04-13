@@ -32,6 +32,7 @@ import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.util.PsiLiteralUtil
 import com.intellij.util.DocumentUtil
 import io.nimbly.any2json.EAction.COPY
+import io.nimbly.any2json.conversion.convertToJson
 import io.nimbly.any2json.util.info
 import io.nimbly.any2json.util.openInSplittedTab
 import org.jetbrains.kotlin.idea.intentions.copyConcatenatedStringToClipboard.ConcatenatedStringGenerator
@@ -40,7 +41,6 @@ import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
-import java.util.*
 
 class Kotlin2JsonPrettify : Kotlin2JsonPrettifyOrCopy(EAction.REPLACE), Any2JsonPrettifyExtensionPoint
 

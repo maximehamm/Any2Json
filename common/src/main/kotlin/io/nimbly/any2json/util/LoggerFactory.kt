@@ -13,14 +13,10 @@
  * GNU General Public License for more details.
  */
 
-package io.nimbly.any2json.conversion
+package io.nimbly.any2json.util
 
-import io.nimbly.any2json.Any2JsonConversionException
-import org.yaml.snakeyaml.Yaml
+import com.intellij.openapi.diagnostic.Logger
 
-fun yamlToJson(yaml: String): Any {
-    val converted = Yaml().load<Any>(yaml)
-    if (converted == null || converted is String)
-        throw Any2JsonConversionException("Not yaml ?")
-    return converted
-}
+fun getLoggerInstance(suffix: String? = null)
+    = Logger.getInstance("io.nimbly.any2json"
+        + (if (suffix == null) "" else ".$suffix"))
