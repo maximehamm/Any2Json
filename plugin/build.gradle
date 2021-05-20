@@ -38,6 +38,8 @@ patchPluginXml {
       <b>Please Rate and Review this plugin !</b><br/><br/>
       Change notes :
       <ul>
+        <li><b>2.16</b> Fix bugs </li>
+        <li><b>2.15</b> Fix bugs </li>
         <li><b>2.14</b> Preview generated class sample </li>
         <li><b>2.13</b> Preview prettified Json as new editor tab </li>
         <li><b>2.12</b> Copy only selection not all file content for Xml, Csv and Properties </li>

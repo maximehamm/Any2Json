@@ -19,7 +19,7 @@ ext {
 allprojects {
 
     group = 'io.nimbly.json'
-    version '2.16.1'
+    version '2.16.6'
 
     repositories {
         mavenCentral()
