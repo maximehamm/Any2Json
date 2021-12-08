@@ -47,9 +47,8 @@ open class YamlToJsonPrettifyOrCopy(private val action: EAction) : Any2JsonRootE
 
     override fun isVisible(event: AnActionEvent): Boolean {
         val psiFile : PsiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return false
-        if (! psiFile.name.toLowerCase().endsWith(".yaml"))
-            return false
-        return true
+        val lowerCase = psiFile.name.toLowerCase()
+        return lowerCase.endsWith(".yaml") || lowerCase.endsWith(".yml")
     }
 
     override fun isEnabled(event: AnActionEvent)

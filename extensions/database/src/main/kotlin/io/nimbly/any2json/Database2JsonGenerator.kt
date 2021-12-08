@@ -15,8 +15,9 @@
 
 package io.nimbly.any2json
 
-import com.intellij.database.dialects.postgres.model.PgLocalTableColumn
+import com.intellij.database.model.DasObject
 import com.intellij.database.model.DasTable
+import com.intellij.database.model.DasTypedObject
 import com.intellij.database.model.ObjectKind
 import com.intellij.database.psi.DbElement
 import com.intellij.database.psi.DbTable
@@ -67,7 +68,7 @@ abstract class AbstractDatabase2JsonGenerate(private val action: EAction) : Any2
                 toJson(list)
             }
             table != null -> {
-                val columns = table.getDasChildren(ObjectKind.COLUMN).toList().map { it as PgLocalTableColumn }
+                val columns = table.getDasChildren(ObjectKind.COLUMN).toList()
                 val map = columns
                     .map { it.name to parse(it) }
                     .toMap()
@@ -83,11 +84,11 @@ abstract class AbstractDatabase2JsonGenerate(private val action: EAction) : Any2
 
     @Suppress("NAME_SHADOWING")
     private fun parse(
-        column: PgLocalTableColumn,
+        column: DasObject,
         actionType: EType = EType.SECONDARY
     ): Any {
 
-        val typeName = column.dataType.typeName
+        val typeName = if (column is DasTypedObject) column.dataType.typeName else ""
         GENERATORS[typeName]?.let {
             return it.generate(actionType == EType.SECONDARY, null)
         }
@@ -128,11 +129,11 @@ abstract class AbstractDatabase2JsonGenerate(private val action: EAction) : Any2
         val GENERATORS = mapOf(
             "varchar" to GString(), "text" to GString(),
             "char" to GChar(),
-            "uuid" to GUUID(),
+            "uuid" to GUUID(), "varbinary" to GUUID(),
             "bigint" to GLong(), "float4" to GLong(),  "float8" to GLong(),
             "integer" to GInteger(),
             "boolean" to GBoolean(), "bit" to GBoolean(), "bool" to GBoolean(),
-            "timestamp" to GObject(), "date" to GObject(), "time" to GObject()
+            "timestamp" to GObject(), "date" to GObject(), "datetime" to GObject(), "time" to GObject()
         )
     }
 
