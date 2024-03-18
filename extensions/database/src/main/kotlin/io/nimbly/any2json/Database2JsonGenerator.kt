@@ -1,6 +1,6 @@
 /*
  * ANY2JSON
- * Copyright (C) 2021  Maxime HAMM - NIMBLY CONSULTING - maxime.hamm.pro@gmail.com
+ * Copyright (C) 2024  Maxime HAMM - NIMBLY CONSULTING - maxime.hamm.pro@gmail.com
  *
  * This document is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -169,11 +169,11 @@ abstract class AbstractDatabase2JsonGenerate(private val action: EAction) : Any2
             iter = JBIterable.empty()
         } else {
             val dataContext = DataManager.getInstance().getDataContext(view)
-            iter = DatabaseView.getSelectedElements(dataContext,
-                { o: DatabaseStructure.Group? ->
-                    o is DatabaseStructure.FamilyGroup && DbImplUtil.isDataTable(
-                        o.childrenKind )
-                }).unique()
+            iter = DatabaseView.getSelectedElements(dataContext) { o ->
+                o is DatabaseStructure.FamilyGroup && DbImplUtil.isDataTable(
+                    o.childrenKind
+                )
+            }.unique()
         }
         return iter
     }

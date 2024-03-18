@@ -10,7 +10,7 @@ ext {
     any2Json_idea_plugins = ['java',
                              'Kotlin',
                              'JavaScriptLanguage',
-                             'DatabaseTools',
+                             // 'DatabaseTools',
                              'com.jetbrains.php:203.7148.15',
                              'Pythonid:203.7148.72',
                              'PsiViewer:203-SNAPSHOT']
@@ -19,7 +19,7 @@ ext {
 allprojects {
 
     group = 'io.nimbly.json'
-    version '2.18.0'
+    version '2.19.0'
 
     repositories {
         mavenCentral()
@@ -43,7 +43,7 @@ dependencies {
     implementation project(':extensions:java')
     implementation project(':extensions:kotlin')
     implementation project(':extensions:typescript')
-    implementation project(':extensions:database')
+    // implementation project(':extensions:database')
     implementation project(':extensions:python')
 
     testImplementation project(':tests')

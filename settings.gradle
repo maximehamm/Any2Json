@@ -8,7 +8,7 @@ include 'extensions:community'
 include 'extensions:java'
 include 'extensions:kotlin'
 include 'extensions:typescript'
-include 'extensions:database'
+//include 'extensions:database'
 include 'extensions:php'
 include 'extensions:python'
 
