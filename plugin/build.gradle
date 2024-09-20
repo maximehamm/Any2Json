@@ -33,7 +33,7 @@ tasks.runPluginVerifier {
 
 patchPluginXml {
     sinceBuild '203'
-    untilBuild '241.*'
+    untilBuild '243.*'
     changeNotes """
       <b>Please Rate and Review this plugin !</b><br/><br/>
       Change notes :
@@ -86,6 +86,7 @@ jar {
 }
 
 publishPlugin {
-    token = System.getenv("ORG_GRADLE_PROJECT_intellijPublishToken")
+    // Add VM Option : -DPublishToken=xxx
+    token = System.getProperty("PublishToken")
 }
 

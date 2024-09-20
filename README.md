@@ -26,8 +26,8 @@ Launch task `runIde` from `plugin` module
 
 ## Get ready to publish to market place
 Setup a system variable :
-- Edit .bash_profile`
-- Add `export ORG_GRADLE_PROJECT_intellijPublishToken='xxxx'`
+- Edit .bash_profile` and add `export ORG_GRADLE_PROJECT_intellijPublishToken='xxxx'`
+- Or launch this command : launchctl setenv ORG_GRADLE_PROJECT_intellijPublishToken 'xxxx'
 
 _Token is known by Maxime HAMM :)_
 
