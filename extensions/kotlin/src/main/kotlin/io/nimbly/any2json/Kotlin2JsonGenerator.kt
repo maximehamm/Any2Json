@@ -1,6 +1,6 @@
 /*
  * ANY2JSON
- * Copyright (C) 2021  Maxime HAMM - NIMBLY CONSULTING - maxime.hamm.pro@gmail.com
+ * Copyright (C) 2024  Maxime HAMM - NIMBLY CONSULTING - maxime.hamm.pro@gmail.com
  *
  * This document is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,12 @@ import io.nimbly.any2json.EAction.COPY
 import io.nimbly.any2json.EAction.PREVIEW
 import io.nimbly.any2json.conversion.toJson
 import io.nimbly.any2json.util.processAction
+import org.jetbrains.kotlin.incremental.KotlinLookupLocation
 import org.jetbrains.kotlin.incremental.components.LookupLocation
 import org.jetbrains.kotlin.js.descriptorUtils.nameIfStandardType
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.nj2k.postProcessing.type
 import org.jetbrains.kotlin.psi.KtClass
-import org.jetbrains.kotlin.resolve.calls.callUtil.createLookupLocation
 import org.jetbrains.kotlin.types.DeferredType
 import org.jetbrains.kotlin.types.FlexibleType
 import org.jetbrains.kotlin.types.KotlinType
@@ -55,7 +55,7 @@ abstract class AbstractKotlin2JsonGenerate(private val action: EAction) : Any2Js
             .map { it.name to parse(
                 it.type(),
                 it.initializer?.text,
-                type.createLookupLocation()!!)}
+                KotlinLookupLocation(type))}
             .filter { it.second != null }
             .toMap()
 

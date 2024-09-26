@@ -1,6 +1,6 @@
 /*
  * ANY2JSON
- * Copyright (C) 2021  Maxime HAMM - NIMBLY CONSULTING - maxime.hamm.pro@gmail.com
+ * Copyright (C) 2024  Maxime HAMM - NIMBLY CONSULTING - maxime.hamm.pro@gmail.com
  *
  * This document is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@ package io.nimbly.any2json
 
 import com.google.gson.JsonSyntaxException
 import com.google.gson.stream.MalformedJsonException
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.extensions.ExtensionPointName
@@ -61,4 +62,7 @@ open class Any2JsonRootAction<T:Any2JsonRootExtensionPoint>(
         event.presentation.isVisible = ext != null
         event.presentation.isEnabled = ext != null && ext.isEnabled(event)
     }
+
+    override fun getActionUpdateThread() = ActionUpdateThread.EDT
+
 }

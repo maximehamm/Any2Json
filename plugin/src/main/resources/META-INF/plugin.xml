@@ -63,7 +63,6 @@
     <depends optional="true" config-file="plugin-withJava.xml">com.intellij.java</depends>
     <depends optional="true" config-file="plugin-withKotlin.xml">org.jetbrains.kotlin</depends>
     <depends optional="true" config-file="plugin-withTypeScript.xml">JavaScript</depends>
-<!--    <depends optional="true" config-file="plugin-withDatabase.xml">com.intellij.modules.database</depends>-->
     <depends optional="true" config-file="plugin-withPhp.xml">com.jetbrains.php</depends>
     <depends optional="true" config-file="plugin-withPython.xml">com.intellij.modules.python</depends>
 

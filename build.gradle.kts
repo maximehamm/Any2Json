@@ -1,45 +1,18 @@
-plugins {
-    id 'org.jetbrains.intellij'
-    id 'org.jetbrains.kotlin.jvm' version '1.4.30'
+@file:Suppress("PropertyName")
+
+import java.net.URI
+
+allprojects {
+    group = "io.nimbly.json"
+    version = "3.0.0"
 }
 
-group 'io.nimbly.json'
-
-dependencies {
-
-    implementation project(':common')
-
-    runtimeOnly project(':extensions:community')
-    runtimeOnly project(':extensions:java')
-    runtimeOnly project(':extensions:kotlin')
-    runtimeOnly project(':extensions:typescript')
-    // runtimeOnly project(':extensions:database')
-    runtimeOnly project(':extensions:php')
-    runtimeOnly project(':extensions:python')
-}
-
-compileKotlin { kotlinOptions.jvmTarget = "11" }
-compileTestKotlin { kotlinOptions.jvmTarget = "11" }
-
-// See https://github.com/JetBrains/gradle-intellij-plugin/
-intellij {
-    version = rootProject.ext.any2Json_idea_version
-    plugins = rootProject.ext.any2Json_idea_plugins
-}
-
-tasks.runPluginVerifier {
-    ideVersions("IC-203.7148.40, CL-211.5787.12, PS-211.5787.18") //IC-203.7148.40, IU-203.7148.40, CL-211.5787.12, PS-211.5787.18
-}
-
-patchPluginXml {
-    sinceBuild '203'
-    untilBuild '243.*'
-    changeNotes """
+val notes by extra {"""
       <b>Please Rate and Review this plugin !</b><br/><br/>
       Change notes :
       <ul>
-        <li><b>2.18</b> IntelliJ IDEA 2024.1 compatibility </li>
-        <li><b>2.18</b> IntelliJ IDEA 2021.3 compatibility </li>
+        <li><b>2.20</b> IntelliJ IDEA 2024.3 compatibility </li>
+        <li><b>2.18</b> IntelliJ IDEA 2021.2 compatibility </li>
         <li><b>2.17</b> IntelliJ IDEA 2021.2 compatibility </li>
         <li><b>2.16</b> Fix bugs </li>
         <li><b>2.15</b> Fix bugs </li>
@@ -77,16 +50,25 @@ patchPluginXml {
       """
 }
 
-tasks.buildSearchableOptions {
-    enabled = false
+val versions by extra {
+    mapOf(
+        "intellij-version" to "IU-2022.3.1", //  "IU-203.7148.57",
+
+        "python" to "223.8214.52",        // https://plugins.jetbrains.com/plugin/631-python/versions
+        "php" to "223.8214.64",           // https://plugins.jetbrains.com/plugin/6610-php/versions
+        "psiViewer" to "223-SNAPSHOT",    //https://plugins.jetbrains.com/plugin/227-psiviewer/versions
+    )
 }
 
-jar {
-    archiveBaseName = 'any2json'
-}
+allprojects {
 
-publishPlugin {
-    // Add VM Option : -DPublishToken=xxx
-    token = System.getProperty("PublishToken")
+    repositories {
+        mavenCentral()
+        maven {
+            url = URI("https://oss.sonatype.org/content/repositories/snapshots/")
+        }
+        maven {
+            url = URI("https://dl.bintray.com/jetbrains/intellij-plugin-service")
+        }
+    }
 }
-
