@@ -52,11 +52,10 @@ val notes by extra {"""
 
 val versions by extra {
     mapOf(
-        "intellij-version" to "IU-2022.3.1", //  "IU-203.7148.57",
-
-        "python" to "223.8214.52",        // https://plugins.jetbrains.com/plugin/631-python/versions
-        "php" to "223.8214.64",           // https://plugins.jetbrains.com/plugin/6610-php/versions
-        "psiViewer" to "223-SNAPSHOT",    //https://plugins.jetbrains.com/plugin/227-psiviewer/versions
+        "intellij-version" to "IU-2023.1",
+        "python"           to "231.8109.90",        // https://plugins.jetbrains.com/plugin/631-python/versions
+        "php"              to "231.8109.108",       // https://plugins.jetbrains.com/plugin/6610-php/versions
+        "psiViewer"        to "231-SNAPSHOT",       //https://plugins.jetbrains.com/plugin/227-psiviewer/versions
     )
 }
 

@@ -32,10 +32,6 @@ class Any2JsonPreviewAction : Any2JsonRootAction<Any2JsonPreviewExtensionPoint>(
 open class Any2JsonRootAction<T:Any2JsonRootExtensionPoint>(
     private val EXT: ExtensionPointName<T>) : AnAction() {
 
-    init {
-        println("test")
-    }
-
     override fun actionPerformed(event: AnActionEvent) {
         try {
             EXT.extensionList.find {

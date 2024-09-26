@@ -1,5 +1,5 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.7.20"
+    id("org.jetbrains.kotlin.jvm") version "1.9.0"
     id("org.jetbrains.intellij") version "1.13.1"
 }
 
@@ -48,7 +48,7 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("203")    // 2021.2.4
+        sinceBuild.set("223.*")
         untilBuild.set("243.*")
 
         changeNotes.set(notes)
@@ -64,7 +64,7 @@ tasks {
 
     runPluginVerifier {
         ideVersions.set(
-            listOf("IU-2022.3.1"))
+            listOf("IU-2023.1.0"))
     }
 
     publishPlugin {
