@@ -1,7 +1,0 @@
-include 'community'
-include 'java'
-include 'kotlin'
-include 'typescript'
-//include 'database'
-include 'php'
-include 'python'

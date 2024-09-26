@@ -140,17 +140,23 @@
 
         <group id="io.nimbly.any2json.Any2Json.pretty">
             <separator/>
+
+            <!-- <action class="io.nimbly.any2json.HelloAction"-->
+            <!--         id="io.nimbly.any2json.Hello"-->
+            <!--         text="Hello">-->
+            <!-- </action>-->
+
             <action class="io.nimbly.any2json.Any2JsonPrettifyAction"
                     id="io.nimbly.any2json.Any2JsonPrettifyAction"
-                    text="Convert to prettified Json">
+                    text="Convert to Prettified Json">
             </action>
             <action class="io.nimbly.any2json.Any2JsonCopyAction"
                     id="io.nimbly.any2json.Any2JsonCopyAction"
-                    text="Copy as prettified Json">
+                    text="Copy as Prettified Json">
             </action>
             <action class="io.nimbly.any2json.Any2JsonPreviewAction"
                     id="io.nimbly.any2json.Any2JsonPreviewAction"
-                    text="Preview as prettified Json">
+                    text="Preview as Prettified Json">
             </action>
             <add-to-group group-id="CutCopyPasteGroup" anchor="last"/>
             <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="EditorToggleColumnMode"/>

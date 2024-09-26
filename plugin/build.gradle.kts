@@ -18,9 +18,9 @@ dependencies {
 }
 
 configurations.all {
-    // This is important for PDF export
-    // exclude("xml-apis", "xml-apis")
-    // exclude("xml-apis", "xml-apis-ext")
+     // This is important for PDF export
+     // exclude("xml-apis", "xml-apis")
+     // exclude("xml-apis", "xml-apis-ext")
 }
 
 // Configure Gradle IntelliJ Plugin
@@ -40,11 +40,11 @@ intellij {
 tasks {
 
     withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = "17"
     }
 
     patchPluginXml {
@@ -61,9 +61,6 @@ tasks {
     jar {
         archiveBaseName.set(rootProject.name)
     }
-    instrumentedJar {
-         exclude("META-INF/*") // Workaround for runPluginVerifier duplicate plugins...
-    }
 
     runPluginVerifier {
         ideVersions.set(
@@ -74,9 +71,4 @@ tasks {
         val t = System.getProperty("PublishToken")
         token.set(t)
     }
-
-//    runIde {
-//        // Workaround to fix startup issue
-//        systemProperty("idea.platform.prefix", "")
-//    }
 }

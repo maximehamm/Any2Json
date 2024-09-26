@@ -14,7 +14,7 @@ intellij {
         "org.intellij.intelliLang",
         "com.jetbrains.php:213.6461.83",
         "Pythonid:213.6461.79",
-//        "PsiViewer:203-SNAPSHOT"
+        // "PsiViewer:203-SNAPSHOT"
     ))
 }
 
@@ -29,11 +29,11 @@ dependencies {
 
 tasks {
     withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = "17"
     }
     buildSearchableOptions {
         enabled = false
